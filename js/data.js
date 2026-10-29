@@ -1,9 +1,9 @@
 /* GERADO por 08_sintese/dados/build_dados.py a partir dos CSVs. Não editar à mão. */
 window.TERA = {
  "versao": {
-  "numero": 9,
+  "numero": 10,
   "data": "2026-10-29",
-  "titulo": "Atores: individual ou completo"
+  "titulo": "O ator escolhido fica inconfundível"
  },
  "relatorio": {
   "titulo": {
@@ -4503,6 +4503,12 @@ window.TERA = {
    "titulo": "Atores: individual ou completo",
    "o_que_mudou": "Ao lado do ciclo, a faixa de atores: individual mostra um ator por vez (clique numa caixa) e completo mostra todos. A rede inteira só aparece quando se escolhe completo e o ciclo inteiro, com o aviso de que é muita coisa para um olhar só",
    "versao": 9
+  },
+  {
+   "data": "2026-10-29",
+   "titulo": "O ator escolhido fica inconfundível",
+   "o_que_mudou": "O ator clicado fica em tinta cheia com letra branca e leva o rótulo \"ator escolhido\" na leitura, com um × para soltar, e os que se relacionam com ele ficam só com a borda azul. A pílula \"individual\" passa a dizer quem está escolhido",
+   "versao": 10
   }
  ]
 };

@@ -278,6 +278,11 @@ nav.barra{position:sticky;top:0;z-index:50;height:var(--header);display:flex;ali
 .estacao.c-provavel .papel{font-style:italic}
 .estacao:hover rect{stroke:var(--accent);stroke-width:2}
 .estacao.foco rect{stroke:var(--accent);stroke-width:2.8;stroke-dasharray:none;fill:#fff}
+/* o ator escolhido: tinta cheia, letra branca; os que se relacionam com ele ficam com a borda azul */
+.estacao.escolhida rect{fill:var(--ink);stroke:var(--ink);stroke-width:2;stroke-dasharray:none}
+.estacao.escolhida .nome,.estacao.escolhida .papel{fill:#fff}
+.estacao.escolhida.e-centro rect{fill:var(--ink)}
+.escolhido-rot{font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#fff;background:var(--ink);border-radius:3px;padding:0 6px;line-height:1.8}
 .estacao.apagada{opacity:.5}
 .grupo-rotulo{font-size:11.5px;font-weight:700;letter-spacing:.2em;fill:var(--ink)}
 .eco-coluna{stroke:none}

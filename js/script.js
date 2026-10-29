@@ -541,12 +541,16 @@
     if (ator) tocados[ator] = true;
     var algo = !!(ator || etapaEco || fluxo);
     Object.keys(caixasEco).forEach(function (id) {
-      caixasEco[id].classList.toggle("foco", !!tocados[id] && (!ator || id === ator || !!grupoAtor[id]));
+      caixasEco[id].classList.toggle("escolhida", id === ator);
+      caixasEco[id].classList.toggle("foco", !!tocados[id] && id !== ator && (!ator || !!grupoAtor[id] || true));
       caixasEco[id].classList.toggle("apagada", false); /* ninguém some: quem participa acende, o resto fica em cor cheia (29/10) */
     });
     if (ecoPassos) {
       Array.prototype.forEach.call(ecoPassos.querySelectorAll(".ep[data-etapa]"), function (b) { b.classList.toggle("on", (b.dataset.etapa || null) === etapaEco); });
-      Array.prototype.forEach.call(ecoPassos.querySelectorAll(".ep-modo"), function (b) { b.classList.toggle("on", (b.dataset.modo === "individual") === !!ator); });
+      Array.prototype.forEach.call(ecoPassos.querySelectorAll(".ep-modo"), function (b) {
+        b.classList.toggle("on", (b.dataset.modo === "individual") === !!ator);
+        if (b.dataset.modo === "individual") b.textContent = ator && ATOR[ator] ? "individual · " + ATOR[ator].curto : "individual";
+      });
     }
     leituraEcossistema(ator, fluxo, grupoAtor, hub);
   }
@@ -575,7 +579,8 @@
     if (ator && ATOR[ator]) {
       var a = ATOR[ator], col = (D.colunas_ecossistema || []).filter(function (c) { return c.id === a.coluna; })[0];
       var internas = hub ? (D.fluxos || []).filter(function (f) { return grupoAtor[f.de] && grupoAtor[f.para]; }).length : 0;
-      html += "<div class='bloco ficha'><div class='rotulo'>" + esc(col ? col.rotulo : "") + (a.grupo && GRUPO[a.grupo] ? " · " + esc(GRUPO[a.grupo].nome) : "") + " " + conf(a.confianca) + "</div><h3>" + esc(a.nome) + "</h3><p>" + esc(ponto(maiuscula(a.papel))) + "</p>" +
+      html += "<button type='button' class='fecha-leitura' title='soltar o ator' aria-label='soltar o ator'>×</button>";
+      html += "<div class='bloco ficha'><div class='rotulo'>" + esc(col ? col.rotulo : "") + (a.grupo && GRUPO[a.grupo] ? " · " + esc(GRUPO[a.grupo].nome) : "") + " " + conf(a.confianca) + " <span class='escolhido-rot'>ator escolhido</span></div><h3>" + esc(a.nome) + "</h3><p>" + esc(ponto(maiuscula(a.papel))) + "</p>" +
         (hub ? "<p class='dica'>Contém: " + hub.contem.map(function (id) { return ATOR[id] ? ATOR[id].curto : id; }).join(" · ") + ". Aqui, só o que atravessa a fronteira do Centro" + (internas ? "; entre as equipes há mais " + internas + " relações, visíveis ao clicar numa equipe" : "") + ".</p>" : "") + "</div>";
       var MAXREL = 8, mostra = lista.slice(0, MAXREL);
       html += "<div class='bloco'><div class='rotulo'>" + (et ? "Em " + esc(et.nome) : "O que chega e sai") + " <span class='conf'>" + lista.length + "</span>" + (et ? " <button type='button' class='ep-ir ep-limpa' data-etapa=''>ver o ciclo inteiro</button>" : "") + "</div><ul class='lista'>" +
@@ -608,6 +613,8 @@
       li.addEventListener("mouseenter", function () { realcaFluxo(li.dataset.fluxo, true); });
       li.addEventListener("mouseleave", function () { realcaFluxo(li.dataset.fluxo, false); });
     });
+    var solta = leituraEco.querySelector(".fecha-leitura");
+    if (solta) solta.addEventListener("click", function () { selecionaEco(null, undefined); estadoNaUrl(); });
     Array.prototype.forEach.call(leituraEco.querySelectorAll(".ep-ir"), function (b) {
       b.addEventListener("click", function () { selecionaEco(b.classList.contains("ep-limpa") ? selecao.ecossistema : null, b.dataset.etapa || null); estadoNaUrl(); });
     });
