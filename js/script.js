@@ -500,10 +500,21 @@
     ecoPassos.innerHTML = "<span class='ep-rot'>O CICLO</span>" + PASSOS.map(function (p, i) {
       var qt = (D.fluxos || []).filter(function (f) { return fluxoNoPasso(f, p.sigla); }).length;
       return "<button type='button' class='ep' role='tab' data-etapa='" + p.sigla + "' style='--cor:" + p.cor + "' title='" + esc(p.verbo) + " · " + qt + " relações'><i>" + SUP[p.sigla] + "</i>" + esc(p.nome) + "<small>" + qt + "</small></button>";
-    }).join("") + "<button type='button' class='ep ep-todos' role='tab' data-etapa='' title='todas as relações do ator escolhido'>tudo</button>";
+    }).join("") + "<button type='button' class='ep ep-todos' role='tab' data-etapa='' title='os três movimentos de uma vez'>ciclo inteiro</button>" +
+      "<span class='ep-sep'></span><span class='ep-rot'>ATORES</span>" +
+      "<button type='button' class='ep ep-modo' role='tab' data-modo='individual' title='um ator por vez: clique numa caixa'>individual</button>" +
+      "<button type='button' class='ep ep-modo' role='tab' data-modo='completo' title='todos os atores de uma vez (são muitas conexões)'>completo</button>";
     cena.insertBefore(ecoPassos, eco);
-    Array.prototype.forEach.call(ecoPassos.querySelectorAll(".ep"), function (b) {
+    Array.prototype.forEach.call(ecoPassos.querySelectorAll(".ep[data-etapa]"), function (b) {
       b.addEventListener("click", function () { selecionaEco(selecao.ecossistema, b.dataset.etapa || null); estadoNaUrl(); });
+    });
+    Array.prototype.forEach.call(ecoPassos.querySelectorAll(".ep-modo"), function (b) {
+      b.addEventListener("click", function () {
+        /* individual sem ator escolhido abre pelo Centro; completo solta o ator */
+        if (b.dataset.modo === "completo") selecionaEco(null, undefined);
+        else selecionaEco(selecao.ecossistema && selecao.ecossistema.indexOf("a:") === 0 ? selecao.ecossistema : (ATOR.centro ? "a:centro" : "a:" + D.atores[0].id), undefined);
+        estadoNaUrl();
+      });
     });
   })();
   function ordemEtapa(f) { var m = 99; (f.etapas || []).forEach(function (e) { var i = ETAPAS.map(function (x) { return x.id; }).indexOf(e); if (i >= 0 && i < m) m = i; }); return m; }
@@ -517,7 +528,7 @@
     visiveisEco = setasEco.filter(function (s) {
       var f = s.f;
       if (fluxo) return f.id === fluxo;
-      if (!ator && !etapaEco) return false;
+      if (!ator && !etapaEco) return true; /* completo + ciclo inteiro: tudo, por escolha de quem olha */
       if (ator && !(grupoAtor[f.de] || grupoAtor[f.para])) return false;
       if (hub && grupoAtor[f.de] && grupoAtor[f.para]) return false; /* dentro do Centro: não é o que chega nem o que sai */
       if (etapaEco && !fluxoNoPasso(f, etapaEco)) return false;
@@ -533,7 +544,10 @@
       caixasEco[id].classList.toggle("foco", !!tocados[id] && (!ator || id === ator || !!grupoAtor[id]));
       caixasEco[id].classList.toggle("apagada", false); /* ninguém some: quem participa acende, o resto fica em cor cheia (29/10) */
     });
-    if (ecoPassos) Array.prototype.forEach.call(ecoPassos.querySelectorAll(".ep"), function (b) { b.classList.toggle("on", (b.dataset.etapa || null) === etapaEco); });
+    if (ecoPassos) {
+      Array.prototype.forEach.call(ecoPassos.querySelectorAll(".ep[data-etapa]"), function (b) { b.classList.toggle("on", (b.dataset.etapa || null) === etapaEco); });
+      Array.prototype.forEach.call(ecoPassos.querySelectorAll(".ep-modo"), function (b) { b.classList.toggle("on", (b.dataset.modo === "individual") === !!ator); });
+    }
     leituraEcossistema(ator, fluxo, grupoAtor, hub);
   }
   function realcaFluxo(id, on) {
@@ -582,7 +596,10 @@
       var tese = achadosDe("ecossistema")[0];
       if (tese && lista.length <= 8) html += "<div class='bloco'>" + achadoHtml(tese, "tese", true) + "</div>";
     } else {
-      html += "<div class='bloco'>" + achadosHtml("ecossistema", true, 4) + "</div>";
+      /* completo + ciclo inteiro: todas as relações, com o aviso de que é muita coisa de uma vez */
+      html += "<div class='bloco ficha'><div class='rotulo'>O ecossistema inteiro <span class='conf'>" + lista.length + "</span></div><h3>Todas as relações, de uma vez.</h3>" +
+        "<p class='dica'>É muita coisa para um olhar só: escolha um movimento do ciclo, ou clique num ator para ver só o que chega e sai dele.</p></div>" +
+        "<div class='bloco'><ul class='lista'>" + lista.slice(0, 8).map(function (f) { return itemFluxo(f, false); }).join("") + (lista.length > 8 ? "<li class='dica'>e mais " + (lista.length - 8) + "</li>" : "") + "</ul></div>";
     }
     html += elo("ecossistema");
     escreve(leituraEco, html);

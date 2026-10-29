@@ -1,9 +1,9 @@
 /* GERADO por 08_sintese/dados/build_dados.py a partir dos CSVs. Não editar à mão. */
 window.TERA = {
  "versao": {
-  "numero": 8,
+  "numero": 9,
   "data": "2026-10-29",
-  "titulo": "O ciclo do ecossistema é o macro: ver, tratar, reavaliar"
+  "titulo": "Atores: individual ou completo"
  },
  "relatorio": {
   "titulo": {
@@ -4497,6 +4497,12 @@ window.TERA = {
    "titulo": "O ciclo do ecossistema é o macro: ver, tratar, reavaliar",
    "o_que_mudou": "A faixa do ecossistema passou dos sete passos para os três movimentos do ciclo (ver · tratar · reavaliar). Cada movimento junta as relações das suas etapas, e a leitura fala do movimento, sem o detalhe de cada passo, que é das jornadas",
    "versao": 8
+  },
+  {
+   "data": "2026-10-29",
+   "titulo": "Atores: individual ou completo",
+   "o_que_mudou": "Ao lado do ciclo, a faixa de atores: individual mostra um ator por vez (clique numa caixa) e completo mostra todos. A rede inteira só aparece quando se escolhe completo e o ciclo inteiro, com o aviso de que é muita coisa para um olhar só",
+   "versao": 9
   }
  ]
 };

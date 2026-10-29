@@ -322,6 +322,8 @@ nav.barra{position:sticky;top:0;z-index:50;height:var(--header);display:flex;ali
 .ep.on{background:var(--cor,var(--ink));border-color:var(--cor,var(--ink));color:#fff}
 .ep.on i{color:#fff}
 .ep-todos{border-left-width:1px;color:var(--muted)}
+.ep-sep{width:1px;height:18px;background:var(--hairline-forte);margin:0 8px}
+.ep-modo{border-left-width:1px;--cor:var(--ink)}
 .ep-nav{margin:8px 0 0;display:flex;flex-wrap:wrap;gap:6px}
 .ep-ir{cursor:pointer;font-size:11.5px;font-weight:600;color:var(--ink);background:var(--azul-claro);border:1px solid rgba(23,116,222,.35);border-radius:999px;padding:2px 10px}
 .ep-ir:hover{background:var(--accent);color:#fff}
