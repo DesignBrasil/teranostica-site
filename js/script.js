@@ -524,12 +524,11 @@
     var tocados = {};
     setasEco.forEach(function (s) { s.p.classList.remove("vis", "realce", "dim", "fundo"); s.r.classList.remove("vis", "dim"); });
     visiveisEco.forEach(function (s, i) { numFluxo[s.f.id] = i + 1; s.t.textContent = String(i + 1); s.p.classList.add("vis"); s.r.classList.add("vis"); tocados[s.f.de] = tocados[s.f.para] = true; });
-    setasEco.forEach(function (s) { if (!s.p.classList.contains("vis")) s.p.classList.add("fundo"); });
     if (ator) tocados[ator] = true;
     var algo = !!(ator || etapaEco || fluxo);
     Object.keys(caixasEco).forEach(function (id) {
       caixasEco[id].classList.toggle("foco", !!tocados[id] && (!ator || id === ator || !!grupoAtor[id]));
-      caixasEco[id].classList.toggle("apagada", algo && !tocados[id]);
+      caixasEco[id].classList.toggle("apagada", false); /* ninguém some: quem participa acende, o resto fica em cor cheia (29/10) */
     });
     if (ecoPassos) Array.prototype.forEach.call(ecoPassos.querySelectorAll(".ep"), function (b) { b.classList.toggle("on", (b.dataset.etapa || null) === etapaEco); });
     leituraEcossistema(ator, fluxo, grupoAtor, hub);

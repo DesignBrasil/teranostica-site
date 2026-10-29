@@ -1,9 +1,9 @@
 /* GERADO por 08_sintese/dados/build_dados.py a partir dos CSVs. Não editar à mão. */
 window.TERA = {
  "versao": {
-  "numero": 6,
+  "numero": 7,
   "data": "2026-10-29",
-  "titulo": "O ecossistema inteiro à vista, com o passo por cima"
+  "titulo": "O ecossistema calmo: sem a rede de fundo, ninguém some"
  },
  "relatorio": {
   "titulo": {
@@ -4485,6 +4485,12 @@ window.TERA = {
    "titulo": "O ecossistema inteiro à vista, com o passo por cima",
    "o_que_mudou": "A rede inteira de relações fica visível em traço fino e claro, como mapa, e o passo ou o ator escolhido pinta por cima, em cor e numerado. As três colunas ganharam faixas de fundo, as caixas fora do foco ficam menos apagadas, cada pílula do ciclo diz quantas relações tem e a leitura do passo traz a tese da camada",
    "versao": 6
+  },
+  {
+   "data": "2026-10-29",
+   "titulo": "O ecossistema calmo: sem a rede de fundo, ninguém some",
+   "o_que_mudou": "A rede de fundo saiu (26 linhas finas confundiam). As caixas ficam todas em cor cheia, e as que participam do passo ou do ator acendem com a borda azul, e só as setas do passo aparecem, coloridas e numeradas",
+   "versao": 7
   }
  ]
 };
