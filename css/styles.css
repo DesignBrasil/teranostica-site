@@ -503,8 +503,9 @@ nav.barra{position:sticky;top:0;z-index:50;height:var(--header);display:flex;ali
   .vista.on{display:block;height:auto}
   .cena{height:auto;overflow-x:auto}
   .cena svg{height:auto;min-width:760px}
-  .cena.cena-abre{overflow:visible}
-  .cena.cena-abre svg{min-width:0;width:100%;max-height:62vh}
+  /* a figura da abertura mantém o tamanho de leitura: abaixo de 600 px ela rola para o lado, como as outras cenas */
+  .cena.cena-abre{overflow-x:auto;overflow-y:hidden}
+  .cena.cena-abre svg{min-width:600px;width:100%;height:auto;max-height:none}
   .duo{grid-template-columns:1fr 1fr;overflow-x:auto}
   .duo svg{height:auto;min-width:0}
   .leitura{margin-top:14px;padding:14px 16px 16px}

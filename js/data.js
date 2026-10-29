@@ -1,9 +1,9 @@
 /* GERADO por 08_sintese/dados/build_dados.py a partir dos CSVs. Não editar à mão. */
 window.TERA = {
  "versao": {
-  "numero": 2,
+  "numero": 3,
   "data": "2026-10-29",
-  "titulo": "A abertura peça por peça, os dois relógios nas jornadas"
+  "titulo": "A figura da abertura legível no celular"
  },
  "relatorio": {
   "titulo": {
@@ -4357,6 +4357,12 @@ window.TERA = {
    "titulo": "A abertura peça por peça, os dois relógios nas jornadas",
    "o_que_mudou": "A aba 0 passou a mostrar a anatomia do radiofármaco em quatro partes (radionuclídeo · quelante · vetor · alvo), cada uma com o seu análogo no projeto e a aba que abre · o relógio da dose saiu da abertura e ganhou, nas jornadas, a forma completa: a curva contra a janela da senha, a molécula no dia 0, o paciente no dia da dose, ver · tratar · reavaliar no eixo e o próximo ciclo · a reação em cadeia e a barra de controle viraram um cartão da Direção",
    "versao": 2
+  },
+  {
+   "data": "2026-10-29",
+   "titulo": "A figura da abertura legível no celular",
+   "o_que_mudou": "Abaixo de 600 px a figura da abertura deixa de encolher: mantém 600 px de largura e rola para o lado dentro do próprio painel, como as cenas do ecossistema e do sistema",
+   "versao": 3
   }
  ]
 };
