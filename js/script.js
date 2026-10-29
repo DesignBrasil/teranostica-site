@@ -435,6 +435,7 @@
     var pos = {};
     COLS.forEach(function (c, ci) {
       var cx = cw * ci + cw / 2, lista = D.atores.filter(function (a) { return a.coluna === c.id; });
+      el("rect", { x: cw * ci + 5, y: 16, width: cw - 10, height: 526, rx: 14, "class": "eco-coluna col-" + c.id }, eco);
       texto(eco, cx, 34, c.rotulo, "grupo-rotulo", "middle");
       texto(eco, cx, 48, c.sub, "grupo-sub", "middle");
       var y0 = 84, y1 = 516, passo = lista.length > 1 ? Math.min(66, (y1 - y0) / (lista.length - 1)) : 0;
@@ -494,7 +495,8 @@
     var cena = eco && eco.parentNode; if (!cena || !ETAPAS.length) return;
     ecoPassos = document.createElement("div"); ecoPassos.className = "eco-passos"; ecoPassos.setAttribute("role", "tablist"); ecoPassos.setAttribute("aria-label", "seguir o ciclo, passo a passo");
     ecoPassos.innerHTML = "<span class='ep-rot'>SEGUIR O CICLO</span>" + ETAPAS.map(function (e, i) {
-      return "<button type='button' class='ep' role='tab' data-etapa='" + e.id + "' style='--cor:" + passoCor(e.passo) + "' title='" + esc(e.nome) + "'><i>" + (i + 1) + "</i>" + esc(e.curto) + "</button>";
+      var qt = (D.fluxos || []).filter(function (f) { return (f.etapas || []).indexOf(e.id) >= 0; }).length;
+      return "<button type='button' class='ep' role='tab' data-etapa='" + e.id + "' style='--cor:" + passoCor(e.passo) + "' title='" + esc(e.nome) + " · " + qt + " relações'><i>" + (i + 1) + "</i>" + esc(e.curto) + "<small>" + qt + "</small></button>";
     }).join("") + "<button type='button' class='ep ep-todos' role='tab' data-etapa='' title='todas as relações do ator escolhido'>tudo</button>";
     cena.insertBefore(ecoPassos, eco);
     Array.prototype.forEach.call(ecoPassos.querySelectorAll(".ep"), function (b) {
@@ -520,8 +522,9 @@
     }).sort(function (x, y) { return ordemEtapa(x.f) - ordemEtapa(y.f); });
     numFluxo = {};
     var tocados = {};
-    setasEco.forEach(function (s) { s.p.classList.remove("vis", "realce", "dim"); s.r.classList.remove("vis", "dim"); });
+    setasEco.forEach(function (s) { s.p.classList.remove("vis", "realce", "dim", "fundo"); s.r.classList.remove("vis", "dim"); });
     visiveisEco.forEach(function (s, i) { numFluxo[s.f.id] = i + 1; s.t.textContent = String(i + 1); s.p.classList.add("vis"); s.r.classList.add("vis"); tocados[s.f.de] = tocados[s.f.para] = true; });
+    setasEco.forEach(function (s) { if (!s.p.classList.contains("vis")) s.p.classList.add("fundo"); });
     if (ator) tocados[ator] = true;
     var algo = !!(ator || etapaEco || fluxo);
     Object.keys(caixasEco).forEach(function (id) {
@@ -573,6 +576,8 @@
         (et.gate ? "<p class='risco'>O que falta aqui: " + esc(et.gate) + "</p>" : "") + "</div>";
       html += "<div class='bloco'><div class='rotulo'>Quem se relaciona neste passo <span class='conf'>" + lista.length + "</span></div><ul class='lista'>" +
         (lista.length ? lista.map(function (f) { return itemFluxo(f, false); }).join("") : "<li>nenhuma relação registrada neste passo</li>") + "</ul>" + navEtapas() + "</div>";
+      var tese = achadosDe("ecossistema")[0];
+      if (tese && lista.length <= 6) html += "<div class='bloco'>" + achadoHtml(tese, "tese", true) + "</div>";
     } else {
       html += "<div class='bloco'>" + achadosHtml("ecossistema", true, 4) + "</div>";
     }

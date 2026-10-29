@@ -1,9 +1,9 @@
 /* GERADO por 08_sintese/dados/build_dados.py a partir dos CSVs. Não editar à mão. */
 window.TERA = {
  "versao": {
-  "numero": 5,
+  "numero": 6,
   "data": "2026-10-29",
-  "titulo": "Seguir o ciclo: as relações do ecossistema passo a passo"
+  "titulo": "O ecossistema inteiro à vista, com o passo por cima"
  },
  "relatorio": {
   "titulo": {
@@ -4479,6 +4479,12 @@ window.TERA = {
    "titulo": "Seguir o ciclo: as relações do ecossistema passo a passo",
    "o_que_mudou": "A aba 1 ganhou a faixa \"seguir o ciclo\": cada um dos sete passos acende só as relações daquele momento, numeradas na ordem da jornada, com o passo seguinte a um clique. Um ator mostra as suas relações com a direção explícita (sai · chega), e passar o mouse numa linha da lista destaca a seta e apaga as outras. O Centro mostra só o que atravessa a sua fronteira. As colunas passaram à ordem Einstein clínico · Einstein de apoio · fora do Einstein",
    "versao": 5
+  },
+  {
+   "data": "2026-10-29",
+   "titulo": "O ecossistema inteiro à vista, com o passo por cima",
+   "o_que_mudou": "A rede inteira de relações fica visível em traço fino e claro, como mapa, e o passo ou o ator escolhido pinta por cima, em cor e numerado. As três colunas ganharam faixas de fundo, as caixas fora do foco ficam menos apagadas, cada pílula do ciclo diz quantas relações tem e a leitura do passo traz a tese da camada",
+   "versao": 6
   }
  ]
 };
