@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sistemática Teranóstico · Einstein</title>
+<meta name="description" content="A síntese do projeto Plataforma Teranóstica em uma tela: a abertura (o átomo teranóstico: ver, tratar, reavaliar), as quatro camadas (quem regula, paga e fornece · os sistemas que já existem · as cinco terapias · o que o paciente vive) e a direção: a decisão da Fase 3.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Sistemática Teranóstico · enxergar o que se trata e tratar o que se vê">
+<meta property="og:description" content="Coordenação é o problema, não tecnologia. A síntese do projeto, do ecossistema à direção, em seis abas que cabem numa tela.">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="img/selo_sistematica.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css?v=pub-1">
+</head>
+<body>
+
+<!-- uma barra só (molde: a Sistemática da Longevidade e a do HDB): o selo, a marca, as seis abas como pílulas -->
+<nav class="barra">
+  <a class="brand" href="./"><img class="brand-selo" src="img/selo_sistematica.svg" alt=""><span class="wm-nome">Sistemática<small>Teranóstico · Einstein</small></span></a>
+  <div class="nav-links" id="camadas" role="tablist" aria-label="a abertura, as quatro camadas e a direção"></div>
+</nav>
+
+<main class="palco">
+  <p class="pergunta" id="pergunta"></p>
+  <p class="manchete" id="manchete"></p>
+
+  <div class="vistas">
+    <!-- 0 · ABERTURA: à esquerda, o átomo teranóstico (a molécula, as emissões, o relógio de decaimento, a reação em cadeia
+         e a barra de controle); à direita, a capa em sete perguntas -->
+    <section class="vista v-abertura" id="v-abertura" role="tabpanel" aria-label="Abertura">
+      <div class="cena cena-abre" id="cena-abre">
+        <svg id="atomo" viewBox="0 0 480 440" preserveAspectRatio="xMidYMid meet" role="img" aria-label="O átomo teranóstico: a mesma molécula leva o que vê e o que trata; a dose decai enquanto a senha não chega; a reação em cadeia e a barra de controle"></svg>
+      </div>
+      <aside class="leitura" id="leitura-abre" aria-live="polite" data-piso="0.5"></aside>
+    </section>
+
+    <section class="vista v-dupla" id="v-ecossistema" role="tabpanel" aria-label="Ecossistema">
+      <div class="cena"><svg id="eco" viewBox="0 0 945 546" role="img" aria-label="O ecossistema: quem regula, paga, fornece e trata, e as relações entre eles"></svg></div>
+      <aside class="leitura" id="leitura-eco" aria-live="polite"></aside>
+    </section>
+
+    <section class="vista v-dupla cheia" id="v-sistema" role="tabpanel" aria-label="Sistema">
+      <div class="cena">
+        <div class="tempos" id="tempos" role="tablist" aria-label="os dois olhares sobre o sistema"></div>
+        <div class="duo" id="duo" aria-label="os dois olhares, lado a lado">
+          <svg id="sis1" viewBox="0 0 900 440" preserveAspectRatio="xMidYMin meet" role="img" aria-label="Hoje, de memória: cada sistema em separado, a coordenação por planilha e mensagem"></svg>
+          <svg id="sis2" viewBox="0 0 900 440" preserveAspectRatio="xMidYMin meet" role="img" aria-label="Com a camada de coordenação: ver, tratar, reavaliar sobre os sistemas que já existem"></svg>
+        </div>
+        <svg id="sis" viewBox="0 0 900 440" role="img" aria-label="Os sistemas do Einstein hoje, e a camada de coordenação proposta"></svg>
+      </div>
+      <aside class="leitura" id="leitura-sis" aria-live="polite"></aside>
+    </section>
+
+    <section class="vista v-cheia" id="v-servicos" role="tabpanel" aria-label="Serviços">
+      <div class="painel" id="portfolio" data-cresce="1.3"></div>
+    </section>
+
+    <section class="vista v-jornadas" id="v-jornadas" role="tabpanel" aria-label="Jornadas">
+      <aside class="lista-jor" id="lista-jor"></aside>
+      <div class="painel" id="jor-palco" data-piso="0.56"></div>
+    </section>
+
+    <section class="vista v-direcao" id="v-direcao" role="tabpanel" aria-label="Direção">
+      <div class="painel" id="direcao" data-piso="0.55"></div>
+    </section>
+  </div>
+
+  <!-- a faixa de baixo: o que a camada revela; nas pontas, como ler e a legenda -->
+  <p class="revela" id="revela"></p>
+  <p class="legenda-procedencia">
+    <span class="lp lp-ok">confirmado</span>
+    <span class="lp lp-prov">provável, ou leitura nossa</span>
+    <span class="lp lp-aberto">em aberto, ou a confirmar</span>
+    <span class="lp-fonte" id="carimbo">Base: vault do projeto Plataforma Teranóstica. Sem nomes de pessoas nem valores em reais nesta peça.</span>
+  </p>
+</main>
+
+<script src="js/data.js?v=pub-1"></script>
+<script src="js/script.js?v=pub-1"></script>
+</body>
+</html>
