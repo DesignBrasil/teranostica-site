@@ -169,25 +169,25 @@ nav.barra{position:sticky;top:0;z-index:50;height:var(--header);display:flex;ali
 .at-sub{font-size:8px;fill:var(--muted)}
 .at-nuc{stroke:#fff;stroke-width:1.5}
 .at-nuc-rot{font-size:7.5px;font-weight:800;fill:#fff;pointer-events:none;stroke:none!important}
-.at-quelante{fill:none;stroke:var(--ink);stroke-width:1.6;transition:stroke .15s}
-.at-braco{stroke:var(--ink);stroke-width:1.1;opacity:.6}
-.at-lig{fill:#fff;stroke:var(--ink);stroke-width:1.2;transition:stroke .15s}
+.at-obj{stroke:var(--ink);stroke-width:1.2;transition:stroke .15s,stroke-width .15s}
+.at-esfera{stroke:#fff;stroke-width:1.6}
+.at-elo{fill:#fff;stroke-width:1.8}
 .at-plugue{fill:#e9b7b0}
-.at-membrana{fill:color-mix(in srgb,var(--ink) 7%,#fff);stroke:var(--ink);stroke-width:1.2;transition:stroke .15s}
-.at-receptor{fill:#fff;stroke:var(--ink);stroke-width:1.4}
-.at-celula{font-family:var(--serif);font-style:italic;font-size:9px;fill:var(--muted)}
+.at-receptor{fill:var(--ink)}
 .at-parte{cursor:pointer}
-.at-parte:hover .at-quelante,.at-parte.on .at-quelante,.at-parte:hover .at-lig,.at-parte.on .at-lig,.at-parte:hover .at-membrana,.at-parte.on .at-membrana{stroke:var(--accent)}
-.at-parte:hover .at-nuc,.at-parte.on .at-nuc{stroke:var(--ink)}
+.at-parte:hover .at-obj,.at-parte.on .at-obj{stroke:var(--accent);stroke-width:2.4}
 .at-lider{stroke:var(--hairline-forte);stroke-width:1}
+/* a cor de cada caixa é a da aba que ela abre (a mesma --cam das abas) */
+.cam-ecossistema{--c:var(--bronze)}.cam-sistema{--c:var(--accent)}.cam-servicos{--c:var(--verde)}.cam-jornadas{--c:var(--ink)}.cam-direcao{--c:var(--verde)}
 .at-caixa{cursor:pointer}
-.at-caixa rect{fill:#fff;stroke:var(--hairline-forte);stroke-width:1;transition:stroke .15s,stroke-width .15s}
-.at-caixa:hover rect,.at-caixa.on rect{stroke:var(--accent);stroke-width:1.8}
-.at-caixa-n{font-family:var(--serif);font-style:italic;font-size:20px;fill:var(--ink)}
-.at-caixa-t{font-size:10.5px;font-weight:700;fill:var(--ink);letter-spacing:.04em}
+.at-caixa-fundo{fill:#fff;stroke:var(--hairline-forte);stroke-width:1;transition:stroke .15s,stroke-width .15s}
+.at-caixa:hover .at-caixa-fundo,.at-caixa.on .at-caixa-fundo{stroke:var(--c,var(--accent));stroke-width:1.8}
+.at-caixa-borda{fill:var(--c,var(--ink))}
+.at-caixa-n{font-family:var(--serif);font-style:italic;font-size:22px;fill:var(--c,var(--ink))}
+.at-caixa-t{font-size:8.5px;font-weight:700;letter-spacing:.14em;fill:var(--muted)}
+.at-caixa-v{font-family:var(--serif);font-weight:500;font-size:14px;fill:var(--c,var(--ink));letter-spacing:-.01em}
 .at-caixa-f{font-size:8.5px;fill:var(--text)}
-.at-caixa-p{font-size:8.5px;fill:var(--ink);font-weight:600}
-.at-caixa-aba{font-size:8px;font-weight:700;letter-spacing:.12em;fill:var(--accent)}
+.at-caixa-aba{font-size:8px;font-weight:700;letter-spacing:.12em;fill:var(--c,var(--accent))}
 .at-mol-rot{font-size:9px;fill:var(--text)}
 .at-mol-rot.serif{font-family:var(--serif);font-style:italic;fill:var(--ink)}
 /* o relógio de decaimento (nas jornadas, completo: a molécula, o paciente, V · T · R e o próximo ciclo) */

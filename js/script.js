@@ -305,9 +305,10 @@
     if (!atomo || atomo.firstChild) return;
     var ANA = (D.anatomia || []).slice(), isoT = isoTerapeuticos()[0], isoV = isoDeVer();
     var defs = el("defs", {}, atomo), grad = el("radialGradient", { id: "at-brilho" }, defs);
-    el("stop", { offset: "0", "stop-color": "#f5d98a", "stop-opacity": .75 }, grad);
+    el("stop", { offset: "0", "stop-color": "#f5d98a", "stop-opacity": .8 }, grad);
     el("stop", { offset: "1", "stop-color": "#f5d98a", "stop-opacity": 0 }, grad);
-    var x = 92, ancora = {};
+    /* quatro objetos, um por parte, como na imagem de referência: a esfera, a corrente, o plugue, o receptor */
+    var x = 88, ancora = {};
     function parte(id, fn) {
       var a = ANA.filter(function (r) { return r.id === id; })[0];
       var g = el("g", { "class": "at-parte", "data-parte": id, role: "button", tabindex: 0, "aria-label": a ? a.parte + ": " + a.analogo : id }, atomo);
@@ -316,61 +317,52 @@
       if (a) clicavel(g, function () { acendeParte(id); abre(a.vista, a.item || undefined); });
       return g;
     }
-    /* 1 · o radionuclídeo: o par da mesma molécula, com o brilho da emissão */
+    /* 1 · o radionuclídeo: uma esfera só, meia de ver e meia de tratar, com o brilho da emissão */
     parte("radionuclideo", function (g) {
-      el("circle", { cx: x + 10, cy: 62, r: 44, fill: "url(#at-brilho)" }, g);
-      el("circle", { cx: x - 8, cy: 62, r: 15, "class": "at-nuc", fill: passoCor("V") }, g);
-      texto(g, x - 8, 65, isoV ? isoV.simbolo.replace(/-.*/, "") : "V", "at-nuc-rot", "middle");
-      el("circle", { cx: x + 16, cy: 64, r: 18, "class": "at-nuc", fill: passoCor("T") }, g);
-      texto(g, x + 16, 67, isoT ? isoT.simbolo.replace(/-.*/, "") : "T", "at-nuc-rot", "middle");
+      el("circle", { cx: x, cy: 64, r: 52, fill: "url(#at-brilho)" }, g);
+      el("path", { d: "M" + x + ",38 a26,26 0 0 0 0,52 z", "class": "at-obj at-esfera", fill: passoCor("V") }, g);
+      el("path", { d: "M" + x + ",38 a26,26 0 0 1 0,52 z", "class": "at-obj at-esfera", fill: passoCor("T") }, g);
+      texto(g, x - 12, 67, isoV ? isoV.simbolo.replace(/-.*/, "") : "V", "at-nuc-rot", "middle");
+      texto(g, x + 12, 67, isoT ? isoT.simbolo.replace(/-.*/, "") : "T", "at-nuc-rot", "middle");
     });
-    ancora.radionuclideo = [x + 34, 62];
-    /* 2 · o quelante: o anel com braços e os elos da corrente */
+    ancora.radionuclideo = [x + 28, 64];
+    /* 2 · o quelante: a corrente que segura a esfera */
     parte("quelante", function (g) {
-      el("line", { x1: x + 4, y1: 82, x2: x + 4, y2: 100, "class": "at-braco" }, g);
-      el("circle", { cx: x + 4, cy: 118, r: 17, "class": "at-quelante" }, g);
-      [45, 135, 225, 315].forEach(function (a) { var r = Math.PI * a / 180; el("line", { x1: x + 4 + 17 * Math.cos(r), y1: 118 + 17 * Math.sin(r), x2: x + 4 + 24 * Math.cos(r), y2: 118 + 24 * Math.sin(r), "class": "at-braco" }, g); });
-      [142, 162, 182].forEach(function (y, i) { el("rect", { x: x + 4 - (i % 2 ? 5 : 8), y: y, width: i % 2 ? 10 : 16, height: 16, rx: 6, "class": "at-quelante" }, g); });
+      [96, 118, 140, 162].forEach(function (y, i) { el("rect", { x: x - (i % 2 ? 6 : 9), y: y, width: i % 2 ? 12 : 18, height: 24, rx: 7, "class": "at-obj at-elo" }, g); });
     });
-    ancora.quelante = [x + 26, 118];
-    /* 3 · o vetor: a cadeia que acha o receptor, com o plugue na ponta */
+    ancora.quelante = [x + 10, 128];
+    /* 3 · o vetor: o plugue que encaixa no receptor */
     parte("vetor", function (g) {
-      var lig = [[x + 4, 214], [x + 4, 236], [x + 4, 258]];
-      lig.forEach(function (p, i) {
-        var pts = [];
-        for (var k = 0; k < 6; k++) { var a = Math.PI / 3 * k + Math.PI / 6; pts.push((p[0] + 9 * Math.cos(a)).toFixed(1) + "," + (p[1] + 9 * Math.sin(a)).toFixed(1)); }
-        if (i) el("line", { x1: lig[i - 1][0], y1: lig[i - 1][1], x2: p[0], y2: p[1], "class": "at-braco" }, g);
-        el("polygon", { points: pts.join(" "), "class": "at-lig" }, g);
-      });
-      el("path", { d: "M" + (x - 6) + ",268 h20 v14 h-6 v8 h-8 v-8 h-6 z", "class": "at-lig at-plugue" }, g);
+      el("path", { d: "M" + (x - 6) + ",186 h12 v24 h10 v12 h-8 v12 h-16 v-12 h-8 v-12 h10 z", "class": "at-obj at-plugue" }, g);
       if (rel("atomo_ligante")) el("title", {}, g).textContent = rel("atomo_ligante");
     });
-    ancora.vetor = [x + 15, 236];
-    /* 4 · o alvo: o receptor que a célula expõe */
+    ancora.vetor = [x + 17, 214];
+    /* 4 · o alvo: o receptor na superfície da célula */
     parte("alvo", function (g) {
-      el("path", { d: "M" + (x - 60) + ",340 C" + (x - 30) + ",316 " + (x + 38) + ",316 " + (x + 68) + ",340 L" + (x + 68) + ",372 L" + (x - 60) + ",372 Z", "class": "at-membrana" }, g);
-      el("path", { d: "M" + (x - 12) + ",324 v-10 h8 v6 h8 v-6 h8 v10 z", "class": "at-receptor" }, g);
-      texto(g, x + 4, 362, "a célula", "at-celula", "middle");
+      el("path", { d: "M" + (x - 22) + ",262 h44 v30 a6,6 0 0 1 -6,6 h-32 a6,6 0 0 1 -6,-6 z M" + (x - 10) + ",262 v12 h20 v-12 z", "class": "at-obj at-receptor", "fill-rule": "evenodd" }, g);
     });
-    ancora.alvo = [x + 68, 340];
-    /* as quatro caixas: número, parte, a física, o análogo e a aba */
-    var bx = 182, bw = 284, bh = 78;
+    ancora.alvo = [x + 23, 282];
+    /* as quatro caixas: o número, a parte, a analogia como manchete (na cor da aba), a física em apoio e a aba */
+    var bx = 176, bw = 290, bh = 76;
     ANA.forEach(function (a, i) {
-      var y = 22 + i * 86, anc = ancora[a.id] || [x, y + 22];
+      var y = 16 + i * 84, anc = ancora[a.id] || [x, y + 22];
       var v = VISTAS.filter(function (z) { return z.id === a.vista; })[0];
-      el("line", { x1: anc[0], y1: anc[1], x2: bx, y2: y + 22, "class": "at-lider" }, atomo);
-      var g = el("g", { "class": "at-caixa", "data-parte": a.id, role: "button", tabindex: 0, "aria-label": a.parte + ": " + a.analogo }, atomo);
-      el("rect", { x: bx, y: y, width: bw, height: bh, rx: 8 }, g);
-      texto(g, bx + 12, y + 30, String(i + 1), "at-caixa-n");
-      texto(g, bx + 32, y + 20, a.parte.toUpperCase(), "at-caixa-t");
-      quebra(interpola(a.fisica, isoV, isoT), 52).slice(0, 2).forEach(function (l, k) { texto(g, bx + 32, y + 33 + k * 10, l, "at-caixa-f"); });
-      quebra(a.analogo, 52).slice(0, 2).forEach(function (l, k) { texto(g, bx + 32, y + 55 + k * 10, l, "at-caixa-p"); });
-      if (v) texto(g, bx + bw - 10, y + bh - 8, "→ " + v.n + " " + v.rot, "at-caixa-aba", "end");
+      el("line", { x1: anc[0], y1: anc[1], x2: bx, y2: y + 24, "class": "at-lider" }, atomo);
+      var g = el("g", { "class": "at-caixa cam-" + a.vista, "data-parte": a.id, role: "button", tabindex: 0, "aria-label": a.parte + ": " + a.analogo }, atomo);
+      el("rect", { x: bx, y: y, width: bw, height: bh, rx: 8, "class": "at-caixa-fundo" }, g);
+      el("rect", { x: bx + 1, y: y + 8, width: 4, height: bh - 16, rx: 2, "class": "at-caixa-borda" }, g);
+      texto(g, bx + 14, y + 29, String(i + 1), "at-caixa-n");
+      texto(g, bx + 34, y + 15, a.parte.toUpperCase(), "at-caixa-t");
+      if (v) texto(g, bx + bw - 10, y + 15, "→ " + v.n + " " + v.rot, "at-caixa-aba", "end");
+      var manchete = quebra(a.analogo, 36).slice(0, 2);
+      manchete.forEach(function (l, k) { texto(g, bx + 34, y + 34 + k * 15, l, "at-caixa-v"); });
+      var yf = y + 34 + manchete.length * 15 - 2;
+      quebra(interpola(a.fisica, isoV, isoT), 60).slice(0, 2).forEach(function (l, k) { texto(g, bx + 34, yf + k * 10, l, "at-caixa-f"); });
       caixasEl[a.id] = g;
       clicavel(g, function () { acendeParte(a.id); abre(a.vista, a.item || undefined); });
     });
-    textoLinhas(atomo, 240, 386, rel("atomo_molecula") || "A mesma molécula leva o olho e o remédio. A mesma jornada precisa de um dono.", "at-mol-rot serif", "middle", 60, 12);
-    texto(atomo, 240, 424, "clique numa parte ou numa caixa: abre a aba onde ela mora", "at-sub", "middle");
+    textoLinhas(atomo, 240, 378, rel("atomo_molecula") || "A mesma molécula leva o olho e o remédio. A mesma jornada precisa de um dono.", "at-mol-rot serif", "middle", 60, 13);
+    texto(atomo, 240, 416, "na molécula, à esquerda; no projeto, à direita · clique numa parte ou numa caixa para abrir a aba", "at-sub", "middle");
   }
   function acendeParte(id) {
     selecao.abertura = id || null;

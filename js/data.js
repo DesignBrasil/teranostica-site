@@ -1971,8 +1971,8 @@ window.TERA = {
   {
    "id": "radionuclideo",
    "parte": "Radionuclídeo",
-   "fisica": "ver: {ver} (pósitron, fótons que saem do corpo) · tratar: {tratar} (beta, {alcance} no tecido)",
-   "analogo": "= o que se vê e o que trata: as 5 terapias, cada uma com o seu par",
+   "fisica": "ver: {ver}, o fóton sai do corpo e vira imagem · tratar: {tratar}, a partícula fica ({alcance})",
+   "analogo": "o que se vê e o que trata: o par de cada terapia",
    "vista": "servicos",
    "item": "",
    "confianca": "confirmado"
@@ -1980,8 +1980,8 @@ window.TERA = {
   {
    "id": "quelante",
    "parte": "Quelante",
-   "fisica": "segura o isótopo preso à molécula, para ele não se soltar no caminho",
-   "analogo": "= a coordenação segura a dose no tempo: a senha, a encomenda, o prazo e o histórico",
+   "fisica": "segura o isótopo preso à molécula até chegar ao alvo",
+   "analogo": "a coordenação segura a dose no tempo: senha, encomenda, prazo",
    "vista": "sistema",
    "item": "coord",
    "confianca": "provavel"
@@ -1990,7 +1990,7 @@ window.TERA = {
    "id": "vetor",
    "parte": "Vetor",
    "fisica": "a molécula que acha o receptor certo na célula e se liga a ele",
-   "analogo": "= a navegação acha o paciente certo e o leva do início ao fim",
+   "analogo": "a navegação acha o paciente certo e o leva ao fim",
    "vista": "jornadas",
    "item": "",
    "confianca": "provavel"
@@ -1999,7 +1999,7 @@ window.TERA = {
    "id": "alvo",
    "parte": "Alvo",
    "fisica": "o receptor que a célula expõe na superfície",
-   "analogo": "= o paciente elegível, e quem autoriza chegar até ele: a operadora, o rol, a cota",
+   "analogo": "o paciente elegível, e quem autoriza chegar a ele",
    "vista": "ecossistema",
    "item": "a:paciente",
    "confianca": "provavel"
