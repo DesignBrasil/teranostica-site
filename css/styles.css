@@ -565,5 +565,9 @@ nav.barra{position:sticky;top:0;z-index:50;height:var(--header);display:flex;ali
   .j-opt{width:auto}
 }
 @media (max-width:700px){.tempos,.duo,.pf-grade{grid-template-columns:1fr}.duo svg{min-width:760px}}
+/* celular (29/10): o × de soltar não cobre o rótulo; "quem pede" numa coluna; os rótulos do blueprint ficam à vista ao rolar */
+.fecha-leitura + .ficha .rotulo{padding-right:30px}
+@media (max-width:700px){.pc-grupos{grid-template-columns:1fr}.pc-grupo span{white-space:normal}}
+@media (max-width:1020px){.bpp-rot,.bpp-eixo{position:sticky;left:0;z-index:2;background:var(--paper);align-self:stretch;display:flex;flex-direction:column;justify-content:center;box-shadow:6px 0 6px -6px rgba(12,58,111,.25)}.bpp-eixo{justify-content:flex-end}}
 @media (max-width:520px){.w5-passos,.alt-grade{grid-template-columns:1fr}}
 @media (prefers-reduced-motion:reduce){.vista,.at-gama-anim,.r1-pulsa{animation:none}}

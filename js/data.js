@@ -1,9 +1,9 @@
 /* GERADO por 08_sintese/dados/build_dados.py a partir dos CSVs. Não editar à mão. */
 window.TERA = {
  "versao": {
-  "numero": 10,
+  "numero": 11,
   "data": "2026-10-29",
-  "titulo": "O ator escolhido fica inconfundível"
+  "titulo": "Ajustes de celular"
  },
  "relatorio": {
   "titulo": {
@@ -4509,6 +4509,12 @@ window.TERA = {
    "titulo": "O ator escolhido fica inconfundível",
    "o_que_mudou": "O ator clicado fica em tinta cheia com letra branca e leva o rótulo \"ator escolhido\" na leitura, com um × para soltar, e os que se relacionam com ele ficam só com a borda azul. A pílula \"individual\" passa a dizer quem está escolhido",
    "versao": 10
+  },
+  {
+   "data": "2026-10-29",
+   "titulo": "Ajustes de celular",
+   "o_que_mudou": "No celular, o × de soltar o ator não cobre mais o rótulo da ficha, os critérios de quem pede na Direção ficam numa coluna só, sem cortar o texto, e a coluna de rótulos do blueprint das Jornadas fica fixa à esquerda enquanto ele rola para o lado",
+   "versao": 11
   }
  ]
 };
