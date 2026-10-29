@@ -192,7 +192,7 @@
     var q = "?vista=" + vistaAtual;
     if (vistaAtual === "jornadas" && jornadaAtual && jornadaAtual !== "mae") q += "&servico=" + encodeURIComponent(jornadaAtual);
     if (selecao[vistaAtual]) q += "&item=" + encodeURIComponent(selecao[vistaAtual]);
-    if (vistaAtual === "ecossistema" && etapaEco) q += "&etapa=" + etapaEco;
+    if (vistaAtual === "ecossistema" && etapaEco) q += "&passo=" + etapaEco;
     if (vistaAtual === "sistema" && !comparativo) q += "&tempo=" + tempoAtual;
     if (vistaAtual === "jornadas" && passoAtual) q += "&passo=" + passoAtual;
     try { history.replaceState(null, "", q); } catch (e) { /* file:// em alguns navegadores */ }
@@ -490,13 +490,16 @@
      Um passo mostra só as relações daquele momento, numeradas na ordem da jornada; um ator mostra as suas, com a
      direção explícita (sai · chega); o hub (o Centro) mostra só o que atravessa a sua fronteira. A lista e as setas
      se respondem: o mouse numa linha destaca a seta e apaga as outras. (O usuário, 29/10: "ao clicar me sinto perdido".) */
+  /* o ciclo macro (passos.csv): ver · tratar · reavaliar. Os sete passos são das Jornadas; aqui cada movimento junta as
+     relações das suas etapas (o usuário, 29/10: "estou antecipando informações e detalhamentos") */
   var numFluxo = {}, etapaEco = null, visiveisEco = [], ecoPassos = null;
+  function fluxoNoPasso(f, sigla) { var p = PASSO[sigla]; return !!p && (f.etapas || []).some(function (e) { return (p.etapas || []).indexOf(e) >= 0; }); }
   (function montaPassosEco() {
-    var cena = eco && eco.parentNode; if (!cena || !ETAPAS.length) return;
-    ecoPassos = document.createElement("div"); ecoPassos.className = "eco-passos"; ecoPassos.setAttribute("role", "tablist"); ecoPassos.setAttribute("aria-label", "seguir o ciclo, passo a passo");
-    ecoPassos.innerHTML = "<span class='ep-rot'>SEGUIR O CICLO</span>" + ETAPAS.map(function (e, i) {
-      var qt = (D.fluxos || []).filter(function (f) { return (f.etapas || []).indexOf(e.id) >= 0; }).length;
-      return "<button type='button' class='ep' role='tab' data-etapa='" + e.id + "' style='--cor:" + passoCor(e.passo) + "' title='" + esc(e.nome) + " · " + qt + " relações'><i>" + (i + 1) + "</i>" + esc(e.curto) + "<small>" + qt + "</small></button>";
+    var cena = eco && eco.parentNode; if (!cena || !PASSOS.length) return;
+    ecoPassos = document.createElement("div"); ecoPassos.className = "eco-passos"; ecoPassos.setAttribute("role", "tablist"); ecoPassos.setAttribute("aria-label", "o ciclo: ver, tratar, reavaliar");
+    ecoPassos.innerHTML = "<span class='ep-rot'>O CICLO</span>" + PASSOS.map(function (p, i) {
+      var qt = (D.fluxos || []).filter(function (f) { return fluxoNoPasso(f, p.sigla); }).length;
+      return "<button type='button' class='ep' role='tab' data-etapa='" + p.sigla + "' style='--cor:" + p.cor + "' title='" + esc(p.verbo) + " · " + qt + " relações'><i>" + SUP[p.sigla] + "</i>" + esc(p.nome) + "<small>" + qt + "</small></button>";
     }).join("") + "<button type='button' class='ep ep-todos' role='tab' data-etapa='' title='todas as relações do ator escolhido'>tudo</button>";
     cena.insertBefore(ecoPassos, eco);
     Array.prototype.forEach.call(ecoPassos.querySelectorAll(".ep"), function (b) {
@@ -517,7 +520,7 @@
       if (!ator && !etapaEco) return false;
       if (ator && !(grupoAtor[f.de] || grupoAtor[f.para])) return false;
       if (hub && grupoAtor[f.de] && grupoAtor[f.para]) return false; /* dentro do Centro: não é o que chega nem o que sai */
-      if (etapaEco && (f.etapas || []).indexOf(etapaEco) < 0) return false;
+      if (etapaEco && !fluxoNoPasso(f, etapaEco)) return false;
       return true;
     }).sort(function (x, y) { return ordemEtapa(x.f) - ordemEtapa(y.f); });
     numFluxo = {};
@@ -544,39 +547,40 @@
       (nn ? "<span class='n' style='background:" + e.cor + "'>" + nn + "</span>" : "") +
       (dir ? "<span class='dir " + dir + "'>" + dir + "</span>" : "") +
       "<b>" + esc(ATOR[f.de] ? ATOR[f.de].curto : f.de) + " → " + esc(ATOR[f.para] ? ATOR[f.para].curto : f.para) + "</b>: " + esc(f.oque) +
-      (et ? " <span class='et' style='color:" + passoCor(et.passo) + "'>" + esc(et.curto) + "</span>" : "") + "</li>";
+      "</li>";
   }
   function navEtapas() {
-    var i = ETAPAS.map(function (e) { return e.id; }).indexOf(etapaEco), h = "<p class='ep-nav'>";
-    if (i > 0) h += "<button type='button' class='ep-ir' data-etapa='" + ETAPAS[i - 1].id + "'>← " + esc(ETAPAS[i - 1].curto) + "</button>";
-    if (i >= 0 && i < ETAPAS.length - 1) h += "<button type='button' class='ep-ir' data-etapa='" + ETAPAS[i + 1].id + "'>passo seguinte: " + esc(ETAPAS[i + 1].curto) + " →</button>";
-    if (i === ETAPAS.length - 1) h += "<button type='button' class='ep-ir' data-etapa='" + ETAPAS[0].id + "'>↻ o ciclo recomeça: " + esc(ETAPAS[0].curto) + "</button>";
+    var i = PASSOS.map(function (p) { return p.sigla; }).indexOf(etapaEco), h = "<p class='ep-nav'>";
+    if (i > 0) h += "<button type='button' class='ep-ir' data-etapa='" + PASSOS[i - 1].sigla + "'>← " + esc(PASSOS[i - 1].nome) + "</button>";
+    if (i >= 0 && i < PASSOS.length - 1) h += "<button type='button' class='ep-ir' data-etapa='" + PASSOS[i + 1].sigla + "'>depois, " + esc(PASSOS[i + 1].nome) + " →</button>";
+    if (i === PASSOS.length - 1) h += "<button type='button' class='ep-ir' data-etapa='" + PASSOS[0].sigla + "'>↻ o ciclo recomeça: " + esc(PASSOS[0].nome) + "</button>";
     return h + "</p>";
   }
   function leituraEcossistema(ator, fluxo, grupoAtor, hub) {
-    var html = "", lista = visiveisEco.map(function (s) { return s.f; }), et = etapaEco && ETAPA[etapaEco];
+    var html = "", lista = visiveisEco.map(function (s) { return s.f; }), et = etapaEco && PASSO[etapaEco];
     if (ator && ATOR[ator]) {
       var a = ATOR[ator], col = (D.colunas_ecossistema || []).filter(function (c) { return c.id === a.coluna; })[0];
       var internas = hub ? (D.fluxos || []).filter(function (f) { return grupoAtor[f.de] && grupoAtor[f.para]; }).length : 0;
       html += "<div class='bloco ficha'><div class='rotulo'>" + esc(col ? col.rotulo : "") + (a.grupo && GRUPO[a.grupo] ? " · " + esc(GRUPO[a.grupo].nome) : "") + " " + conf(a.confianca) + "</div><h3>" + esc(a.nome) + "</h3><p>" + esc(ponto(maiuscula(a.papel))) + "</p>" +
         (hub ? "<p class='dica'>Contém: " + hub.contem.map(function (id) { return ATOR[id] ? ATOR[id].curto : id; }).join(" · ") + ". Aqui, só o que atravessa a fronteira do Centro" + (internas ? "; entre as equipes há mais " + internas + " relações, visíveis ao clicar numa equipe" : "") + ".</p>" : "") + "</div>";
       var MAXREL = 8, mostra = lista.slice(0, MAXREL);
-      html += "<div class='bloco'><div class='rotulo'>" + (et ? "No passo " + (ETAPAS.indexOf(et) + 1) + " · " + esc(et.nome) : "O que chega e sai") + " <span class='conf'>" + lista.length + "</span>" + (et ? " <button type='button' class='ep-ir ep-limpa' data-etapa=''>ver todos os passos</button>" : "") + "</div><ul class='lista'>" +
+      html += "<div class='bloco'><div class='rotulo'>" + (et ? "Em " + esc(et.nome) : "O que chega e sai") + " <span class='conf'>" + lista.length + "</span>" + (et ? " <button type='button' class='ep-ir ep-limpa' data-etapa=''>ver o ciclo inteiro</button>" : "") + "</div><ul class='lista'>" +
         (lista.length ? mostra.map(function (f) { return itemFluxo(f, false, grupoAtor); }).join("") : "<li>nenhuma relação " + (et ? "neste passo" : "registrada ainda") + "</li>") +
-        (lista.length > MAXREL ? "<li class='dica'>e mais " + (lista.length - MAXREL) + ": siga o ciclo na faixa acima para ver passo a passo</li>" : "") + "</ul></div>";
+        (lista.length > MAXREL ? "<li class='dica'>e mais " + (lista.length - MAXREL) + ": escolha um movimento do ciclo na faixa acima</li>" : "") + "</ul></div>";
     } else if (fluxo) {
       var fl = (D.fluxos || []).filter(function (f) { return f.id === fluxo; })[0];
       if (fl) html += "<div class='bloco'><div class='rotulo'>Uma relação " + tagEnq(fl.enquadramento, true) + " " + conf(fl.confianca) + "</div><ul class='lista'>" + itemFluxo(fl, true) + "</ul>" +
-        "<p class='dica'>Passo: " + (fl.etapas || []).map(function (s) { return ETAPA[s] ? ETAPA[s].nome : s; }).join(" · ") + ". Clique numa caixa para ver tudo o que chega e sai dela.</p></div>";
+        "<p class='dica'>Momento do ciclo: " + (fl.etapas || []).map(function (s) { return ETAPA[s] && PASSO[ETAPA[s].passo] ? PASSO[ETAPA[s].passo].nome : s; }).filter(function (v, i, a) { return a.indexOf(v) === i; }).join(" · ") + ". Clique numa caixa para ver tudo o que chega e sai dela.</p></div>";
     } else if (et) {
-      var i = ETAPAS.indexOf(et), p = PASSO[et.passo];
-      html += "<div class='bloco ficha'><div class='rotulo'><span class='passo-chip p-" + et.passo + "'>" + SUP[et.passo] + " " + esc(p ? p.nome : et.passo) + "</span>passo " + (i + 1) + " de " + ETAPAS.length + " " + conf(et.confianca) + "</div><h3>" + esc(et.nome) + "</h3>" +
-        "<p>" + esc(ponto(maiuscula(et.curto))) + (et.dono_hoje === "ninguem" ? " <span class='c-aberto'>Ninguém responde por este passo.</span>" : (ATOR[et.dono_hoje] ? " Responde: " + esc(ATOR[et.dono_hoje].curto) + "." : "")) + "</p>" +
-        (et.gate ? "<p class='risco'>O que falta aqui: " + esc(et.gate) + "</p>" : "") + "</div>";
-      html += "<div class='bloco'><div class='rotulo'>Quem se relaciona neste passo <span class='conf'>" + lista.length + "</span></div><ul class='lista'>" +
-        (lista.length ? lista.map(function (f) { return itemFluxo(f, false); }).join("") : "<li>nenhuma relação registrada neste passo</li>") + "</ul>" + navEtapas() + "</div>";
+      var i = PASSOS.indexOf(et), minhas = ETAPAS.filter(function (e) { return (et.etapas || []).indexOf(e.id) >= 0; }), semDono = minhas.filter(function (e) { return e.dono_hoje === "ninguem"; });
+      html += "<div class='bloco ficha'><div class='rotulo'><span class='passo-chip p-" + et.sigla + "'>" + SUP[et.sigla] + "</span>movimento " + (i + 1) + " de " + PASSOS.length + "</div><h3>" + esc(maiuscula(et.nome)) + ": " + esc(et.verbo) + "</h3>" +
+        "<p>" + esc(minhas.map(function (e) { return e.nome; }).join(" → ")) + (semDono.length ? ". <span class='c-aberto'>Ninguém responde pela jornada em " + esc(semDono.map(function (e) { return e.nome.toLowerCase(); }).join(" e ")) + ".</span>" : ".") + "</p></div>";
+      var MAXP = 10;
+      html += "<div class='bloco'><div class='rotulo'>Quem se relaciona em " + esc(et.nome) + " <span class='conf'>" + lista.length + "</span></div><ul class='lista'>" +
+        (lista.length ? lista.slice(0, MAXP).map(function (f) { return itemFluxo(f, false); }).join("") : "<li>nenhuma relação registrada neste movimento</li>") +
+        (lista.length > MAXP ? "<li class='dica'>e mais " + (lista.length - MAXP) + ": clique num ator para ver só as dele neste movimento</li>" : "") + "</ul>" + navEtapas() + "</div>";
       var tese = achadosDe("ecossistema")[0];
-      if (tese && lista.length <= 6) html += "<div class='bloco'>" + achadoHtml(tese, "tese", true) + "</div>";
+      if (tese && lista.length <= 8) html += "<div class='bloco'>" + achadoHtml(tese, "tese", true) + "</div>";
     } else {
       html += "<div class='bloco'>" + achadosHtml("ecossistema", true, 4) + "</div>";
     }
@@ -1027,8 +1031,8 @@
     var serv = p.get("servico"); if (serv && SERV[serv]) jornadaAtual = serv;
     var t = +p.get("tempo"); if (t === 1 || t === 2) { comparativo = false; if (vSistema) vSistema.classList.remove("cheia"); tempo(t); }
     montaAtomo(); leituraAbertura();
-    var et = p.get("etapa"), et0 = ETAPAS[0] ? ETAPAS[0].id : null;
-    if (vista === "ecossistema") selecionaEco(item || null, (et && ETAPA[et]) ? et : (item ? null : et0));
+    var et = vista === "ecossistema" ? (p.get("passo") || "") : "", et0 = PASSOS[0] ? PASSOS[0].sigla : null;
+    if (vista === "ecossistema") selecionaEco(item || null, PASSO[et] ? et : (item ? null : et0));
     else selecionaEco(null, et0);
     if (vista === "sistema" && item) selecionaSis(item);
     if (vista === "servicos" && item) selecionaServico(item);

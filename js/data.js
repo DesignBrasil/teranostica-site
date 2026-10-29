@@ -1,9 +1,9 @@
 /* GERADO por 08_sintese/dados/build_dados.py a partir dos CSVs. Não editar à mão. */
 window.TERA = {
  "versao": {
-  "numero": 7,
+  "numero": 8,
   "data": "2026-10-29",
-  "titulo": "O ecossistema calmo: sem a rede de fundo, ninguém some"
+  "titulo": "O ciclo do ecossistema é o macro: ver, tratar, reavaliar"
  },
  "relatorio": {
   "titulo": {
@@ -4491,6 +4491,12 @@ window.TERA = {
    "titulo": "O ecossistema calmo: sem a rede de fundo, ninguém some",
    "o_que_mudou": "A rede de fundo saiu (26 linhas finas confundiam). As caixas ficam todas em cor cheia, e as que participam do passo ou do ator acendem com a borda azul, e só as setas do passo aparecem, coloridas e numeradas",
    "versao": 7
+  },
+  {
+   "data": "2026-10-29",
+   "titulo": "O ciclo do ecossistema é o macro: ver, tratar, reavaliar",
+   "o_que_mudou": "A faixa do ecossistema passou dos sete passos para os três movimentos do ciclo (ver · tratar · reavaliar). Cada movimento junta as relações das suas etapas, e a leitura fala do movimento, sem o detalhe de cada passo, que é das jornadas",
+   "versao": 8
   }
  ]
 };
