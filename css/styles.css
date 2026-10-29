@@ -280,7 +280,12 @@ nav.barra{position:sticky;top:0;z-index:50;height:var(--header);display:flex;ali
 .estacao.foco rect{stroke:var(--accent);stroke-width:2.6;stroke-dasharray:none}
 .estacao.apagada{opacity:.25}
 .grupo-rotulo{font-size:11.5px;font-weight:700;letter-spacing:.2em;fill:var(--muted)}
-.fluxo{fill:none;stroke-width:2.2;opacity:0;transition:opacity .25s ease}
+.fluxo{fill:none;stroke-width:2.2;opacity:0;transition:opacity .25s ease,stroke-width .15s;pointer-events:none}
+.fluxo.vis{pointer-events:stroke;cursor:pointer}
+.fluxo.realce{stroke-width:4.2}
+.fluxo.dim{opacity:.12}
+.rot-fluxo.dim{opacity:.15}
+.rot-fluxo.vis{pointer-events:auto;cursor:pointer}
 .fluxo.vis{opacity:1}
 .fluxo.t-confirmar{stroke-dasharray:8 6}
 .fluxo.t-regra{stroke-dasharray:2 4;stroke-linecap:round}
@@ -300,6 +305,23 @@ nav.barra{position:sticky;top:0;z-index:50;height:var(--header);display:flex;ali
 .l-rels .enq{margin-left:0}
 .enq{display:inline-block;border-radius:999px;padding:1px 9px;font-size:10.5px;font-weight:600;letter-spacing:.03em;vertical-align:1px;white-space:nowrap}
 .l-nota{margin:8px 0 0;font-size:11.5px;font-style:italic;color:var(--muted);line-height:1.45}
+/* seguir o ciclo: os sete passos como pílulas sobre a cena */
+.eco-passos{flex:0 0 auto;display:flex;flex-wrap:wrap;align-items:center;gap:4px;padding:0 0 6px}
+.ep-rot{font-size:9.5px;font-weight:700;letter-spacing:.16em;color:var(--muted);margin-right:4px}
+.ep{cursor:pointer;font-size:11px;font-weight:600;color:var(--ink);background:#fff;border:1px solid var(--hairline-forte);border-left:4px solid var(--cor,var(--muted));border-radius:999px;padding:2px 10px 2px 8px;white-space:nowrap;transition:background .15s,color .15s}
+.ep i{font-style:normal;font-weight:800;color:var(--cor,var(--muted));margin-right:5px}
+.ep:hover{border-color:var(--cor,var(--ink))}
+.ep.on{background:var(--cor,var(--ink));border-color:var(--cor,var(--ink));color:#fff}
+.ep.on i{color:#fff}
+.ep-todos{border-left-width:1px;color:var(--muted)}
+.ep-nav{margin:8px 0 0;display:flex;flex-wrap:wrap;gap:6px}
+.ep-ir{cursor:pointer;font-size:11.5px;font-weight:600;color:var(--ink);background:var(--azul-claro);border:1px solid rgba(23,116,222,.35);border-radius:999px;padding:2px 10px}
+.ep-ir:hover{background:var(--accent);color:#fff}
+.ep-limpa{font-size:10px;padding:0 8px;text-transform:none;letter-spacing:0}
+.lista li.realce{background:var(--azul-claro)}
+.lista li .dir{display:inline-block;min-width:36px;font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-right:3px}
+.lista li .dir.sai{color:var(--verde)}.lista li .dir.chega{color:var(--accent)}
+.lista li .et{margin-left:6px;font-size:10px;font-weight:700;letter-spacing:.04em;white-space:nowrap}
 
 /* ---- 2 · sistema: os dois olhares ---- */
 .tempos{flex:0 0 auto;display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:0 0 6px}

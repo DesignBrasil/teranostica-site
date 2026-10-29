@@ -1,9 +1,9 @@
 /* GERADO por 08_sintese/dados/build_dados.py a partir dos CSVs. Não editar à mão. */
 window.TERA = {
  "versao": {
-  "numero": 4,
+  "numero": 5,
   "data": "2026-10-29",
-  "titulo": "O ecossistema em três colunas, com o Centro de Teranóstico"
+  "titulo": "Seguir o ciclo: as relações do ecossistema passo a passo"
  },
  "relatorio": {
   "titulo": {
@@ -709,11 +709,6 @@ window.TERA = {
  ],
  "colunas_ecossistema": [
   {
-   "id": "fora",
-   "rotulo": "FORA DO EINSTEIN",
-   "sub": "quem chega, quem regula, paga e fornece"
-  },
-  {
    "id": "clinico",
    "rotulo": "EINSTEIN CLÍNICO",
    "sub": "o Centro de Teranóstico, as suas equipes e o oncologista da casa"
@@ -722,6 +717,11 @@ window.TERA = {
    "id": "apoio",
    "rotulo": "EINSTEIN · APOIO",
    "sub": "navegação, comercial, senhas, auditoria, gestão"
+  },
+  {
+   "id": "fora",
+   "rotulo": "FORA DO EINSTEIN",
+   "sub": "quem chega, quem regula, paga e fornece"
   }
  ],
  "fluxos": [
@@ -4473,6 +4473,12 @@ window.TERA = {
    "titulo": "O ecossistema em três colunas, com o Centro de Teranóstico",
    "o_que_mudou": "A aba 1 passou de duas colunas (dentro · fora) para três: fora do Einstein (quem chega: o paciente e o oncologista · quem regula, paga e fornece) · Einstein clínico (o Centro de Teranóstico e as suas equipes: médico nuclear, física médica, enfermagem terapêutica, radiofarmácia) · Einstein de apoio (navegação, comercial, senhas, auditoria, gestão, Parque Global) . O oncologista virou dois: o do Einstein, na coluna clínica, e o de fora, que abre a coluna de fora. O Centro entrou como ator próprio, em destaque: clicar nele mostra tudo o que chega e sai das suas equipes",
    "versao": 4
+  },
+  {
+   "data": "2026-10-29",
+   "titulo": "Seguir o ciclo: as relações do ecossistema passo a passo",
+   "o_que_mudou": "A aba 1 ganhou a faixa \"seguir o ciclo\": cada um dos sete passos acende só as relações daquele momento, numeradas na ordem da jornada, com o passo seguinte a um clique. Um ator mostra as suas relações com a direção explícita (sai · chega), e passar o mouse numa linha da lista destaca a seta e apaga as outras. O Centro mostra só o que atravessa a sua fronteira. As colunas passaram à ordem Einstein clínico · Einstein de apoio · fora do Einstein",
+   "versao": 5
   }
  ]
 };

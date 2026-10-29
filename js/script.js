@@ -192,6 +192,7 @@
     var q = "?vista=" + vistaAtual;
     if (vistaAtual === "jornadas" && jornadaAtual && jornadaAtual !== "mae") q += "&servico=" + encodeURIComponent(jornadaAtual);
     if (selecao[vistaAtual]) q += "&item=" + encodeURIComponent(selecao[vistaAtual]);
+    if (vistaAtual === "ecossistema" && etapaEco) q += "&etapa=" + etapaEco;
     if (vistaAtual === "sistema" && !comparativo) q += "&tempo=" + tempoAtual;
     if (vistaAtual === "jornadas" && passoAtual) q += "&passo=" + passoAtual;
     try { history.replaceState(null, "", q); } catch (e) { /* file:// em alguns navegadores */ }
@@ -475,56 +476,103 @@
       var r = el("g", { "class": "rot-fluxo" }, eco);
       el("circle", { cx: lx, cy: ly, r: 9, fill: ENQ[f.enquadramento] ? ENQ[f.enquadramento].cor : "#0C3A6F" }, r);
       var t = texto(r, lx, ly + 3.5, "", "", "middle");
+      [p, r].forEach(function (x) {
+        x.addEventListener("mouseenter", function () { realcaFluxo(f.id, true); });
+        x.addEventListener("mouseleave", function () { realcaFluxo(f.id, false); });
+        x.addEventListener("click", function (ev) { ev.stopPropagation(); selecionaEco("f:" + f.id); estadoNaUrl(); });
+      });
       setasEco.push({ f: f, p: p, r: r, t: t });
     });
     texto(eco, 940, 542, "setas: cor = quem paga ou autoriza · cheia = acontece · tracejada = a confirmar · pontilhada = regra", "nota-svg", "end");
   })();
-  var numFluxo = {};
-  function selecionaEco(item) {
+  /* ---- seguir o ciclo: as relações de cada passo acendem uma a uma (fluxos.etapas) ----
+     Um passo mostra só as relações daquele momento, numeradas na ordem da jornada; um ator mostra as suas, com a
+     direção explícita (sai · chega); o hub (o Centro) mostra só o que atravessa a sua fronteira. A lista e as setas
+     se respondem: o mouse numa linha destaca a seta e apaga as outras. (O usuário, 29/10: "ao clicar me sinto perdido".) */
+  var numFluxo = {}, etapaEco = null, visiveisEco = [], ecoPassos = null;
+  (function montaPassosEco() {
+    var cena = eco && eco.parentNode; if (!cena || !ETAPAS.length) return;
+    ecoPassos = document.createElement("div"); ecoPassos.className = "eco-passos"; ecoPassos.setAttribute("role", "tablist"); ecoPassos.setAttribute("aria-label", "seguir o ciclo, passo a passo");
+    ecoPassos.innerHTML = "<span class='ep-rot'>SEGUIR O CICLO</span>" + ETAPAS.map(function (e, i) {
+      return "<button type='button' class='ep' role='tab' data-etapa='" + e.id + "' style='--cor:" + passoCor(e.passo) + "' title='" + esc(e.nome) + "'><i>" + (i + 1) + "</i>" + esc(e.curto) + "</button>";
+    }).join("") + "<button type='button' class='ep ep-todos' role='tab' data-etapa='' title='todas as relações do ator escolhido'>tudo</button>";
+    cena.insertBefore(ecoPassos, eco);
+    Array.prototype.forEach.call(ecoPassos.querySelectorAll(".ep"), function (b) {
+      b.addEventListener("click", function () { selecionaEco(selecao.ecossistema, b.dataset.etapa || null); estadoNaUrl(); });
+    });
+  })();
+  function ordemEtapa(f) { var m = 99; (f.etapas || []).forEach(function (e) { var i = ETAPAS.map(function (x) { return x.id; }).indexOf(e); if (i >= 0 && i < m) m = i; }); return m; }
+  function selecionaEco(item, etapa) {
+    if (etapa !== undefined) etapaEco = etapa || null;
     selecao.ecossistema = item || null;
     var ator = item && item.indexOf("a:") === 0 ? item.slice(2) : (item && ATOR[item] ? item : null);
     var fluxo = item && item.indexOf("f:") === 0 ? item.slice(2) : null;
-    /* um hub (o Centro) responde pelas suas equipes: o que chega e sai delas é dele também */
-    var grupoAtor = {}; if (ator) { grupoAtor[ator] = true; ((ATOR[ator] || {}).contem || []).forEach(function (id) { grupoAtor[id] = true; }); }
-    var tocados = {};
+    var hub = ator && ATOR[ator] && (ATOR[ator].contem || []).length ? ATOR[ator] : null;
+    var grupoAtor = {}; if (ator) { grupoAtor[ator] = true; (hub ? hub.contem : []).forEach(function (id) { grupoAtor[id] = true; }); }
+    visiveisEco = setasEco.filter(function (s) {
+      var f = s.f;
+      if (fluxo) return f.id === fluxo;
+      if (!ator && !etapaEco) return false;
+      if (ator && !(grupoAtor[f.de] || grupoAtor[f.para])) return false;
+      if (hub && grupoAtor[f.de] && grupoAtor[f.para]) return false; /* dentro do Centro: não é o que chega nem o que sai */
+      if (etapaEco && (f.etapas || []).indexOf(etapaEco) < 0) return false;
+      return true;
+    }).sort(function (x, y) { return ordemEtapa(x.f) - ordemEtapa(y.f); });
     numFluxo = {};
-    var n = 0;
-    setasEco.forEach(function (s) {
-      var on = (ator && (grupoAtor[s.f.de] || grupoAtor[s.f.para])) || (fluxo && s.f.id === fluxo);
-      if (on) { n += 1; numFluxo[s.f.id] = n; s.t.textContent = String(n); tocados[s.f.de] = tocados[s.f.para] = true; }
-      s.p.classList.toggle("vis", !!on); s.r.classList.toggle("vis", !!on);
-    });
+    var tocados = {};
+    setasEco.forEach(function (s) { s.p.classList.remove("vis", "realce", "dim"); s.r.classList.remove("vis", "dim"); });
+    visiveisEco.forEach(function (s, i) { numFluxo[s.f.id] = i + 1; s.t.textContent = String(i + 1); s.p.classList.add("vis"); s.r.classList.add("vis"); tocados[s.f.de] = tocados[s.f.para] = true; });
     if (ator) tocados[ator] = true;
+    var algo = !!(ator || etapaEco || fluxo);
     Object.keys(caixasEco).forEach(function (id) {
-      caixasEco[id].classList.toggle("foco", !!tocados[id] && (id === ator || !!grupoAtor[id] || !!fluxo));
-      caixasEco[id].classList.toggle("apagada", !!(ator || fluxo) && !tocados[id]);
+      caixasEco[id].classList.toggle("foco", !!tocados[id] && (!ator || id === ator || !!grupoAtor[id]));
+      caixasEco[id].classList.toggle("apagada", algo && !tocados[id]);
     });
-    leituraEcossistema(ator, fluxo);
+    if (ecoPassos) Array.prototype.forEach.call(ecoPassos.querySelectorAll(".ep"), function (b) { b.classList.toggle("on", (b.dataset.etapa || null) === etapaEco); });
+    leituraEcossistema(ator, fluxo, grupoAtor, hub);
   }
-  function itemFluxo(f, ativo) {
-    var nn = numFluxo[f.id], e = ENQ[f.enquadramento] || {};
+  function realcaFluxo(id, on) {
+    visiveisEco.forEach(function (s) { s.p.classList.toggle("realce", on && s.f.id === id); s.p.classList.toggle("dim", on && s.f.id !== id); s.r.classList.toggle("dim", on && s.f.id !== id); });
+    if (leituraEco) Array.prototype.forEach.call(leituraEco.querySelectorAll("[data-fluxo]"), function (li) { li.classList.toggle("realce", on && li.dataset.fluxo === id); });
+  }
+  function itemFluxo(f, ativo, grupoAtor) {
+    var nn = numFluxo[f.id], e = ENQ[f.enquadramento] || {}, dir = grupoAtor && Object.keys(grupoAtor).length ? (grupoAtor[f.de] ? "sai" : "chega") : "";
+    var et = ETAPA[(f.etapas || [])[0]];
     return "<li class='clicavel t-" + f.tipo + (ativo ? " on" : "") + "' tabindex='0' data-fluxo='" + f.id + "' style='border-left-color:" + (e.cor || "#ccc") + "' title='" + esc((f.etapas || []).map(function (s) { return ETAPA[s] ? ETAPA[s].nome : s; }).join(" · ")) + "'>" +
       (nn ? "<span class='n' style='background:" + e.cor + "'>" + nn + "</span>" : "") +
+      (dir ? "<span class='dir " + dir + "'>" + dir + "</span>" : "") +
       "<b>" + esc(ATOR[f.de] ? ATOR[f.de].curto : f.de) + " → " + esc(ATOR[f.para] ? ATOR[f.para].curto : f.para) + "</b>: " + esc(f.oque) +
-"</li>";
+      (et ? " <span class='et' style='color:" + passoCor(et.passo) + "'>" + esc(et.curto) + "</span>" : "") + "</li>";
   }
-  function leituraEcossistema(ator, fluxo) {
-    var html = "";
+  function navEtapas() {
+    var i = ETAPAS.map(function (e) { return e.id; }).indexOf(etapaEco), h = "<p class='ep-nav'>";
+    if (i > 0) h += "<button type='button' class='ep-ir' data-etapa='" + ETAPAS[i - 1].id + "'>← " + esc(ETAPAS[i - 1].curto) + "</button>";
+    if (i >= 0 && i < ETAPAS.length - 1) h += "<button type='button' class='ep-ir' data-etapa='" + ETAPAS[i + 1].id + "'>passo seguinte: " + esc(ETAPAS[i + 1].curto) + " →</button>";
+    if (i === ETAPAS.length - 1) h += "<button type='button' class='ep-ir' data-etapa='" + ETAPAS[0].id + "'>↻ o ciclo recomeça: " + esc(ETAPAS[0].curto) + "</button>";
+    return h + "</p>";
+  }
+  function leituraEcossistema(ator, fluxo, grupoAtor, hub) {
+    var html = "", lista = visiveisEco.map(function (s) { return s.f; }), et = etapaEco && ETAPA[etapaEco];
     if (ator && ATOR[ator]) {
-      var a = ATOR[ator], meus = {}; meus[ator] = true; (a.contem || []).forEach(function (id) { meus[id] = true; });
-      var seus = (D.fluxos || []).filter(function (f) { return meus[f.de] || meus[f.para]; });
-      var col = (D.colunas_ecossistema || []).filter(function (c) { return c.id === a.coluna; })[0];
-      html += "<div class='bloco ficha'><div class='rotulo'>" + esc(col ? col.rotulo : (a.lado === "dentro" ? "Dentro do Einstein" : "Fora do Einstein")) + (a.grupo && GRUPO[a.grupo] ? " · " + esc(GRUPO[a.grupo].nome) : "") + " " + conf(a.confianca) + "</div><h3>" + esc(a.nome) + "</h3><p>" + esc(ponto(maiuscula(a.papel))) + "</p>" +
-        ((a.contem || []).length ? "<p class='dica'>Contém: " + a.contem.map(function (id) { return ATOR[id] ? ATOR[id].curto : id; }).join(" · ") + ".</p>" : "") + "</div>";
-      /* um hub lista as primeiras relações e manda clicar numa equipe para ver só as dela (senão a ficha não cabe) */
-      var MAXREL = 8, mostra = seus.slice(0, MAXREL);
-      html += "<div class='bloco'><div class='rotulo'>O que chega e sai <span class='conf'>" + seus.length + "</span></div><ul class='lista'>" + (seus.length ? mostra.map(function (f) { return itemFluxo(f, false); }).join("") : "<li>nenhuma relação registrada ainda</li>") +
-        (seus.length > MAXREL ? "<li class='dica'>e mais " + (seus.length - MAXREL) + " relações: clique numa equipe do Centro para ver só as dela</li>" : "") + "</ul></div>";
-      var achs = (a.contem || []).length ? [] : achadosDe("ecossistema").slice(0, 2);
-      if (achs.length) html += "<div class='bloco'><div class='rotulo'>O que já sabemos nesta camada</div>" + achs.map(function (x) { return achadoHtml(x, "mini", true); }).join("") + "</div>";
+      var a = ATOR[ator], col = (D.colunas_ecossistema || []).filter(function (c) { return c.id === a.coluna; })[0];
+      var internas = hub ? (D.fluxos || []).filter(function (f) { return grupoAtor[f.de] && grupoAtor[f.para]; }).length : 0;
+      html += "<div class='bloco ficha'><div class='rotulo'>" + esc(col ? col.rotulo : "") + (a.grupo && GRUPO[a.grupo] ? " · " + esc(GRUPO[a.grupo].nome) : "") + " " + conf(a.confianca) + "</div><h3>" + esc(a.nome) + "</h3><p>" + esc(ponto(maiuscula(a.papel))) + "</p>" +
+        (hub ? "<p class='dica'>Contém: " + hub.contem.map(function (id) { return ATOR[id] ? ATOR[id].curto : id; }).join(" · ") + ". Aqui, só o que atravessa a fronteira do Centro" + (internas ? "; entre as equipes há mais " + internas + " relações, visíveis ao clicar numa equipe" : "") + ".</p>" : "") + "</div>";
+      var MAXREL = 8, mostra = lista.slice(0, MAXREL);
+      html += "<div class='bloco'><div class='rotulo'>" + (et ? "No passo " + (ETAPAS.indexOf(et) + 1) + " · " + esc(et.nome) : "O que chega e sai") + " <span class='conf'>" + lista.length + "</span>" + (et ? " <button type='button' class='ep-ir ep-limpa' data-etapa=''>ver todos os passos</button>" : "") + "</div><ul class='lista'>" +
+        (lista.length ? mostra.map(function (f) { return itemFluxo(f, false, grupoAtor); }).join("") : "<li>nenhuma relação " + (et ? "neste passo" : "registrada ainda") + "</li>") +
+        (lista.length > MAXREL ? "<li class='dica'>e mais " + (lista.length - MAXREL) + ": siga o ciclo na faixa acima para ver passo a passo</li>" : "") + "</ul></div>";
     } else if (fluxo) {
       var fl = (D.fluxos || []).filter(function (f) { return f.id === fluxo; })[0];
-      if (fl) html += "<div class='bloco'><div class='rotulo'>Uma relação " + tagEnq(fl.enquadramento, true) + " " + conf(fl.confianca) + "</div><ul class='lista'>" + itemFluxo(fl, true) + "</ul></div>";
+      if (fl) html += "<div class='bloco'><div class='rotulo'>Uma relação " + tagEnq(fl.enquadramento, true) + " " + conf(fl.confianca) + "</div><ul class='lista'>" + itemFluxo(fl, true) + "</ul>" +
+        "<p class='dica'>Passo: " + (fl.etapas || []).map(function (s) { return ETAPA[s] ? ETAPA[s].nome : s; }).join(" · ") + ". Clique numa caixa para ver tudo o que chega e sai dela.</p></div>";
+    } else if (et) {
+      var i = ETAPAS.indexOf(et), p = PASSO[et.passo];
+      html += "<div class='bloco ficha'><div class='rotulo'><span class='passo-chip p-" + et.passo + "'>" + SUP[et.passo] + " " + esc(p ? p.nome : et.passo) + "</span>passo " + (i + 1) + " de " + ETAPAS.length + " " + conf(et.confianca) + "</div><h3>" + esc(et.nome) + "</h3>" +
+        "<p>" + esc(ponto(maiuscula(et.curto))) + (et.dono_hoje === "ninguem" ? " <span class='c-aberto'>Ninguém responde por este passo.</span>" : (ATOR[et.dono_hoje] ? " Responde: " + esc(ATOR[et.dono_hoje].curto) + "." : "")) + "</p>" +
+        (et.gate ? "<p class='risco'>O que falta aqui: " + esc(et.gate) + "</p>" : "") + "</div>";
+      html += "<div class='bloco'><div class='rotulo'>Quem se relaciona neste passo <span class='conf'>" + lista.length + "</span></div><ul class='lista'>" +
+        (lista.length ? lista.map(function (f) { return itemFluxo(f, false); }).join("") : "<li>nenhuma relação registrada neste passo</li>") + "</ul>" + navEtapas() + "</div>";
     } else {
       html += "<div class='bloco'>" + achadosHtml("ecossistema", true, 4) + "</div>";
     }
@@ -532,6 +580,11 @@
     escreve(leituraEco, html);
     Array.prototype.forEach.call(leituraEco.querySelectorAll("[data-fluxo]"), function (li) {
       clicavel(li, function () { var alvo = "f:" + li.dataset.fluxo; selecionaEco(selecao.ecossistema === alvo ? null : alvo); estadoNaUrl(); });
+      li.addEventListener("mouseenter", function () { realcaFluxo(li.dataset.fluxo, true); });
+      li.addEventListener("mouseleave", function () { realcaFluxo(li.dataset.fluxo, false); });
+    });
+    Array.prototype.forEach.call(leituraEco.querySelectorAll(".ep-ir"), function (b) {
+      b.addEventListener("click", function () { selecionaEco(b.classList.contains("ep-limpa") ? selecao.ecossistema : null, b.dataset.etapa || null); estadoNaUrl(); });
     });
   }
 
@@ -970,8 +1023,9 @@
     var serv = p.get("servico"); if (serv && SERV[serv]) jornadaAtual = serv;
     var t = +p.get("tempo"); if (t === 1 || t === 2) { comparativo = false; if (vSistema) vSistema.classList.remove("cheia"); tempo(t); }
     montaAtomo(); leituraAbertura();
-    if (vista === "ecossistema") selecionaEco(item || "a:centro");
-    else selecionaEco("a:centro");
+    var et = p.get("etapa"), et0 = ETAPAS[0] ? ETAPAS[0].id : null;
+    if (vista === "ecossistema") selecionaEco(item || null, (et && ETAPA[et]) ? et : (item ? null : et0));
+    else selecionaEco(null, et0);
     if (vista === "sistema" && item) selecionaSis(item);
     if (vista === "servicos" && item) selecionaServico(item);
     abre(vista, (vista === "direcao" || vista === "abertura" || vista === "jornadas") ? (item || undefined) : undefined);
