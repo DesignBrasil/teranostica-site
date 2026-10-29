@@ -307,8 +307,9 @@
     var defs = el("defs", {}, atomo), grad = el("radialGradient", { id: "at-brilho" }, defs);
     el("stop", { offset: "0", "stop-color": "#f5d98a", "stop-opacity": .8 }, grad);
     el("stop", { offset: "1", "stop-color": "#f5d98a", "stop-opacity": 0 }, grad);
-    /* quatro objetos, um por parte, como na imagem de referência: a esfera, a corrente, o plugue, o receptor */
-    var x = 88, ancora = {};
+    /* quatro objetos, um por parte, como na imagem de referência: a esfera, a corrente, o plugue, o receptor.
+       A cena é larga (560 × 440) para ocupar a coluna inteira; os objetos crescem e as caixas ganham duas metades. */
+    var x = 82, ancora = {};
     function parte(id, fn) {
       var a = ANA.filter(function (r) { return r.id === id; })[0];
       var g = el("g", { "class": "at-parte", "data-parte": id, role: "button", tabindex: 0, "aria-label": a ? a.parte + ": " + a.analogo : id }, atomo);
@@ -319,50 +320,54 @@
     }
     /* 1 · o radionuclídeo: uma esfera só, meia de ver e meia de tratar, com o brilho da emissão */
     parte("radionuclideo", function (g) {
-      el("circle", { cx: x, cy: 64, r: 52, fill: "url(#at-brilho)" }, g);
-      el("path", { d: "M" + x + ",38 a26,26 0 0 0 0,52 z", "class": "at-obj at-esfera", fill: passoCor("V") }, g);
-      el("path", { d: "M" + x + ",38 a26,26 0 0 1 0,52 z", "class": "at-obj at-esfera", fill: passoCor("T") }, g);
-      texto(g, x - 12, 67, isoV ? isoV.simbolo.replace(/-.*/, "") : "V", "at-nuc-rot", "middle");
-      texto(g, x + 12, 67, isoT ? isoT.simbolo.replace(/-.*/, "") : "T", "at-nuc-rot", "middle");
+      el("circle", { cx: x, cy: 62, r: 62, fill: "url(#at-brilho)" }, g);
+      el("path", { d: "M" + x + ",30 a32,32 0 0 0 0,64 z", "class": "at-obj at-esfera", fill: passoCor("V") }, g);
+      el("path", { d: "M" + x + ",30 a32,32 0 0 1 0,64 z", "class": "at-obj at-esfera", fill: passoCor("T") }, g);
+      texto(g, x - 15, 66, isoV ? isoV.simbolo.replace(/-.*/, "") : "V", "at-nuc-rot at-nuc-rot-g", "middle");
+      texto(g, x + 15, 66, isoT ? isoT.simbolo.replace(/-.*/, "") : "T", "at-nuc-rot at-nuc-rot-g", "middle");
     });
-    ancora.radionuclideo = [x + 28, 64];
+    ancora.radionuclideo = [x + 34, 62];
     /* 2 · o quelante: a corrente que segura a esfera */
     parte("quelante", function (g) {
-      [96, 118, 140, 162].forEach(function (y, i) { el("rect", { x: x - (i % 2 ? 6 : 9), y: y, width: i % 2 ? 12 : 18, height: 24, rx: 7, "class": "at-obj at-elo" }, g); });
+      [100, 126, 152, 178].forEach(function (y, i) { el("rect", { x: x - (i % 2 ? 7 : 11), y: y, width: i % 2 ? 14 : 22, height: 28, rx: 8, "class": "at-obj at-elo" }, g); });
     });
-    ancora.quelante = [x + 10, 128];
+    ancora.quelante = [x + 12, 150];
     /* 3 · o vetor: o plugue que encaixa no receptor */
     parte("vetor", function (g) {
-      el("path", { d: "M" + (x - 6) + ",186 h12 v24 h10 v12 h-8 v12 h-16 v-12 h-8 v-12 h10 z", "class": "at-obj at-plugue" }, g);
+      el("path", { d: "M" + (x - 8) + ",212 h16 v28 h12 v14 h-10 v16 h-20 v-16 h-10 v-14 h12 z", "class": "at-obj at-plugue" }, g);
       if (rel("atomo_ligante")) el("title", {}, g).textContent = rel("atomo_ligante");
     });
-    ancora.vetor = [x + 17, 214];
+    ancora.vetor = [x + 20, 246];
     /* 4 · o alvo: o receptor na superfície da célula */
     parte("alvo", function (g) {
-      el("path", { d: "M" + (x - 22) + ",262 h44 v30 a6,6 0 0 1 -6,6 h-32 a6,6 0 0 1 -6,-6 z M" + (x - 10) + ",262 v12 h20 v-12 z", "class": "at-obj at-receptor", "fill-rule": "evenodd" }, g);
+      el("path", { d: "M" + (x - 28) + ",292 h56 v36 a7,7 0 0 1 -7,7 h-42 a7,7 0 0 1 -7,-7 z M" + (x - 12) + ",292 v14 h24 v-14 z", "class": "at-obj at-receptor", "fill-rule": "evenodd" }, g);
     });
-    ancora.alvo = [x + 23, 282];
-    /* as quatro caixas: o número, a parte, a analogia como manchete (na cor da aba), a física em apoio e a aba */
-    var bx = 176, bw = 290, bh = 76;
+    ancora.alvo = [x + 28, 314];
+    /* as quatro caixas, cada uma em duas metades do mesmo peso: NA MOLÉCULA (a ciência) = NO PROJETO (a analogia) */
+    var bx = 160, bw = 470, bh = 82, meio = bx + 244;
     ANA.forEach(function (a, i) {
-      var y = 16 + i * 84, anc = ancora[a.id] || [x, y + 22];
+      var y = 12 + i * 90, anc = ancora[a.id] || [x, y + 24];
       var v = VISTAS.filter(function (z) { return z.id === a.vista; })[0];
-      el("line", { x1: anc[0], y1: anc[1], x2: bx, y2: y + 24, "class": "at-lider" }, atomo);
+      el("line", { x1: anc[0], y1: anc[1], x2: bx, y2: y + 26, "class": "at-lider" }, atomo);
       var g = el("g", { "class": "at-caixa cam-" + a.vista, "data-parte": a.id, role: "button", tabindex: 0, "aria-label": a.parte + ": " + a.analogo }, atomo);
       el("rect", { x: bx, y: y, width: bw, height: bh, rx: 8, "class": "at-caixa-fundo" }, g);
       el("rect", { x: bx + 1, y: y + 8, width: 4, height: bh - 16, rx: 2, "class": "at-caixa-borda" }, g);
-      texto(g, bx + 14, y + 29, String(i + 1), "at-caixa-n");
-      texto(g, bx + 34, y + 15, a.parte.toUpperCase(), "at-caixa-t");
-      if (v) texto(g, bx + bw - 10, y + 15, "→ " + v.n + " " + v.rot, "at-caixa-aba", "end");
-      var manchete = quebra(a.analogo, 36).slice(0, 2);
-      manchete.forEach(function (l, k) { texto(g, bx + 34, y + 34 + k * 15, l, "at-caixa-v"); });
-      var yf = y + 34 + manchete.length * 15 - 2;
-      quebra(interpola(a.fisica, isoV, isoT), 60).slice(0, 2).forEach(function (l, k) { texto(g, bx + 34, yf + k * 10, l, "at-caixa-f"); });
+      texto(g, bx + 14, y + 31, String(i + 1), "at-caixa-n");
+      /* a metade da ciência */
+      texto(g, bx + 30, y + 15, "NA MOLÉCULA · " + a.parte.toUpperCase(), "at-caixa-e");
+      quebra(interpola(a.fisica, isoV, isoT), 34).slice(0, 3).forEach(function (l, k) { texto(g, bx + 30, y + 30 + k * 13.5, l, "at-caixa-c"); });
+      /* o sinal de igual: a correlação */
+      el("line", { x1: meio, y1: y + 10, x2: meio, y2: y + bh - 10, "class": "at-caixa-div" }, g);
+      el("rect", { x: meio - 9, y: y + bh / 2 - 9, width: 18, height: 18, rx: 9, "class": "at-igual-fundo" }, g);
+      texto(g, meio, y + bh / 2 + 4.5, "=", "at-igual", "middle");
+      /* a metade do projeto */
+      texto(g, meio + 16, y + 15, "NO PROJETO" + (v ? " → " + v.n + " " + v.rot : ""), "at-caixa-e at-caixa-e-aba");
+      quebra(a.analogo, 34).slice(0, 3).forEach(function (l, k) { texto(g, meio + 16, y + 30 + k * 13.5, l, "at-caixa-v"); });
       caixasEl[a.id] = g;
       clicavel(g, function () { acendeParte(a.id); abre(a.vista, a.item || undefined); });
     });
-    textoLinhas(atomo, 240, 378, rel("atomo_molecula") || "A mesma molécula leva o olho e o remédio. A mesma jornada precisa de um dono.", "at-mol-rot serif", "middle", 60, 13);
-    texto(atomo, 240, 416, "na molécula, à esquerda; no projeto, à direita · clique numa parte ou numa caixa para abrir a aba", "at-sub", "middle");
+    textoLinhas(atomo, 320, 392, rel("atomo_molecula") || "A mesma molécula leva o olho e o remédio. A mesma jornada precisa de um dono.", "at-mol-rot serif", "middle", 84, 14);
+    texto(atomo, 320, 428, "na molécula, à esquerda; no projeto, à direita · clique numa parte ou numa caixa para abrir a aba", "at-sub", "middle");
   }
   function acendeParte(id) {
     selecao.abertura = id || null;
