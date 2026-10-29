@@ -1,6 +1,6 @@
 /* ============================================================
    Sistemática Teranóstico — "enxergar o que se trata e tratar o que se vê" (28/10/2026)
-   Irmã da Sistemática da Longevidade (a matriz: as seis abas 0 ABERTURA … 5 DIREÇÃO, papel quente, Fraunces + Inter,
+   Irmã da Sistemática da Longevidade (a matriz: as abas numeradas, de 0 ABERTURA a 6 JORNADA TO BE, papel quente, Fraunces + Inter,
    tema claro único) e da do Health Data Brasil (o motor: uma barra só, pílulas, encaixe sem rolagem, estado na URL,
    procedência em tudo). A identidade é a da Longevidade, a plateia é a mesma (Einstein).
    Cores com sentido fixo em toda a peça (a convenção dos diagramas D2 do vault):
@@ -74,9 +74,10 @@ nav.barra{position:sticky;top:0;z-index:50;height:var(--header);display:flex;ali
 .v-dupla:not(.cheia) #duo{display:none}
 .v-abertura.on{grid-template-columns:minmax(380px,50%) minmax(0,1fr);gap:22px}
 .v-jornadas.on{grid-template-columns:180px minmax(0,1fr);gap:20px}
+.v-tobe.on{grid-template-columns:236px minmax(0,1fr);gap:18px}
 .v-cheia.on,.v-direcao.on{display:block}
 /* a cor de cada camada: pinta o alto do cartão da leitura e a caixa da tese */
-#v-abertura{--cam:var(--ink)} #v-ecossistema{--cam:var(--bronze)} #v-sistema{--cam:var(--accent)} #v-servicos{--cam:var(--verde)} #v-jornadas{--cam:var(--ink)} #v-direcao{--cam:var(--verde)}
+#v-abertura{--cam:var(--ink)} #v-ecossistema{--cam:var(--bronze)} #v-sistema{--cam:var(--accent)} #v-servicos{--cam:var(--verde)} #v-jornadas{--cam:var(--ink)} #v-direcao{--cam:var(--verde)} #v-tobe{--cam:var(--verde)}
 .cena{display:flex;flex-direction:column;align-items:stretch;justify-content:center;min-height:0;height:100%;overflow:hidden}
 .cena svg{flex:1 1 auto;min-height:0;height:100%;width:100%;display:block}
 .cena svg text{font-family:var(--font)}
@@ -178,7 +179,7 @@ nav.barra{position:sticky;top:0;z-index:50;height:var(--header);display:flex;ali
 .at-parte:hover .at-obj,.at-parte.on .at-obj{stroke:var(--accent);stroke-width:2.4}
 .at-lider{stroke:var(--hairline-forte);stroke-width:1}
 /* a cor de cada caixa é a da aba que ela abre (a mesma --cam das abas) */
-.cam-ecossistema{--c:var(--bronze)}.cam-sistema{--c:var(--accent)}.cam-servicos{--c:var(--verde)}.cam-jornadas{--c:var(--ink)}.cam-direcao{--c:var(--verde)}
+.cam-ecossistema{--c:var(--bronze)}.cam-sistema{--c:var(--accent)}.cam-servicos{--c:var(--verde)}.cam-jornadas{--c:var(--ink)}.cam-direcao{--c:var(--verde)}.cam-tobe{--c:var(--verde)}
 .at-caixa{cursor:pointer}
 .at-caixa-fundo{fill:#fff;stroke:var(--hairline-forte);stroke-width:1;transition:stroke .15s,stroke-width .15s}
 .at-caixa:hover .at-caixa-fundo,.at-caixa.on .at-caixa-fundo{stroke:var(--c,var(--accent));stroke-width:1.8}
@@ -462,6 +463,118 @@ nav.barra{position:sticky;top:0;z-index:50;height:var(--header);display:flex;ali
 .bp-pe .l-elo{flex:0 0 auto;width:auto;margin:0;padding:0;border:0;font-style:normal}
 .bpp-dinheiro{margin:6px 0 0;display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:11.5px;color:var(--text)}
 
+/* ---- 4 · jornada AS IS e 6 · jornada TO BE: o meso em três eventos (29/10/2026; molde: a mãe da Longevidade) ---- */
+.j-opt.j-ev{border-left:3px solid var(--cor)}
+.j-ev span i{font-style:normal;font-weight:800;color:var(--cor);margin-right:6px}
+.j-opt.j-ciclo{margin-top:4px;border-left:3px solid var(--bronze)}
+.jm-falta{display:block;margin-top:3px;font-size:10px;line-height:1.3;color:var(--risco);font-weight:600}
+.jm-resp{display:block;margin-top:3px;font-size:10px;line-height:1.3;color:var(--verde);font-weight:600}
+.jm-resp.h-provavel,.jm-resp.h-aberto{font-style:italic}
+.jm-ir-ciclo{margin:6px 0 0}
+.bpp-cel small.mec{display:block;margin-top:3px;font-size:9.5px;font-style:italic;color:var(--verde)}
+.tb-alt span{display:flex;flex-direction:column}
+.tb-alt span small{font-size:9.5px;font-weight:400;color:var(--muted)}
+.tb-alt .tb-resolve .dor-selo{margin-left:2px}
+/* a página do ciclo: o relógio grande e, ao lado, o que ele diz escrito */
+.cc{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:18px;align-items:start}
+.cc-relogio svg{display:block;width:100%;height:auto;overflow:visible}
+.cc-relogio text{font-family:var(--font)}
+.cc-fatos{display:flex;flex-direction:column;gap:8px}
+.cc-fato{background:#fff;border:1px solid var(--hairline);border-left:3px solid var(--bronze);border-radius:8px;padding:6px 10px}
+.cc-fato b{display:block;font-size:10px;font-weight:700;letter-spacing:.12em;color:var(--ink);margin-bottom:2px}
+.cc-fato p{margin:0;font-size:12px;line-height:1.4;color:var(--text)}
+.jm-cap{margin:8px 0 4px;font-size:10px;font-weight:700;letter-spacing:.16em;color:var(--ink)}
+.jm-cap span{margin-left:8px;font-weight:400;letter-spacing:0;font-style:italic;font-size:11px;color:var(--muted)}
+.jm{display:grid;align-items:stretch}
+.jm-bloco{display:flex;flex-direction:column;gap:6px;min-width:0;background:#fff;border:1px solid var(--hairline);border-top:4px solid var(--cor);border-radius:10px;padding:8px 10px 10px}
+.jm-abre{all:unset;cursor:pointer;display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 8px}
+.jm-abre .jm-m{font-family:var(--serif);font-size:20px;font-weight:500;color:var(--ink)}
+.jm-abre .jm-m b{font-family:var(--font);font-size:13px;font-weight:800;color:var(--cor);margin-right:6px}
+.jm-abre small{font-size:11px;font-style:italic;color:var(--muted)}
+.jm-abre em{margin-left:auto;font-style:normal;font-size:11px;font-weight:600;color:var(--accent)}
+.jm-abre:hover em{text-decoration:underline}
+.jm-abre:focus-visible,.jm-et:focus-visible,.tb-alt:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.jm-desc{margin:0;font-size:11.5px;line-height:1.35;color:var(--text)}
+.jm-ets{display:flex;flex-wrap:wrap;gap:4px;margin-top:auto}
+.jm-et{cursor:pointer;flex:1 1 0;min-width:96px;text-align:left;background:var(--paper);border:1px solid var(--hairline);border-radius:8px;padding:4px 7px;font-size:10.5px;line-height:1.3;color:var(--text)}
+.jm-et > b{display:flex;justify-content:space-between;align-items:center;gap:4px;font-size:11px;color:var(--ink)}
+.jm-et > span{display:block}
+.jm-et:hover{border-color:var(--cor)}
+.jm-et.muda{background:var(--verde-claro);border-color:rgba(15,122,100,.45)}
+.jm-lac{flex:none;display:inline-grid;place-items:center;width:14px;height:14px;border-radius:50%;background:var(--risco);color:#fff;font-size:9px;font-weight:800}
+.jm-lac.resp{background:var(--verde)}
+.ninguem{color:var(--risco);font-weight:700}
+.jm-seta{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:0 8px;text-align:center;font-size:10.5px;line-height:1.3;color:var(--text)}
+.jm-seta-rot{font-size:10px;font-weight:700;letter-spacing:.04em;color:var(--ink)}
+.jm-flecha{font-size:22px;line-height:1;color:var(--hairline-forte)}
+.jm-como{font-size:10px;color:var(--muted)}
+.jm-quebra{font-size:10px;font-weight:600;color:var(--risco)}
+.jm-quebra.respondida{font-weight:400;color:var(--muted)}
+.jm-seta.bpv-infere .jm-como{font-style:italic}
+.jm-ac{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:14px;background:var(--bronze-claro);border:1px dashed rgba(156,85,24,.55);border-radius:10px;padding:8px 12px}
+.jm-ac-txt > b{display:block;font-size:12px;color:var(--ink)}
+.jm-ac-txt > span{display:block;margin-top:2px;font-size:11px;color:var(--text)}
+.jm-ac-volta{display:flex;flex-direction:column;gap:1px;border-left:1px solid rgba(156,85,24,.35);padding-left:12px;font-size:10.5px}
+.jm-ac-volta > b{font-size:11px;color:var(--bronze)}
+.jm-relogio{max-width:820px}
+.jm-relogio svg{display:block;width:100%;height:auto;overflow:visible}
+.jm-relogio text{font-family:var(--font)}
+.jm-nav{display:inline-flex;gap:6px;margin-left:12px;vertical-align:middle}
+.j-topo h2 small{margin-left:6px;font-family:var(--font);font-size:12px;font-style:italic;font-weight:400;color:var(--muted)}
+/* o TO BE: o antes riscado, o depois em verde com o número da escolha, a hipótese tracejada */
+.antes{text-decoration:line-through;color:var(--muted);font-weight:400}
+.depois{color:var(--verde);font-weight:700}
+.depois.h-provavel{font-style:italic}
+.depois.h-aberto{font-style:italic;text-decoration:underline dashed var(--risco);text-underline-offset:2px}
+.alt-selo{display:inline-grid;place-items:center;min-width:14px;height:14px;padding:0 3px;margin-left:3px;border-radius:7px;background:var(--verde);color:#fff;font-style:normal;font-size:9px;font-weight:700;vertical-align:1px}
+.bpp-cel.muda{background:var(--verde-claro);border-color:rgba(15,122,100,.5)}
+.bpp-cel.muda.h-provavel,.bpp-cel.muda.h-aberto{border-style:dashed}
+.bpp-cel .respondida{display:block;color:var(--muted)}
+.resposta{display:block;margin-top:3px;font-weight:600;color:var(--verde)}
+/* uma etapa pode ter mais de uma lacuna (lacunas.csv): a aberta segue em vermelho ao lado da respondida */
+.bpp-cel .lac-aberta{display:block;color:var(--risco);font-weight:600}
+.bpp-cel > * + .lac-aberta,.bpp-cel > * + .respondida{margin-top:4px}
+.resposta.h-provavel{font-style:italic}
+.resposta.h-aberto{font-style:italic;border-bottom:1px dashed var(--risco)}
+.chip-sis.novo{background:var(--verde-claro);border-color:var(--verde);color:var(--verde)}
+.chip-sis.sai{text-decoration:line-through;opacity:.6}
+.placar{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px;margin:0 0 4px}
+.pl{background:#fff;border:1px solid var(--hairline);border-top:3px solid var(--muted);border-radius:8px;padding:4px 8px 5px}
+.pl span{display:block;font-size:9.5px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;line-height:1.2;color:var(--muted)}
+.pl b{display:block;font-family:var(--serif);font-size:22px;font-weight:500;line-height:1.15;color:var(--ink)}
+.pl b s{font-size:15px;color:var(--muted)}
+.pl.melhora{border-top-color:var(--verde)}
+.pl.melhora b{color:var(--verde)}
+.pl.piora{border-top-color:var(--risco)}
+.tb-alt{display:flex;align-items:baseline;gap:6px;width:100%;margin-bottom:3px;padding:3px 8px;text-align:left;cursor:pointer;font-size:12px;color:var(--ink);background:transparent;border:1px solid var(--hairline);border-radius:7px}
+.tb-alt > i{flex:none;display:inline-grid;place-items:center;min-width:24px;height:16px;padding:0 3px;border-radius:8px;border:1px solid var(--verde);color:var(--verde);font-style:normal;font-size:10px;font-weight:700}
+.tb-alt:hover{border-color:var(--verde)}
+.tb-alt.on{background:var(--verde-claro);border-color:var(--verde);font-weight:600}
+.tb-alt.on > i{background:var(--verde);color:#fff}
+.tb-alt.fora{opacity:.55}
+/* os cenários: a mesma anatomia das oportunidades, com o número num selo escuro e o aspecto em versalete */
+.tb-cen{padding:4px 8px}
+.tb-cen > i{min-width:18px;border-color:var(--ink);color:var(--ink)}
+.tb-cen.on > i{background:var(--ink);color:#fff}
+.tb-cen .tb-asp em{font-style:normal;font-weight:600;font-size:8.5px;letter-spacing:.08em;text-transform:uppercase}
+.tb-cen .tb-resolve .alt-selo{margin:0 2px 0 0}
+.tb-sub{margin:8px 0 4px}
+/* as oportunidades numa linha só: o nome à esquerda, as dores que resolvem à direita */
+.tb-alt:not(.tb-cen) > span{flex:1;flex-direction:row;flex-wrap:wrap;align-items:baseline;column-gap:6px}
+.tb-alt:not(.tb-cen) .tb-resolve{margin-left:auto;white-space:nowrap}
+.tb-sua{letter-spacing:0;text-transform:none;font-weight:400;font-style:italic}
+.tb-aviso{margin:0 0 4px;font-size:11.5px;font-style:italic;color:var(--muted)}
+.pc-tobe{margin:-4px 0 0}
+/* a numeração ligada: a dor em vermelho (1.x), a escolha em verde (2.x), a seta liga uma à outra */
+.dor-selo{display:inline-grid;place-items:center;min-width:18px;height:14px;padding:0 3px;margin-left:3px;border-radius:7px;background:var(--risco);color:#fff;font-style:normal;font-size:9px;font-weight:700;vertical-align:1px}
+.liga{white-space:nowrap;margin-left:2px;color:var(--muted);font-style:normal}
+.jm-dores{display:flex;flex-wrap:wrap;align-items:center;gap:4px 12px;margin:8px 0 0;font-size:10.5px;color:var(--text)}
+.jm-dores b{font-size:10px;font-weight:700;letter-spacing:.14em;color:var(--risco)}
+.jm-dores span{display:inline-flex;align-items:center;gap:4px}
+.jm-dores .dor-selo{margin-left:0}
+.l-ordem{margin-left:6px;font-size:10px;font-weight:400;letter-spacing:0;color:var(--muted)}
+.pc-responde{margin-left:10px;font-size:11.5px;color:var(--text)}
+
 /* ---- 5 · direção: a decisão da Fase 3 ---- */
 .dir-grade{display:grid;grid-template-columns:400px minmax(0,1fr);gap:20px;align-items:start}
 .dir-col{display:flex;flex-direction:column;gap:8px}
@@ -570,4 +683,23 @@ nav.barra{position:sticky;top:0;z-index:50;height:var(--header);display:flex;ali
 @media (max-width:700px){.pc-grupos{grid-template-columns:1fr}.pc-grupo span{white-space:normal}}
 @media (max-width:1020px){.bpp-rot,.bpp-eixo{position:sticky;left:0;z-index:2;background:var(--paper);align-self:stretch;display:flex;flex-direction:column;justify-content:center;box-shadow:6px 0 6px -6px rgba(12,58,111,.25)}.bpp-eixo{justify-content:flex-end}}
 @media (max-width:520px){.w5-passos,.alt-grade{grid-template-columns:1fr}}
+/* as jornadas em dois tempos, em telas estreitas: os eventos empilham, a seta gira, o relógio e o micro rolam para o lado */
+@media (max-width:1360px){.v-tobe.on{grid-template-columns:226px minmax(0,1fr)}}
+@media (max-width:1020px){
+  .jm{grid-template-columns:1fr!important}
+  .jm-seta{flex-direction:row;flex-wrap:wrap;justify-content:flex-start;text-align:left;gap:2px 8px;padding:6px 4px}
+  .jm-flecha{transform:rotate(90deg)}
+  .jm-ac{grid-template-columns:1fr}
+  .jm-ac-volta{border-left:0;border-top:1px solid rgba(156,85,24,.35);padding:6px 0 0}
+  .jm-relogio{overflow-x:auto}.jm-relogio svg{min-width:640px}
+  .cc{grid-template-columns:1fr}.cc-relogio{overflow-x:auto}.cc-relogio svg{min-width:640px}
+  .jm-nav{display:flex;margin:6px 0 0}
+  .placar{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .tobe-escolhas .ajusta{display:flex;flex-wrap:wrap;gap:4px}
+  .tobe-escolhas .l-coluna,.tobe-escolhas .l-sub,.tobe-escolhas .j-nota{width:100%}
+  .tb-alt.tb-cen{flex-basis:100%}
+  .tb-alt{flex:1 1 45%;width:auto}
+  .bpp.bpp-micro{min-width:calc(120px + var(--bpp-n,3) * 170px)}
+}
+@media (max-width:520px){.placar{grid-template-columns:1fr 1fr}.tb-alt{flex-basis:100%}}
 @media (prefers-reduced-motion:reduce){.vista,.at-gama-anim,.r1-pulsa{animation:none}}

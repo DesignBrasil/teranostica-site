@@ -1,9 +1,9 @@
 /* GERADO por 08_sintese/dados/build_dados.py a partir dos CSVs. Não editar à mão. */
 window.TERA = {
  "versao": {
-  "numero": 11,
+  "numero": 12,
   "data": "2026-10-29",
-  "titulo": "Ajustes de celular"
+  "titulo": "AS IS e TO BE"
  },
  "relatorio": {
   "titulo": {
@@ -11,7 +11,7 @@ window.TERA = {
    "confianca": "confirmado"
   },
   "subtitulo": {
-   "texto": "O ciclo teranóstico do Einstein em seis abas: o ecossistema, o sistema, os serviços, as jornadas e a direção da Fase 3",
+   "texto": "O ciclo teranóstico do Einstein em sete abas: o ecossistema, o sistema, os serviços, a jornada de hoje, a direção da Fase 3 e a jornada com as escolhas",
    "confianca": "confirmado"
   },
   "pergunta_abertura": {
@@ -155,11 +155,11 @@ window.TERA = {
    "confianca": "provavel"
   },
   "jor_mae": {
-   "texto": "A jornada inteira",
+   "texto": "A jornada inteira, em três eventos",
    "confianca": "confirmado"
   },
   "jor_mae_sub": {
-   "texto": "Sete pontos de contato de um ciclo, da indicação ao retorno. Em vermelho, onde ninguém responde.",
+   "texto": "Ver, tratar e reavaliar: as passagens entre eles, quem acompanha a travessia e o relógio da dose. Clique num evento para ver os seus passos.",
    "confianca": "confirmado"
   },
   "jor_nota_V": {
@@ -181,6 +181,50 @@ window.TERA = {
   "loops_nota": {
    "texto": "Cada nó abre a aba onde o problema mora. A barra de controle abre as alternativas que o freiam: o navegador dedicado e o controle de prazos.",
    "confianca": "provavel"
+  },
+  "centro_inclusivo": {
+   "texto": "Centro de Teranóstico: quem faz o ciclo acontecer dentro do Einstein, o cuidado e o apoio lado a lado",
+   "confianca": "provavel"
+  },
+  "pergunta_tobe": {
+   "texto": "E se escolhermos? A mesma jornada, com o que cada alternativa muda.",
+   "confianca": "confirmado"
+  },
+  "tobe_titulo": {
+   "texto": "A jornada com as escolhas",
+   "confianca": "confirmado"
+  },
+  "tobe_sub": {
+   "texto": "É a jornada de hoje com o efeito de cada alternativa escolhida. Riscado, como é hoje. Tracejado, o que ainda é hipótese.",
+   "confianca": "confirmado"
+  },
+  "revela_tobe": {
+   "texto": "A jornada com as escolhas não é desenhada à mão: sai da jornada de hoje e dos efeitos de cada alternativa. O placar conta etapas, passagens e lacunas, nunca dias.",
+   "confianca": "confirmado"
+  },
+  "tobe_cenario": {
+   "texto": "c1",
+   "confianca": "provavel"
+  },
+  "tobe_nota": {
+   "texto": "Três cenários, cada um uma junção de oportunidades: operacional, assistencial e comercial. A reserva de sala fica fora deles, porque é infraestrutura física. Abre na desfragmentação. A validar com os atores.",
+   "confianca": "provavel"
+  },
+  "dor_sem_dono": {
+   "texto": "dono-jornada",
+   "confianca": "confirmado"
+  },
+  "jor_sempre_quem": {
+   "texto": "ninguem",
+   "confianca": "confirmado"
+  },
+  "jor_sempre_como": {
+   "texto": "ninguém responde pela travessia inteira · o médico nuclear coordena à mão, por e-mail",
+   "confianca": "confirmado"
+  },
+  "jor_sempre_dores": {
+   "texto": "dono-jornada",
+   "confianca": "confirmado"
   }
  },
  "camadas": {
@@ -711,7 +755,7 @@ window.TERA = {
   {
    "id": "clinico",
    "rotulo": "EINSTEIN CLÍNICO",
-   "sub": "o Centro de Teranóstico, as suas equipes e o oncologista da casa"
+   "sub": "as equipes de cuidado e o oncologista da casa"
   },
   {
    "id": "apoio",
@@ -1373,7 +1417,6 @@ window.TERA = {
    "curto": "Indicação",
    "dono_hoje": "onco",
    "passo": "V",
-   "gate": "",
    "confianca": "confirmado"
   },
   {
@@ -1382,7 +1425,6 @@ window.TERA = {
    "curto": "Elegibilidade",
    "dono_hoje": "mn",
    "passo": "V",
-   "gate": "cada ciclo é uma nova elegibilidade, clínica e do plano",
    "confianca": "confirmado"
   },
   {
@@ -1391,7 +1433,6 @@ window.TERA = {
    "curto": "Autorização",
    "dono_hoje": "ninguem",
    "passo": "T",
-   "gate": "senha por ciclo, prazo de 3 a 30 dias, sem dono",
    "confianca": "confirmado"
   },
   {
@@ -1400,7 +1441,6 @@ window.TERA = {
    "curto": "Encomenda da dose",
    "dono_hoje": "ninguem",
    "passo": "T",
-   "gate": "encomenda antes da senha: risco sem dono",
    "confianca": "confirmado"
   },
   {
@@ -1409,7 +1449,6 @@ window.TERA = {
    "curto": "Infusão",
    "dono_hoje": "mn",
    "passo": "T",
-   "gate": "box disputado com o diagnóstico, sem programação",
    "confianca": "confirmado"
   },
   {
@@ -1418,7 +1457,6 @@ window.TERA = {
    "curto": "Alta radiológica",
    "dono_hoje": "fis",
    "passo": "R",
-   "gate": "",
    "confianca": "confirmado"
   },
   {
@@ -1427,8 +1465,73 @@ window.TERA = {
    "curto": "Retorno ao oncologista",
    "dono_hoje": "onco",
    "passo": "R",
-   "gate": "ninguém avisa o oncologista por sistema",
    "confianca": "provavel"
+  }
+ ],
+ "lacunas": [
+  {
+   "id": "l-elegibilidade",
+   "etapa": "s2",
+   "texto": "cada ciclo é uma nova elegibilidade, clínica e do plano",
+   "confianca": "confirmado",
+   "dores": [
+    "operadora-elegibilidade"
+   ]
+  },
+  {
+   "id": "l-senha",
+   "etapa": "s3",
+   "texto": "senha por ciclo, prazo de 3 a 30 dias, sem dono",
+   "confianca": "confirmado",
+   "dores": [
+    "dono-jornada",
+    "operadora-elegibilidade"
+   ]
+  },
+  {
+   "id": "l-dose-senha",
+   "etapa": "s4",
+   "texto": "encomenda antes da senha: risco sem dono",
+   "confianca": "confirmado",
+   "dores": [
+    "dose-antes-senha"
+   ]
+  },
+  {
+   "id": "l-fornecedor",
+   "etapa": "s4",
+   "texto": "dose importada · o fornecedor público falha com regularidade",
+   "confianca": "confirmado",
+   "dores": [
+    "fornecimento-importado"
+   ]
+  },
+  {
+   "id": "l-box",
+   "etapa": "s5",
+   "texto": "box disputado com o diagnóstico, sem programação",
+   "confianca": "confirmado",
+   "dores": [
+    "sala-box"
+   ]
+  },
+  {
+   "id": "l-equipe",
+   "etapa": "s5",
+   "texto": "a enfermagem do andar radioativo troca o ano inteiro",
+   "confianca": "confirmado",
+   "dores": [
+    "conhecimento-pessoas"
+   ]
+  },
+  {
+   "id": "l-retorno",
+   "etapa": "s7",
+   "texto": "ninguém avisa o oncologista por sistema",
+   "confianca": "provavel",
+   "dores": [
+    "fragmentacao"
+   ]
   }
  ],
  "servico_etapas": [
@@ -1767,216 +1870,390 @@ window.TERA = {
    ]
   }
  ],
- "jornada_servico": [
+ "passagens": [
   {
-   "servico": "dotatate",
-   "etapa": "s1",
-   "quando": "dia 0",
-   "vive": "Está com o oncologista há meses · ouve que existe uma terapia a mais e que vai ficar internado para recebê-la",
-   "atua": "o oncologista titular indica · a medicina nuclear recebe o paciente emprestado",
-   "bastidor": "o caso entra no tumor board do teranóstico",
-   "fonte": "inferencia",
-   "espera": ""
+   "id": "vt",
+   "de": "V",
+   "para": "T",
+   "rotulo": "da elegibilidade à senha e à dose",
+   "quem_hoje": "mn",
+   "como_hoje": "o médico nuclear dispara à mão até 4 demandas, por e-mail",
+   "quebra": "ninguém responde pela senha nem pela encomenda da dose",
+   "confianca": "confirmado",
+   "etapas": [
+    "s2",
+    "s3",
+    "s4"
+   ],
+   "dores": [
+    "email",
+    "dono-jornada"
+   ]
   },
   {
-   "servico": "dotatate",
-   "etapa": "s2",
-   "quando": "semana 1 a 2",
-   "vive": "Faz o PET com o par diagnóstico e a consulta de 1 hora",
-   "atua": "o médico nuclear confere a captação, a função renal e hematológica",
-   "bastidor": "o médico nuclear dispara as demandas por e-mail, como no PSMA",
-   "fonte": "inferencia",
-   "espera": "≈ 1 a 2 semanas"
+   "id": "tr",
+   "de": "T",
+   "para": "R",
+   "rotulo": "da infusão ao retorno",
+   "quem_hoje": "mn",
+   "como_hoje": "o médico nuclear devolve o paciente e escreve o relatório do ciclo",
+   "quebra": "o retorno ao oncologista é mais uma demanda manual",
+   "confianca": "provavel",
+   "etapas": [
+    "s5",
+    "s6",
+    "s7"
+   ],
+   "dores": [
+    "fragmentacao"
+   ]
   },
   {
-   "servico": "dotatate",
-   "etapa": "s3",
-   "quando": "semana 2 a 6",
-   "vive": "Espera a senha sem notícia",
-   "atua": "a navegação de alta complexidade e o controle de senhas pedem por ciclo",
-   "bastidor": "a operadora leva de 3 a 30 dias · a encomenda muitas vezes precisa sair antes da senha",
-   "fonte": "primaria",
-   "espera": ""
+   "id": "rt",
+   "de": "R",
+   "para": "T",
+   "rotulo": "o próximo ciclo, de 4 a 6 semanas",
+   "quem_hoje": "ninguem",
+   "como_hoje": "cada ciclo pede nova elegibilidade, nova senha e nova dose",
+   "quebra": "ninguém acompanha o intervalo · uma dose já foi esquecida",
+   "confianca": "confirmado",
+   "etapas": [
+    "s7",
+    "s2",
+    "s3"
+   ],
+   "dores": [
+    "dono-jornada",
+    "sessenta-dias"
+   ]
+  }
+ ],
+ "efeitos": [
+  {
+   "id": "e01",
+   "alternativa": "a1",
+   "alvo_tipo": "etapa",
+   "alvo": "s3",
+   "campo": "sistema",
+   "depois": "+coord",
+   "mecanismo": "a senha ganha status visível para cada papel",
+   "confianca": "provavel",
+   "achados": [
+    "visao-plataforma-unica-controle-acesso",
+    "quatro-sistemas-fragmentados-radiofarmaco"
+   ]
   },
   {
-   "servico": "dotatate",
-   "etapa": "s4",
-   "quando": "semana 3 a 6",
-   "vive": "Não vê nada · só sente quando a data muda",
-   "atua": "a radiofarmácia pede a dose ao fabricante 3 semanas antes",
-   "bastidor": "a dose chega com data de uso marcada · o prazo de cancelamento fica na planilha",
-   "fonte": "primaria",
-   "espera": "≈ 3 a 30 dias"
+   "id": "e02",
+   "alternativa": "a1",
+   "alvo_tipo": "etapa",
+   "alvo": "s4",
+   "campo": "sistema",
+   "depois": "+coord",
+   "mecanismo": "a dose ganha status visível: pedida, a caminho, chegou",
+   "confianca": "provavel",
+   "achados": [
+    "quatro-sistemas-fragmentados-radiofarmaco"
+   ]
   },
   {
-   "servico": "dotatate",
-   "etapa": "s5",
-   "quando": "dia D",
-   "vive": "Recebe a infusão e vai para o quarto blindado do 5º andar",
-   "atua": "o médico nuclear conduz · a enfermagem do andar radioativo, com alta rotatividade, cuida",
-   "bastidor": "quando a equipe é nova, o atendimento fica moroso e inseguro",
-   "fonte": "primaria",
-   "espera": "≈ 17 dias"
+   "id": "e03",
+   "alternativa": "a1",
+   "alvo_tipo": "etapa",
+   "alvo": "s5",
+   "campo": "sistema",
+   "depois": "+coord",
+   "mecanismo": "a agenda do dia D fica ao lado da senha e da dose",
+   "confianca": "provavel",
+   "achados": [
+    "visao-plataforma-unica-controle-acesso"
+   ]
   },
   {
-   "servico": "dotatate",
-   "etapa": "s6",
-   "quando": "dia D+1 a D+2",
-   "vive": "Fica isolado até a radiação cair",
-   "atua": "a física médica mede todo dia e libera pela radioproteção",
-   "bastidor": "o rejeito fica no cofre por cerca de 2 meses",
-   "fonte": "primaria",
-   "espera": ""
+   "id": "e04",
+   "alternativa": "a1",
+   "alvo_tipo": "lacuna",
+   "alvo": "l-retorno",
+   "campo": "resposta",
+   "depois": "o oncologista vê o status do caso pelo painel, sem perder a titularidade",
+   "mecanismo": "o oncologista acompanha o ciclo sem precisar ser avisado à mão",
+   "confianca": "aberto",
+   "achados": [
+    "papel-medico-nuclear-coadjuvante",
+    "fluxo-quebra-quando-oncologia-externa-entra"
+   ]
   },
   {
-   "servico": "dotatate",
-   "etapa": "s7",
-   "quando": "semanas depois",
-   "vive": "Volta ao oncologista · o ciclo recomeça semanas depois, por vários ciclos",
-   "atua": "o médico nuclear devolve o paciente",
-   "bastidor": "ninguém acompanha o intervalo por sistema",
-   "fonte": "inferencia",
-   "espera": ""
+   "id": "e05",
+   "alternativa": "a2",
+   "alvo_tipo": "lacuna",
+   "alvo": "l-dose-senha",
+   "campo": "resposta",
+   "depois": "o alerta cruza o prazo da encomenda com o status real da senha",
+   "mecanismo": "o risco da dose sem senha aparece antes do prazo de cancelamento",
+   "confianca": "provavel",
+   "achados": [
+    "janela-risco-encomenda-vs-autorizacao-convenio",
+    "exigencia-aguardar-senha-antes-pedir-dose"
+   ]
   },
   {
-   "servico": "iodoterapia",
-   "etapa": "s1",
-   "quando": "dia 0",
-   "vive": "Sai da cirurgia da tireoide com o diagnóstico e é encaminhado à medicina nuclear",
-   "atua": "o cirurgião de cabeça e pescoço encaminha com o histopatológico",
-   "bastidor": "a decisão de tratar é do médico nuclear · o cirurgião raramente pede retorno",
-   "fonte": "primaria",
-   "espera": ""
+   "id": "e06",
+   "alternativa": "a2",
+   "alvo_tipo": "etapa",
+   "alvo": "s4",
+   "campo": "sistema",
+   "depois": "-xls +coord",
+   "mecanismo": "o prazo de cancelamento sai da planilha e vira alerta",
+   "confianca": "provavel",
+   "achados": [
+    "prazo-lote-semanal-engessado-radiofarmacia",
+    "quatro-sistemas-fragmentados-radiofarmaco"
+   ]
   },
   {
-   "servico": "iodoterapia",
-   "etapa": "s2",
-   "quando": "semana 1",
-   "vive": "Faz 1 hora de consulta por telemedicina e começa a dieta sem iodo, que dura 30 dias",
-   "atua": "o médico nuclear decide por histológico, idade, gênero e viabilidade do tumor, com diretrizes próprias quando os consensos não bastam",
-   "bastidor": "o pedido ao IPEN sai no mesmo dia, 30 dias antes: o preparo e a encomenda correm juntos",
-   "fonte": "primaria",
-   "espera": ""
+   "id": "e07",
+   "alternativa": "a3",
+   "alvo_tipo": "etapa",
+   "alvo": "s3",
+   "campo": "dono",
+   "depois": "nav",
+   "mecanismo": "o navegador responde pela senha, do pedido ao dia D",
+   "confianca": "provavel",
+   "achados": [
+    "navegador-teranostico-ausente",
+    "navegacao-alta-complexidade-vs-oncologica"
+   ]
   },
   {
-   "servico": "iodoterapia",
-   "etapa": "s3",
-   "quando": "semana 1 a 2",
-   "vive": "Quase não percebe a autorização · o iodo é coberto e de rotina",
-   "atua": "a navegação oncológica resolve sozinha, sem acionar a navegação de alta complexidade",
-   "bastidor": "o convênio raramente trava a sequência · o pedido é feito com folga",
-   "fonte": "primaria",
-   "espera": ""
+   "id": "e08",
+   "alternativa": "a3",
+   "alvo_tipo": "lacuna",
+   "alvo": "l-senha",
+   "campo": "resposta",
+   "depois": "a senha tem dono · o prazo da operadora continua de 3 a 30 dias",
+   "mecanismo": "alguém acompanha a senha, mas a operadora segue no seu ritmo",
+   "confianca": "provavel",
+   "achados": [
+    "navegador-teranostico-ausente"
+   ]
   },
   {
-   "servico": "iodoterapia",
-   "etapa": "s4",
-   "quando": "dia −30 a −7",
-   "vive": "Segue a dieta · faz a cintilografia de corpo inteiro na semana anterior",
-   "atua": "a radiofarmácia encomenda o iodo ao IPEN com 30 dias · a cintilografia calibra a dose a pedir",
-   "bastidor": "o grupo da iodoterapia recebe o convite de calendário: administrativo, radiofarmácia e leitos · o IPEN falha com regularidade",
-   "fonte": "primaria",
-   "espera": "≈ 1 semana"
+   "id": "e09",
+   "alternativa": "a3",
+   "alvo_tipo": "etapa",
+   "alvo": "s4",
+   "campo": "dono",
+   "depois": "nav",
+   "mecanismo": "o navegador acompanha a encomenda contra a senha · a radiofarmácia segue pedindo",
+   "confianca": "aberto",
+   "achados": [
+    "navegador-teranostico-ausente",
+    "janela-risco-encomenda-vs-autorizacao-convenio"
+   ]
   },
   {
-   "servico": "iodoterapia",
-   "etapa": "s5",
-   "quando": "dia D",
-   "vive": "Toma a injeção de estímulo 2 dias antes · recebe o iodo por via oral e vai para o quarto blindado do 5º andar",
-   "atua": "o médico nuclear aplica · a enfermagem do andar radioativo, com alta rotatividade, cuida",
-   "bastidor": "a física médica fraciona a dose · tudo que toca o paciente vira rejeito",
-   "fonte": "primaria",
-   "espera": "≈ 30 dias"
+   "id": "e10",
+   "alternativa": "a3",
+   "alvo_tipo": "passagem",
+   "alvo": "vt",
+   "campo": "quem",
+   "depois": "nav",
+   "mecanismo": "as demandas saem do navegador, não da memória do médico",
+   "confianca": "provavel",
+   "achados": [
+    "fluxo-demandas-disparadas-por-atendimento"
+   ]
   },
   {
-   "servico": "iodoterapia",
-   "etapa": "s6",
-   "quando": "dia D+1 a D+3",
-   "vive": "Fica isolado no quarto até a radiação cair · a família espera do lado de fora",
-   "atua": "a física médica mede todo dia e libera pela radioproteção",
-   "bastidor": "o rejeito fica no cofre por cerca de 3 meses",
-   "fonte": "primaria",
-   "espera": ""
+   "id": "e11",
+   "alternativa": "a3",
+   "alvo_tipo": "passagem",
+   "alvo": "tr",
+   "campo": "quem",
+   "depois": "nav",
+   "mecanismo": "o navegador devolve o caso ao oncologista com o relatório do ciclo",
+   "confianca": "aberto",
+   "achados": [
+    "paciente-transita-oncologia-medicina-nuclear"
+   ]
   },
   {
-   "servico": "iodoterapia",
-   "etapa": "s7",
-   "quando": "semana 1 a 2 depois",
-   "vive": "Volta ao médico que encaminhou · na maioria dos casos não há ciclo seguinte",
-   "atua": "o médico nuclear dá o retorno · quem encaminhou raramente o pede",
-   "bastidor": "o fluxo fecha dentro do grupo interno: é por isso que funciona",
-   "fonte": "inferencia",
-   "espera": ""
+   "id": "e12",
+   "alternativa": "a3",
+   "alvo_tipo": "passagem",
+   "alvo": "rt",
+   "campo": "quem",
+   "depois": "nav",
+   "mecanismo": "o navegador acompanha o intervalo e abre o próximo ciclo",
+   "confianca": "provavel",
+   "achados": [
+    "navegador-teranostico-ausente",
+    "autorizacao-por-ciclo-nao-por-tratamento-completo"
+   ]
   },
   {
-   "servico": "psma",
-   "etapa": "s1",
-   "quando": "dia 0",
-   "vive": "Está há meses ou anos com o oncologista · ouve que existe uma terapia a mais, com outra equipe, e que depois volta",
-   "atua": "o oncologista titular indica · a medicina nuclear recebe o paciente emprestado",
-   "bastidor": "o caso entra no tumor board do teranóstico, com oncologista fixo e o médico titular convidado",
-   "fonte": "inferencia",
-   "espera": ""
+   "id": "e13",
+   "alternativa": "a3",
+   "alvo_tipo": "sempre",
+   "alvo": "sempre",
+   "campo": "quem",
+   "depois": "nav",
+   "mecanismo": "um papel formal responde pela travessia inteira, sobre a navegação que já existe",
+   "confianca": "provavel",
+   "achados": [
+    "navegador-teranostico-ausente",
+    "navegacao-alta-complexidade-vs-oncologica"
+   ]
   },
   {
-   "servico": "psma",
-   "etapa": "s2",
-   "quando": "semana 1 a 2",
-   "vive": "Faz o PET com o par diagnóstico e a consulta de 1 hora · descobre que a elegibilidade será refeita a cada ciclo",
-   "atua": "o médico nuclear confere a captação, a função renal e hematológica e o desempenho clínico",
-   "bastidor": "o médico nuclear dispara 4 demandas por e-mail: comercial, radiofarmácia, oncologista, imagem · ele é o hub que o navegador deveria ser",
-   "fonte": "primaria",
-   "espera": "≈ 1 a 2 semanas"
+   "id": "e14",
+   "alternativa": "a4",
+   "alvo_tipo": "lacuna",
+   "alvo": "l-senha",
+   "campo": "resposta",
+   "depois": "a cobertura por operadora é conferida antes da consulta",
+   "mecanismo": "a combinação de terapia e exame chega à senha já triada",
+   "confianca": "provavel",
+   "achados": [
+    "cobertura-teranostico-sem-categoria-propria",
+    "processo-navegacao-triagem-antes-solicitar-senha"
+   ]
   },
   {
-   "servico": "psma",
-   "etapa": "s3",
-   "quando": "semana 2 a 6",
-   "vive": "Espera a senha sem notícia · pode assinar um termo para pagar se o convênio negar, ou migrar para particular",
-   "atua": "a navegação de alta complexidade entra porque o fármaco não tem contrato garantido · o controle de senhas pede por ciclo",
-   "bastidor": "a operadora leva de 3 a 30 dias · não existe código próprio do teranóstico: a cobertura é uma combinação frágil de dois códigos",
-   "fonte": "primaria",
-   "espera": ""
+   "id": "e15",
+   "alternativa": "a5",
+   "alvo_tipo": "lacuna",
+   "alvo": "l-fornecedor",
+   "campo": "resposta",
+   "depois": "um bloqueio de fornecedor aparece para todos os pacientes de uma vez",
+   "mecanismo": "a situação do fornecedor é vista no nível do hospital, não paciente a paciente",
+   "confianca": "provavel",
+   "achados": [
+    "fornecedor-bloqueado-divida-outro-departamento",
+    "ipen-falha-entrega-vs-industria-privada"
+   ]
   },
   {
-   "servico": "psma",
-   "etapa": "s4",
-   "quando": "semana 3 a 6",
-   "vive": "Não vê nada · só sente quando a data muda",
-   "atua": "a radiofarmácia pede a dose ao fabricante 3 semanas antes, só com a senha, ou com o termo assinado",
-   "bastidor": "a dose chega em 17 dias com data de uso marcada · o prazo de cancelamento está numa planilha · uma dose perdida cai na área",
-   "fonte": "primaria",
-   "espera": "≈ 3 a 30 dias"
+   "id": "e16",
+   "alternativa": "a6",
+   "alvo_tipo": "etapa",
+   "alvo": "s2",
+   "campo": "sistema",
+   "depois": "-mail +coord",
+   "mecanismo": "as demandas do médico saem pelo canal, com responsável e histórico",
+   "confianca": "provavel",
+   "achados": [
+    "coordenacao-via-email-sem-rastreabilidade",
+    "fluxo-demandas-disparadas-por-atendimento"
+   ]
   },
   {
-   "servico": "psma",
-   "etapa": "s5",
-   "quando": "dia D",
-   "vive": "Recebe a infusão na veia, no mesmo box do diagnóstico, no fim da tarde · vai para casa no mesmo dia com os cuidados de radioproteção",
-   "atua": "o médico nuclear conduz · a enfermagem aplica · o horário é escolhido de memória porque sobram boxes no fim do dia",
-   "bastidor": "a elegibilidade do plano deveria ser conferida de novo neste dia · já houve negativa da operadora no dia da infusão",
-   "fonte": "primaria",
-   "espera": "≈ 17 dias"
+   "id": "e17",
+   "alternativa": "a6",
+   "alvo_tipo": "etapa",
+   "alvo": "s3",
+   "campo": "sistema",
+   "depois": "-mail +coord",
+   "mecanismo": "o status da senha fica no canal, fora do e-mail",
+   "confianca": "provavel",
+   "achados": [
+    "coordenacao-via-email-sem-rastreabilidade",
+    "comunicacao-formalizada-email-whatsapp-triagem"
+   ]
   },
   {
-   "servico": "psma",
-   "etapa": "s6",
-   "quando": "dia D",
-   "vive": "Sai no mesmo dia, depois da medição",
-   "atua": "a física médica mede e libera pela radioproteção",
-   "bastidor": "a imagem pós-dose só vira dosimetria em pesquisa: o software não tem registro na Anvisa",
-   "fonte": "primaria",
-   "espera": ""
+   "id": "e18",
+   "alternativa": "a6",
+   "alvo_tipo": "etapa",
+   "alvo": "s4",
+   "campo": "sistema",
+   "depois": "-mail +coord",
+   "mecanismo": "radiofarmácia e medicina nuclear combinam a dose no canal",
+   "confianca": "provavel",
+   "achados": [
+    "coordenacao-via-email-sem-rastreabilidade"
+   ]
   },
   {
-   "servico": "psma",
-   "etapa": "s7",
-   "quando": "semana 4 a 6 depois",
-   "vive": "Volta ao oncologista · em 4 a 6 semanas tudo recomeça: nova elegibilidade, nova senha, nova dose · são 6 ciclos, ou 7 a 8 segundo outra fonte",
-   "atua": "o médico nuclear devolve o paciente e escreve o relatório do ciclo",
-   "bastidor": "ninguém acompanha o intervalo por sistema · o primeiro paciente do serviço teve a dose esquecida entre ciclos",
-   "fonte": "primaria",
-   "espera": ""
+   "id": "e19",
+   "alternativa": "a6",
+   "alvo_tipo": "etapa",
+   "alvo": "s7",
+   "campo": "sistema",
+   "depois": "-mail +coord",
+   "mecanismo": "o retorno a quem indicou vira mensagem com dono",
+   "confianca": "provavel",
+   "achados": [
+    "coordenacao-via-email-sem-rastreabilidade"
+   ]
+  },
+  {
+   "id": "e20",
+   "alternativa": "a6",
+   "alvo_tipo": "passagem",
+   "alvo": "vt",
+   "campo": "como",
+   "depois": "as demandas viram mensagens com dono e prazo, rastreáveis",
+   "mecanismo": "o que hoje sai por e-mail passa a ter responsável e histórico",
+   "confianca": "provavel",
+   "achados": [
+    "coordenacao-via-email-sem-rastreabilidade"
+   ]
+  },
+  {
+   "id": "e21",
+   "alternativa": "a6",
+   "alvo_tipo": "sempre",
+   "alvo": "sempre",
+   "campo": "como",
+   "depois": "o histórico da travessia fica no canal, não na memória",
+   "mecanismo": "quem chega depois encontra o caso registrado",
+   "confianca": "provavel",
+   "achados": [
+    "coordenacao-via-email-sem-rastreabilidade"
+   ]
+  },
+  {
+   "id": "e23",
+   "alternativa": "a6",
+   "alvo_tipo": "lacuna",
+   "alvo": "l-equipe",
+   "campo": "resposta",
+   "depois": "o histórico do canal fica quando a equipe troca",
+   "mecanismo": "o saber do andar não vai embora com quem sai",
+   "confianca": "aberto",
+   "achados": [
+    "rotatividade-enfermagem-radioativa"
+   ]
+  },
+  {
+   "id": "e24",
+   "alternativa": "a7",
+   "alvo_tipo": "lacuna",
+   "alvo": "l-elegibilidade",
+   "campo": "resposta",
+   "depois": "checklist em 2 camadas: o plano a cada atendimento, a clínica a cada ciclo",
+   "mecanismo": "a elegibilidade deixa de depender de quem lembra de conferir",
+   "confianca": "provavel",
+   "achados": [
+    "elegibilidade-segue-rol-mas-pode-extrapolar",
+    "elegibilidade-convenio-deve-ser-checada-toda-visita",
+    "elegibilidade-dinamica-por-ciclo"
+   ]
+  },
+  {
+   "id": "e25",
+   "alternativa": "a8",
+   "alvo_tipo": "lacuna",
+   "alvo": "l-box",
+   "campo": "resposta",
+   "depois": "a reserva troca a agenda de memória por uma regra visível",
+   "mecanismo": "diagnóstico e tratamento deixam de disputar o box no dia",
+   "confianca": "aberto",
+   "achados": [
+    "conflito-sala-diagnostico-vs-tratamento"
+   ]
   }
  ],
  "loops": [
@@ -2230,7 +2507,8 @@ window.TERA = {
    "camada": "sistema",
    "confianca": "provavel",
    "nivel": 1,
-   "terapias": []
+   "terapias": [],
+   "numero": "2.1"
   },
   {
    "id": "a2",
@@ -2244,7 +2522,8 @@ window.TERA = {
    "terapias": [
     "psma",
     "dotatate"
-   ]
+   ],
+   "numero": "2.6"
   },
   {
    "id": "a3",
@@ -2258,7 +2537,8 @@ window.TERA = {
    "terapias": [
     "psma",
     "dotatate"
-   ]
+   ],
+   "numero": "2.2"
   },
   {
    "id": "a4",
@@ -2269,7 +2549,8 @@ window.TERA = {
    "camada": "servicos",
    "confianca": "provavel",
    "nivel": 2,
-   "terapias": []
+   "terapias": [],
+   "numero": "2.5"
   },
   {
    "id": "a5",
@@ -2280,7 +2561,8 @@ window.TERA = {
    "camada": "ecossistema",
    "confianca": "provavel",
    "nivel": 2,
-   "terapias": []
+   "terapias": [],
+   "numero": "2.7"
   },
   {
    "id": "a6",
@@ -2291,7 +2573,8 @@ window.TERA = {
    "camada": "sistema",
    "confianca": "provavel",
    "nivel": 1,
-   "terapias": []
+   "terapias": [],
+   "numero": "2.3"
   },
   {
    "id": "a7",
@@ -2302,7 +2585,8 @@ window.TERA = {
    "camada": "servicos",
    "confianca": "provavel",
    "nivel": 2,
-   "terapias": []
+   "terapias": [],
+   "numero": "2.4"
   },
   {
    "id": "a8",
@@ -2313,7 +2597,101 @@ window.TERA = {
    "camada": "sistema",
    "confianca": "aberto",
    "nivel": 2,
-   "terapias": []
+   "terapias": [],
+   "numero": "2.8"
+  }
+ ],
+ "cenarios": [
+  {
+   "id": "c1",
+   "nome": "Desfragmentação",
+   "aspecto": "operacional",
+   "frase": "um status e um canal entre as áreas",
+   "confianca": "provavel",
+   "alternativas": [
+    "a1",
+    "a6"
+   ]
+  },
+  {
+   "id": "c2",
+   "nome": "Paciente acompanhado",
+   "aspecto": "assistencial",
+   "frase": "um dono do pedido ao retorno, e a elegibilidade conferida a cada ciclo",
+   "confianca": "provavel",
+   "alternativas": [
+    "a3",
+    "a7"
+   ]
+  },
+  {
+   "id": "c3",
+   "nome": "Dose garantida",
+   "aspecto": "comercial",
+   "frase": "a cobertura, a senha e o fornecedor antes da encomenda",
+   "confianca": "provavel",
+   "alternativas": [
+    "a4",
+    "a2",
+    "a5"
+   ]
+  }
+ ],
+ "dores": [
+  {
+   "id": "dose-antes-senha",
+   "numero": "1.1",
+   "nome": "Dose encomendada antes da senha"
+  },
+  {
+   "id": "email",
+   "numero": "1.2",
+   "nome": "E-mail como canal de comunicação"
+  },
+  {
+   "id": "dono-jornada",
+   "numero": "1.3",
+   "nome": "Falta de dono da jornada"
+  },
+  {
+   "id": "sessenta-dias",
+   "numero": "1.4",
+   "nome": "60 dias entre indicação e infusão"
+  },
+  {
+   "id": "fornecimento-importado",
+   "numero": "1.5",
+   "nome": "Fornecimento importado (atraso do IPEN)"
+  },
+  {
+   "id": "fragmentacao",
+   "numero": "1.6",
+   "nome": "Fragmentação da jornada"
+  },
+  {
+   "id": "operadora-elegibilidade",
+   "numero": "1.7",
+   "nome": "Operadora suspende elegibilidade"
+  },
+  {
+   "id": "cobertura-sem-categoria",
+   "numero": "1.8",
+   "nome": "Teranóstico sem categoria de cobertura"
+  },
+  {
+   "id": "conhecimento-pessoas",
+   "numero": "1.9",
+   "nome": "Conhecimento que mora em pessoas"
+  },
+  {
+   "id": "sala-box",
+   "numero": "1.10",
+   "nome": "Sala e box disputados"
+  },
+  {
+   "id": "teto-cnen",
+   "numero": "1.11",
+   "nome": "Teto regulatório de capacidade (CNEN)"
   }
  ],
  "grupos": [
@@ -4515,6 +4893,12 @@ window.TERA = {
    "titulo": "Ajustes de celular",
    "o_que_mudou": "No celular, o × de soltar o ator não cobre mais o rótulo da ficha, os critérios de quem pede na Direção ficam numa coluna só, sem cortar o texto, e a coluna de rótulos do blueprint das Jornadas fica fixa à esquerda enquanto ele rola para o lado",
    "versao": 11
+  },
+  {
+   "data": "2026-10-29",
+   "titulo": "AS IS e TO BE",
+   "o_que_mudou": "A aba 4 virou JORNADA AS IS: os três eventos (ver, tratar, reavaliar), as passagens entre eles, quem acompanha a travessia inteira e o ciclo dia a dia, e um clique num evento abre só os seus passos. Uma jornada só, sem a escolha de terapia: o que falta em cada etapa, de todas as terapias, numa leitura geral. Nova aba 6, JORNADA TO BE: a mesma jornada com o efeito das alternativas escolhidas, calculado e não desenhado, com um placar de antes e depois, e três cenários para escolher: desfragmentação (operacional), paciente acompanhado (assistencial) e dose garantida (comercial). Uma numeração só liga as abas e os slides: as dores de 1.1 a 1.11 marcam os pontos vermelhos da jornada de hoje, e as alternativas de 2.1 a 2.8, pela ordem provisória da matriz multicritério, aparecem na Direção e na jornada com as escolhas",
+   "versao": 12
   }
  ]
 };

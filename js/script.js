@@ -1,15 +1,18 @@
 /* Sistemática Teranóstico — "enxergar o que se trata e tratar o que se vê" (28/10/2026).
-   Cada aba responde UMA pergunta e aponta para a seguinte, de fora para dentro; a 5 volta à 0:
+   Cada aba responde UMA pergunta e aponta para a seguinte, de fora para dentro; a 6 volta à 0:
      0 abertura    — o átomo teranóstico: a mesma molécula leva o que vê e o que trata; a dose decai enquanto a senha
                      não chega; a reação em cadeia (R1) e a barra de controle (B1)
      1 ecossistema — quem regula, paga, fornece e trata, e o que cada um impõe ao ciclo
      2 sistema     — os sistemas que já existem, hoje coordenados de memória; e a camada de coordenação por cima
      3 serviços    — as cinco terapias: o mesmo ciclo, coordenação diferente
-     4 jornadas    — os sete passos que o paciente atravessa, e quem responde por cada um (ninguém pelo todo)
+     4 jornada AS IS — os três eventos (ver, tratar, reavaliar), as passagens entre eles e quem acompanha a travessia;
+                     um clique num evento abre os seus passos; uma jornada só, sem a variável terapia
      5 direção     — a decisão da Fase 3: a premissa, a arquitetura e o que construir primeiro; as oito alternativas
+     6 jornada TO BE — a mesma jornada com o efeito das alternativas escolhidas, calculado (efeitos.csv), com um placar
    Dados: js/data.js, GERADO de 08_sintese/dados/*.csv (não editar à mão). Sem nomes de pessoas, sem reais.
    Motor herdado da Sistemática do Health Data Brasil (encaixa/dimensiona, estado na URL, cartões empilhados) e da
-   Sistemática da Longevidade (as seis abas 0–5, o #revela, o data-cresce, o ecossistema em duas colunas, o blueprint). */
+   Sistemática da Longevidade (as abas numeradas, o #revela, o data-cresce, o ecossistema em duas colunas, o blueprint, a
+   jornada mãe em três eventos). */
 
 (function () {
   "use strict";
@@ -124,14 +127,15 @@
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(reencaixa);
   window.addEventListener("load", reencaixa);
 
-  /* ---------- as seis abas ---------- */
+  /* ---------- as sete abas ---------- */
   var VISTAS = [
     { id: "abertura", n: 0, rot: "ABERTURA", livro: true, perg: rel("pergunta_abertura") || "o que é este projeto, e como ler este relatório?" },
     { id: "ecossistema", n: 1, rot: "ECOSSISTEMA", perg: cam("ecossistema", "pergunta") || "quem regula, paga e fornece, e o que cada um impõe?" },
     { id: "sistema", n: 2, rot: "SISTEMA", perg: cam("sistema", "pergunta") || "o que já existe, e o que coordena por cima?" },
     { id: "servicos", n: 3, rot: "SERVIÇOS", perg: cam("servicos", "pergunta") || "o que muda de uma terapia para outra?" },
-    { id: "jornadas", n: 4, rot: "JORNADAS", perg: cam("jornadas", "pergunta") || "o que o paciente atravessa, e quem responde por cada passo?" },
-    { id: "direcao", n: 5, rot: "DIREÇÃO", livro: true, perg: rel("pergunta_direcao") || "o que a Fase 3 precisa decidir?" }
+    { id: "jornadas", n: 4, rot: "JORNADA AS IS", perg: cam("jornadas", "pergunta") || "o que o paciente atravessa, e quem responde por cada passo?" },
+    { id: "direcao", n: 5, rot: "DIREÇÃO", livro: true, perg: rel("pergunta_direcao") || "o que a Fase 3 precisa decidir?" },
+    { id: "tobe", n: 6, rot: "JORNADA TO BE", perg: rel("pergunta_tobe") || "e se escolhermos? a mesma jornada, com o que cada alternativa muda" }
   ];
   var PROXIMA = {
     abertura: ["ecossistema", "quem regula, paga e fornece?"],
@@ -139,7 +143,8 @@
     sistema: ["servicos", "o que muda de uma terapia para outra?"],
     servicos: ["jornadas", "o que o paciente atravessa, passo a passo?"],
     jornadas: ["direcao", "o que a Fase 3 precisa decidir?"],
-    direcao: ["abertura", "de volta ao começo: o átomo teranóstico"]
+    direcao: ["tobe", "e se escolhermos? a jornada com as alternativas"],
+    tobe: ["abertura", "de volta ao começo: o átomo teranóstico"]
   };
   var botoes = {}, vistaAtual = null;
   var nav = document.getElementById("camadas");
@@ -162,9 +167,10 @@
     document.getElementById("pergunta").innerHTML = "<b>" + v.n + " · " + esc(v.rot) + "</b>" + (nv ? "<span class='nivel nv-" + nv + "'>" + nv + "</span>" : "") +
       " · " + esc(v.perg) + (pp ? " <span class='perg-pessoa'>— para o paciente: «" + esc(pp) + "»</span>" : "");
     var m = cam(v.id, "manchete");
-    document.getElementById("manchete").textContent = (v.id !== "abertura" && v.id !== "direcao" && m) ? ponto(m) : "";
+    document.getElementById("manchete").textContent = (v.id !== "abertura" && v.id !== "direcao" && v.id !== "tobe" && m) ? ponto(m) : "";
     revelaCamada(v);
-    if (v.id === "jornadas") montaJornada(jornadaAtual);
+    if (v.id === "jornadas") montaJornada();
+    if (v.id === "tobe") montaToBe();
     if (item !== undefined && item !== null) seleciona(v.id, item);
     estadoNaUrl();
     reencaixa();
@@ -173,31 +179,34 @@
     var r = document.getElementById("revela"), rot, txt;
     if (v.id === "abertura") { rot = "COMO LER"; txt = rel("como_ler"); }
     else if (v.id === "direcao") { rot = "LEGENDA"; txt = rel("legenda_fontes"); }
+    else if (v.id === "tobe") { rot = "O QUE ISSO REVELA"; txt = rel("revela_tobe"); }
     else { rot = "O QUE ISSO REVELA"; txt = cam(v.id, "revela"); }
     if (!txt) { r.innerHTML = ""; return; }
     r.innerHTML = "<b class='rv-rot'>" + rot + "</b><span class='rv-txt'></span>";
     var s = r.querySelector(".rv-txt"); s.textContent = txt; s.title = txt;
   }
-  var selecao = { abertura: null, ecossistema: null, sistema: null, servicos: null, jornadas: null, direcao: null };
+  var selecao = { abertura: null, ecossistema: null, sistema: null, servicos: null, jornadas: null, direcao: null, tobe: null };
   function seleciona(vista, item) {
     if (vista === "ecossistema") selecionaEco(item);
     else if (vista === "sistema") selecionaSis(item);
     else if (vista === "servicos") selecionaServico(item);
-    else if (vista === "jornadas") { selecao.jornadas = item; montaJornada(jornadaAtual); }
+    else if (vista === "jornadas") abreEtapa(item);
+    else if (vista === "tobe") escolheUma(item);
     else if (vista === "direcao") mostraAlt(item);
     else if (vista === "abertura") acendeParte(item);
   }
-  var passoAtual = null, servicoAtual = null;
   function estadoNaUrl() {
     var q = "?vista=" + vistaAtual;
-    if (vistaAtual === "jornadas" && jornadaAtual && jornadaAtual !== "mae") q += "&servico=" + encodeURIComponent(jornadaAtual);
     if (selecao[vistaAtual]) q += "&item=" + encodeURIComponent(selecao[vistaAtual]);
     if (vistaAtual === "ecossistema" && etapaEco) q += "&passo=" + etapaEco;
     if (vistaAtual === "sistema" && !comparativo) q += "&tempo=" + tempoAtual;
-    if (vistaAtual === "jornadas" && passoAtual) q += "&passo=" + passoAtual;
+    if (vistaAtual === "jornadas" || vistaAtual === "tobe") {
+      if (evento[vistaAtual]) q += "&passo=" + evento[vistaAtual];
+    }
+    if (vistaAtual === "tobe" && !selecao.tobe) { var c = cenarioDe(escolhas); q += c ? "&cenario=" + c.id : "&escolhas=" + escolhas.join(","); }
     try { history.replaceState(null, "", q); } catch (e) { /* file:// em alguns navegadores */ }
   }
-  function elo(vista) { var p = PROXIMA[vista]; return "<button type='button' class='l-elo' data-vista='" + p[0] + "'>" + (vista === "direcao" ? "↻ " : "→ ") + esc(p[1]) + "</button>"; }
+  function elo(vista) { var p = PROXIMA[vista]; return "<button type='button' class='l-elo' data-vista='" + p[0] + "'>" + (p[0] === VISTAS[0].id ? "↻ " : "→ ") + esc(p[1]) + "</button>"; }
   function eloPara(vista, item, rot, cls) { return "<button type='button' class='" + (cls || "l-elo inline") + "' data-vista='" + vista + "'" + (item ? " data-item='" + esc(item) + "'" : "") + ">" + rot + "</button>"; }
   function ligaElos(raiz) {
     Array.prototype.forEach.call(raiz.querySelectorAll("button.l-elo"), function (b) {
@@ -205,8 +214,7 @@
       b.dataset.ligado = "1";
       b.addEventListener("click", function (ev) {
         ev.stopPropagation();
-        if (b.dataset.servico) jornadaAtual = b.dataset.servico;
-        if (b.dataset.passo) passoAtual = b.dataset.passo;
+        if (b.dataset.passo && (PASSO[b.dataset.passo] || b.dataset.passo === "ciclo")) evento[b.dataset.vista === "tobe" ? "tobe" : "jornadas"] = b.dataset.passo;
         abre(b.dataset.vista, b.dataset.item || undefined);
       });
     });
@@ -238,8 +246,9 @@
     var pts = [], i;
     for (i = 0; i <= 80; i++) { var d = dias * i / 80; pts.push(X(d).toFixed(1) + "," + Y(Math.pow(2, -d / T)).toFixed(1)); }
     var h = "<svg class='relogio-svg' viewBox='0 0 " + W + " " + H + "' role='img' aria-label='" + esc("a atividade da dose cai pela metade a cada " + meiaVidaTxt(iso) + "; a senha chega entre " + cont("senha_min") + " e " + cont("senha_max") + " dias") + "'>";
-    h += "<defs><pattern id='rl-hachura' width='6' height='6' patternUnits='userSpaceOnUse' patternTransform='rotate(45)'><line x1='0' y1='0' x2='0' y2='6' stroke='#B3261E' stroke-width='1' opacity='.35'/></pattern></defs>";
-    var smin = cont("senha_min"), smax = cont("senha_max"), prev = cont("previsao_industria"), ent = cont("entrega_dose"), c0 = cont("ciclo_intervalo_min"), c1 = cont("ciclo_intervalo_max");
+    /* o padrão da hachura (rl-hachura) mora uma vez só no index.html: dois relógios na página não duplicam o id */
+    var smin = cont("senha_min"), smax = cont("senha_max"), prev = cont("previsao_industria"), ent = cont("entrega_dose");
+    var c0 = cont("ciclo_intervalo_min"), c1 = cont("ciclo_intervalo_max");
     var topo = y0 + 9;
     if (completo && c0 !== null && c1 !== null && c0 <= dias) {
       h += "<rect class='rl-ciclo' x='" + X(c0) + "' y='" + y0 + "' width='" + (X(Math.min(c1, dias)) - X(c0)) + "' height='" + (y1 - y0) + "'/>";
@@ -281,7 +290,7 @@
       });
     }
     if (!opts.semFrase) {
-      var frase = (rel("relogio_frase") || "cada dia de atraso leva {perda} da atividade de {isotopo}").replace("{perda}", pt(perdaPorDia(iso) * 100, 1) + "%").replace("{isotopo}", iso.simbolo);
+      var frase = (opts.frase || rel("relogio_frase") || "cada dia de atraso leva {perda} da atividade de {isotopo}").replace("{perda}", pt(perdaPorDia(iso) * 100, 1) + "%").replace("{isotopo}", iso.simbolo);
       if (completo) h += "<text class='rl-frase' x='" + x0 + "' y='" + (H - 4) + "'>" + esc(quebra(frase, Math.round(W / 5.2))[0]) + "</text>";
       else quebra(frase, Math.round(W / 5.4)).slice(0, 2).forEach(function (l, i) { h += "<text class='rl-frase' x='" + x0 + "' y='" + (H - 12 + i * 10) + "'>" + esc(l) + "</text>"; });
     }
@@ -412,7 +421,7 @@
       "</dl>" + elo("abertura");
     escreve(leituraAbre, html);
     Array.prototype.forEach.call(leituraAbre.querySelectorAll(".w5-passo"), function (b) {
-      b.addEventListener("click", function () { passoAtual = b.getAttribute("data-passo"); abre("jornadas"); });
+      b.addEventListener("click", function () { evento.jornadas = b.getAttribute("data-passo") || null; etapaOn.jornadas = null; selecao.jornadas = null; abre("jornadas"); });
     });
   }
 
@@ -493,6 +502,9 @@
   /* o ciclo macro (passos.csv): ver · tratar · reavaliar. Os sete passos são das Jornadas; aqui cada movimento junta as
      relações das suas etapas (o usuário, 29/10: "estou antecipando informações e detalhamentos") */
   var numFluxo = {}, etapaEco = null, visiveisEco = [], ecoPassos = null;
+  /* a aba abre sem nada escolhido: nenhum ator, nenhum movimento, nenhuma seta (o usuário, 29/10). "ciclo inteiro" e
+     "completo" mostram tudo só quando alguém pede */
+  var ecoTudo = false;
   function fluxoNoPasso(f, sigla) { var p = PASSO[sigla]; return !!p && (f.etapas || []).some(function (e) { return (p.etapas || []).indexOf(e) >= 0; }); }
   (function montaPassosEco() {
     var cena = eco && eco.parentNode; if (!cena || !PASSOS.length) return;
@@ -506,12 +518,12 @@
       "<button type='button' class='ep ep-modo' role='tab' data-modo='completo' title='todos os atores de uma vez (são muitas conexões)'>completo</button>";
     cena.insertBefore(ecoPassos, eco);
     Array.prototype.forEach.call(ecoPassos.querySelectorAll(".ep[data-etapa]"), function (b) {
-      b.addEventListener("click", function () { selecionaEco(selecao.ecossistema, b.dataset.etapa || null); estadoNaUrl(); });
+      b.addEventListener("click", function () { if (!b.dataset.etapa) ecoTudo = true; selecionaEco(selecao.ecossistema, b.dataset.etapa || null); estadoNaUrl(); });
     });
     Array.prototype.forEach.call(ecoPassos.querySelectorAll(".ep-modo"), function (b) {
       b.addEventListener("click", function () {
         /* individual sem ator escolhido abre pelo Centro; completo solta o ator */
-        if (b.dataset.modo === "completo") selecionaEco(null, undefined);
+        if (b.dataset.modo === "completo") { ecoTudo = true; selecionaEco(null, undefined); }
         else selecionaEco(selecao.ecossistema && selecao.ecossistema.indexOf("a:") === 0 ? selecao.ecossistema : (ATOR.centro ? "a:centro" : "a:" + D.atores[0].id), undefined);
         estadoNaUrl();
       });
@@ -528,7 +540,7 @@
     visiveisEco = setasEco.filter(function (s) {
       var f = s.f;
       if (fluxo) return f.id === fluxo;
-      if (!ator && !etapaEco) return true; /* completo + ciclo inteiro: tudo, por escolha de quem olha */
+      if (!ator && !etapaEco) return ecoTudo; /* completo + ciclo inteiro: tudo, só quando alguém pede */
       if (ator && !(grupoAtor[f.de] || grupoAtor[f.para])) return false;
       if (hub && grupoAtor[f.de] && grupoAtor[f.para]) return false; /* dentro do Centro: não é o que chega nem o que sai */
       if (etapaEco && !fluxoNoPasso(f, etapaEco)) return false;
@@ -546,9 +558,10 @@
       caixasEco[id].classList.toggle("apagada", false); /* ninguém some: quem participa acende, o resto fica em cor cheia (29/10) */
     });
     if (ecoPassos) {
-      Array.prototype.forEach.call(ecoPassos.querySelectorAll(".ep[data-etapa]"), function (b) { b.classList.toggle("on", (b.dataset.etapa || null) === etapaEco); });
+      var neutro = !ator && !etapaEco && !fluxo && !ecoTudo;
+      Array.prototype.forEach.call(ecoPassos.querySelectorAll(".ep[data-etapa]"), function (b) { b.classList.toggle("on", !neutro && (b.dataset.etapa || null) === etapaEco); });
       Array.prototype.forEach.call(ecoPassos.querySelectorAll(".ep-modo"), function (b) {
-        b.classList.toggle("on", (b.dataset.modo === "individual") === !!ator);
+        b.classList.toggle("on", !neutro && (b.dataset.modo === "individual") === !!ator);
         if (b.dataset.modo === "individual") b.textContent = ator && ATOR[ator] ? "individual · " + ATOR[ator].curto : "individual";
       });
     }
@@ -600,6 +613,15 @@
         (lista.length > MAXP ? "<li class='dica'>e mais " + (lista.length - MAXP) + ": clique num ator para ver só as dele neste movimento</li>" : "") + "</ul>" + navEtapas() + "</div>";
       var tese = achadosDe("ecossistema")[0];
       if (tese && lista.length <= 8) html += "<div class='bloco'>" + achadoHtml(tese, "tese", true) + "</div>";
+    } else if (!ecoTudo) {
+      /* a abertura da aba: nada escolhido. As colunas e o convite, escritos na tela */
+      var cols = D.colunas_ecossistema || [];
+      html += "<div class='bloco ficha'><div class='rotulo'>O ecossistema</div><h3>Quem regula, paga, fornece e trata.</h3>" +
+        "<p>" + esc(ponto(cam("ecossistema", "revela"))) + "</p></div>" +
+        "<div class='bloco'><div class='rotulo'>As colunas</div><ul class='lista'>" + cols.map(function (c) { return "<li><b>" + esc(c.rotulo) + "</b>: " + esc(c.sub) + "</li>"; }).join("") + "</ul>" +
+        "<p class='dica'>Escolha um movimento do ciclo na faixa acima (ver, tratar, reavaliar), ou clique num ator para ver o que chega e sai dele.</p></div>";
+      var tese0 = achadosDe("ecossistema")[0];
+      if (tese0) html += "<div class='bloco'>" + achadoHtml(tese0, "tese", true) + "</div>";
     } else {
       /* completo + ciclo inteiro: todas as relações, com o aviso de que é muita coisa de uma vez */
       html += "<div class='bloco ficha'><div class='rotulo'>O ecossistema inteiro <span class='conf'>" + lista.length + "</span></div><h3>Todas as relações, de uma vez.</h3>" +
@@ -836,41 +858,56 @@
     });
   })();
 
-  /* ================= 4 · JORNADAS: os sete passos =================
-     A mãe (jornada.csv): o blueprint dos sete passos com a faixa dos passos V T R, as esperas, o que o paciente vive
-     (inferência, em itálico: ninguém ouviu paciente ainda), quem atua, a linha de visibilidade, o bastidor, os
-     sistemas, quem decide, quem paga, o dono (vermelho onde é ninguém) e o que falta; embaixo, o relógio da dose.
-     As filhas (jornada_servico.csv): a mesma gramática por terapia, com o isótopo da terapia no relógio. */
-  var jornadaAtual = "mae", jorPalco = document.getElementById("jor-palco");
-  var jorLista = document.getElementById("lista-jor");
-  function servicosComJornada() { return (D.servicos || []).filter(function (s) { return (D.jornada_servico || []).some(function (j) { return j.servico === s.id; }); }); }
-  (function montaListaJornadas() {
-    if (!jorLista) return;
-    var html = "<p class='l-coluna'>ESCOLHA UMA JORNADA</p><button type='button' class='j-opt j-destaque' data-id='mae'>" + esc(rel("jor_mae") || "O ciclo inteiro") + "<small>mãe</small></button>" +
-      "<p class='l-legenda j-nota'>" + esc(rel("jor_mae_sub") || "a regra, igual para toda terapia") + "</p><p class='l-sub'>POR TERAPIA</p>" +
-      servicosComJornada().map(function (s) { return "<button type='button' class='j-opt' data-id='" + s.id + "'>" + esc(s.curto || s.nome) + "<small>" + (D.jornada_servico || []).filter(function (j) { return j.servico === s.id; }).length + "</small></button>"; }).join("");
-    escreve(jorLista, html);
-    Array.prototype.forEach.call(jorLista.querySelectorAll(".j-opt"), function (b) { b.addEventListener("click", function () { selecao.jornadas = null; montaJornada(b.dataset.id); estadoNaUrl(); }); });
-  })();
-  function faixaPassos(cls) {
-    var html = "", i = 0;
-    PASSOS.forEach(function (p) {
-      var n = ETAPAS.filter(function (e) { return e.passo === p.sigla; }).length;
-      if (!n) return;
-      html += "<div class='" + cls + "' style='grid-column:span " + n + ";--cor:" + p.cor + "'>" + SUP[p.sigla] + " " + esc(p.nome.toUpperCase()) + "</div>";
-      i += n;
-    });
-    return html;
+  /* ================= 4 · JORNADA AS IS e 6 · JORNADA TO BE: a jornada em dois tempos (29/10/2026) =================
+     No molde da "mãe" da Longevidade: o MESO são os três eventos (V ver · T tratar · R reavaliar, de passos.csv), as
+     passagens entre eles (passagens.csv: quem passa, como, e onde quebra), a camada SEMPRE (quem acompanha a travessia
+     inteira, com a volta do próximo ciclo) e, no AS IS, o ciclo dia a dia (o relógio). Um clique num evento abre o
+     MICRO: o blueprint só dos seus passos. Uma jornada só, holística: sem a variável terapia (decisão do usuário em
+     29/10/2026). O que falta em cada etapa vem de lacunas.csv, uma lacuna por dor, e cada efeito responde a uma lacuna.
+     O TO BE não é desenhado: é o AS IS mais os efeitos das alternativas escolhidas (efeitos.csv). O placar conta etapas,
+     passagens e lacunas, nunca dias. Riscado é como é hoje; em verde, o que muda, com o número da escolha; tracejado,
+     hipótese. Uma lacuna respondida continua à vista: a escolha responde, mas a restrição de fora não some. */
+  var PSG = D.passagens || [], EFE = D.efeitos || [], LAC = D.lacunas || [];
+  var ALT_N = {}; (D.alternativas || []).forEach(function (a, i) { ALT_N[a.id] = a.numero || String(i + 1); });
+  /* a numeração ligada (29/10/2026): as dores 1.x marcam os pontos vermelhos da jornada de hoje; as alternativas 2.x são a
+     ação. Os mesmos números dos slides do relatório (dados/numeracao.csv, gerado por exportes/gera_diagnostico.py) */
+  var DOR = indexa(D.dores, "id");
+  function ordemNum(n) { var p = String(n || "9.99").split("."); return (+p[0]) * 1000 + (+p[1] || 0); }
+  function altsOrdenadas() { return (D.alternativas || []).slice().sort(function (a, b) { return ordemNum(a.numero) - ordemNum(b.numero); }); }
+  function doresSelo(ids) { return (ids || []).filter(function (d) { return DOR[d]; }).map(function (d) { return "<i class='dor-selo'>" + DOR[d].numero + "</i>"; }).join(""); }
+  var COORD_HOJE = (D.sistemas || []).filter(function (s) { return s.grupo === "coordenacao_hoje"; }).map(function (s) { return s.id; });
+  var ORD_CONF = { confirmado: 0, provavel: 1, aberto: 2 };
+  /* os cenários da TO BE (cenarios.csv, 29/10/2026): junções de oportunidades pelas lentes operacional, assistencial e
+     comercial. As escolhas são uma lista só: um cenário as preenche, e um clique numa oportunidade ajusta */
+  var CEN = D.cenarios || [], CENI = indexa(CEN, "id");
+  function altsDoCenario(id) { var c = CENI[id]; return c ? (D.alternativas || []).map(function (x) { return x.id; }).filter(function (x) { return c.alternativas.indexOf(x) >= 0; }) : []; }
+  function cenarioDe(lista) { /* o cenário cujas oportunidades são exatamente as escolhidas; null numa combinação própria */
+    return CEN.filter(function (c) { return c.alternativas.length === lista.length && c.alternativas.every(function (a) { return lista.indexOf(a) >= 0; }); })[0] || null;
   }
-  function desenhaBlueprint(linhas, raias, iso, isoVer) {
+  var evento = { jornadas: null, tobe: null }, etapaOn = { jornadas: null, tobe: null };
+  var escolhas = altsDoCenario(rel("tobe_cenario"));
+  var jorPalco = document.getElementById("jor-palco"), jorLista = document.getElementById("lista-jor");
+  var tbPalco = document.getElementById("tobe-palco"), tbLista = document.getElementById("tobe-escolhas");
+
+  function nomeAtor(id) { return id === "ninguem" ? "ninguém" : (ATOR[id] ? ATOR[id].curto : id); }
+  function etapasDoPasso(sigla) { return ETAPAS.filter(function (e) { return e.passo === sigla; }); }
+
+  /* ---------- o blueprint (micro): a faixa dos passos conta as colunas pelas linhas que recebe ---------- */
+  function faixaPassos(cls, linhas) {
+    return PASSOS.map(function (p) {
+      var n = linhas.filter(function (j) { return (ETAPA[j.etapa] || {}).passo === p.sigla; }).length;
+      return n ? "<div class='" + cls + "' style='grid-column:span " + n + ";--cor:" + p.cor + "'>" + SUP[p.sigla] + " " + esc(p.nome.toUpperCase()) + "</div>" : "";
+    }).join("");
+  }
+  function desenhaBlueprint(linhas, raias, iso, isoVer, etapaAcesa) {
     var n = linhas.length;
-    function celula(txt, e, cls) { return "<div class='bpp-cel" + (e.fonte === "inferencia" ? " bpp-infere" : "") + (txt ? "" : " bpp-vazia") + (cls ? " " + cls : "") + "'>" + (txt || "") + "</div>"; }
-    var html = "<div class='bpp' style='--bpp-n:" + n + ";grid-template-columns:120px repeat(" + n + ", minmax(0,1fr))'>" +
-      "<div class='bpp-eixo'>OS PASSOS</div>" + faixaPassos("bpp-zona") +
+    var html = "<div class='bpp" + (n < ETAPAS.length ? " bpp-micro" : "") + "' style='--bpp-n:" + n + ";grid-template-columns:120px repeat(" + n + ", minmax(0,1fr))'>" +
+      "<div class='bpp-eixo'>O EVENTO</div>" + faixaPassos("bpp-zona", linhas) +
       "<div class='bpp-eixo'>A LINHA DO TEMPO</div>" +
-      linhas.map(function (j, i) {
+      linhas.map(function (j) {
         var et = ETAPA[j.etapa] || { nome: j.etapa };
-        return "<div class='bpp-marco" + (passoAtual && et.passo === passoAtual ? " on" : "") + "'>" + (j.espera ? "<span class='bpp-espera'>" + esc(j.espera) + "</span>" : "") + "<b>" + (i + 1) + " · " + esc(et.nome) + "</b><small>" + esc(j.quando || "—") + "</small></div>";
+        return "<div class='bpp-marco" + (etapaAcesa && j.etapa === etapaAcesa ? " on" : "") + "'>" + (j.espera ? "<span class='bpp-espera'>" + esc(j.espera) + "</span>" : "") +
+          "<b>" + (ETAPAS.indexOf(et) + 1) + " · " + esc(et.nome) + "</b><small>" + esc(j.quando || "—") + "</small></div>";
       }).join("");
     raias.forEach(function (r) {
       if (r === "vis") { html += "<div class='bpp-vis'><span>linha de visibilidade</span></div>"; return; }
@@ -879,41 +916,323 @@
     if (iso) html += "<div class='bpp-rot'><b>OS DOIS RELÓGIOS</b><small>o da física é fixo: " + esc(iso.simbolo) + ", meia-vida " + meiaVidaTxt(iso) + " · o da senha varia</small></div><div class='bpp-relogio'>" + relogioSvg(iso, { w: 900, h: 118, dias: 45, completo: true, isoVer: isoVer }) + "</div>";
     return html + "</div>";
   }
-  function montaJornada(id) {
-    if (!jorPalco) return;
-    id = id || "mae"; jornadaAtual = id;
-    Array.prototype.forEach.call(document.querySelectorAll("#lista-jor .j-opt"), function (b) { b.classList.toggle("on", b.dataset.id === id); });
-    var html, rodape = "<p class='bp-pe'><span>em itálico, o que ainda é leitura nossa: ninguém ouviu paciente nem oncologista ainda — o resto vem das entrevistas</span>" + elo("jornadas") + "</p>";
-    var isoMae = isoTerapeuticos()[0];
-    if (id === "mae") {
-      var linhas = (D.jornada || []).slice();
-      html = "<div class='j-topo'><h2 class='serif'>" + esc(rel("jor_mae") || "O ciclo inteiro") + "</h2><p class='l-entrega'>" + esc(rel("jor_mae_sub") || "") + "</p></div>" +
-        desenhaBlueprint(linhas, [
-          ["O PACIENTE VIVE", "sempre inferência", function (j) { return "<div class='bpp-cel bpp-infere" + (j.vive ? "" : " bpp-vazia") + "' title='" + esc(j.vive) + "'>" + esc(corta(j.vive, 72)) + "</div>"; }],
-          ["QUEM ATUA", "e quem decide", function (j) { return "<div class='bpp-cel" + (j.fonte === "inferencia" ? " bpp-infere" : "") + "' title='" + esc(j.atua) + "'>" + esc(corta(j.atua, 70)) + (j.decide ? "<small>decide: " + esc(corta(j.decide, 40)) + "</small>" : "") + "</div>"; }],
-          "vis",
-          ["BASTIDOR", "e onde fica o registro", function (j) { return "<div class='bpp-cel" + (j.fonte === "inferencia" ? " bpp-infere" : "") + (j.bastidor ? "" : " bpp-vazia") + "' title='" + esc(j.bastidor) + "'>" + esc(corta(j.bastidor, 72)) + ((j.sistema || []).length ? "<span class='chips'>" + (j.sistema || []).map(function (s) { return "<span class='chip-sis'>" + esc(SIS[s] ? SIS[s].nome : s) + "</span>"; }).join("") + "</span>" : "") + "</div>"; }],
-          ["DONO", "e quem paga ou autoriza", function (j) { return (j.dono === "ninguem" ? "<div class='bpp-cel bpp-risco'>ninguém" : "<div class='bpp-cel bpp-dono" + (j.dono ? "" : " bpp-vazia") + "'>" + esc(ATOR[j.dono] ? ATOR[j.dono].curto : j.dono)) + ((j.paga || []).length ? "<span class='chips'>" + (j.paga || []).map(function (k) { return tagEnq(k, true); }).join("") + "</span>" : "") + "</div>"; }],
-          ["O QUE FALTA", "nesta etapa", function (j) { var et = ETAPA[j.etapa]; return "<div class='bpp-cel" + (et && et.gate ? " bpp-risco" : " bpp-vazia") + "'>" + esc(et && et.gate ? et.gate : "") + "</div>"; }]
-        ], isoMae, isoDeVer()) + rodape;
-    } else {
-      var s = SERV[id], etapas = (D.jornada_servico || []).filter(function (j) { return j.servico === id; });
-      if (!s) { montaJornada("mae"); return; }
-      html = "<p class='jm-trilha'><button type='button' class='jm-mae'>" + esc(rel("jor_mae") || "O ciclo inteiro") + "</button> › <b>" + esc(s.nome) + "</b></p>" +
-        "<div class='j-topo'><h2 class='serif'>" + esc(s.nome) + "</h2><p class='l-entrega'>" + esc(ponto(maiuscula(s.indicacao))) + " " + (s.coordenacao === "informal_basta" ? "A coordenação informal dá conta." : "A coordenação precisa ser sistematizada.") + "</p></div>" +
-        desenhaBlueprint(etapas, [
-          ["O PACIENTE VIVE", "sempre inferência", function (j) { return "<div class='bpp-cel bpp-infere" + (j.vive ? "" : " bpp-vazia") + "' title='" + esc(j.vive) + "'>" + esc(corta(j.vive, 90)) + "</div>"; }],
-          ["QUEM ATUA", "a cada contato", function (j) { return "<div class='bpp-cel" + (j.fonte === "inferencia" ? " bpp-infere" : "") + "' title='" + esc(j.atua) + "'>" + esc(corta(j.atua, 80)) + "</div>"; }],
-          "vis",
-          ["BASTIDOR", "o que ele não vê", function (j) { return "<div class='bpp-cel" + (j.fonte === "inferencia" ? " bpp-infere" : "") + (j.bastidor ? "" : " bpp-vazia") + "' title='" + esc(j.bastidor) + "'>" + esc(corta(j.bastidor, 90)) + "</div>"; }],
-          ["DONO", "quem responde", function (j) { var m = (D.jornada || []).filter(function (x) { return x.etapa === j.etapa; })[0]; return !m ? "<div class='bpp-cel bpp-vazia'></div>" : m.dono === "ninguem" ? "<div class='bpp-cel bpp-risco'>ninguém</div>" : "<div class='bpp-cel bpp-dono'>" + esc(ATOR[m.dono] ? ATOR[m.dono].curto : m.dono) + "</div>"; }]
-        ], ISO[s.isotopo_tratar] || isoMae, ISO[s.isotopo_ver] || isoDeVer()) +
-        "<p class='bpp-dinheiro'><span class='l-sub' style='margin:0'>Quem paga esta linha</span>" + tagEnq(s.enquadramento) + "</p>" + rodape;
-    }
-    escreve(jorPalco, html);
-    Array.prototype.forEach.call(jorPalco.querySelectorAll(".jm-mae"), function (b) { b.addEventListener("click", function () { montaJornada("mae"); estadoNaUrl(); }); });
-    if (selecao.jornadas) Array.prototype.forEach.call(jorPalco.querySelectorAll(".bpp-marco"), function (m, i) { var j = (id === "mae" ? D.jornada : (D.jornada_servico || []).filter(function (x) { return x.servico === id; }))[i]; m.classList.toggle("on", !!j && j.etapa === selecao.jornadas); });
+
+  /* ---------- o estado de hoje: a jornada mãe e, em cada etapa, as suas lacunas (lacunas.csv) ---------- */
+  function linhasDeHoje() {
+    return (D.jornada || []).map(function (m) {
+      var et = ETAPA[m.etapa] || {};
+      var r = { etapa: m.etapa, passo: et.passo, quando: m.quando, vive: m.vive, atua: m.atua, bastidor: m.bastidor, espera: m.espera, fonte: m.fonte,
+        decide: m.decide, paga: (m.paga || []).slice(), dono: m.dono, sistema: (m.sistema || []).slice(), muda: {} };
+      r.lacunas = LAC.filter(function (l) { return l.etapa === m.etapa; }).map(function (l) {
+        return { id: l.id, txt: l.texto, dores: (l.dores || []).slice(), conf: l.confianca, respostas: [] };
+      });
+      r.sis = r.sistema.map(function (id) { return { id: id, estado: "fica", alts: [] }; });
+      return r;
+    });
   }
+  function estadoJornada() {
+    var est = { linhas: linhasDeHoje(), passagens: {}, sempre: null };
+    PSG.forEach(function (p) {
+      est.passagens[p.id] = { id: p.id, rotulo: p.rotulo, quem: p.quem_hoje, como: p.como_hoje, quebra: p.quebra, conf: p.confianca, dores: (p.dores || []).slice(), muda: {} };
+    });
+    est.sempre = { quem: rel("jor_sempre_quem") || "ninguem", como: rel("jor_sempre_como"), dores: rel("jor_sempre_dores").split(/\s+/).filter(Boolean), muda: {} };
+    return est;
+  }
+  function abertas(r) { return r.lacunas.filter(function (l) { return !l.respostas.length; }); }
+  function lacunaPorId(est, id) { var achou = null; est.linhas.forEach(function (r) { r.lacunas.forEach(function (l) { if (l.id === id) achou = l; }); }); return achou; }
+  /* ---------- o estado com as escolhas: o de hoje mais os efeitos ---------- */
+  function maisFraca(a, b) { return (ORD_CONF[a] || 0) >= (ORD_CONF[b] || 0) ? a : b; }
+  function temEfeito(a) { return EFE.some(function (e) { return e.alternativa === a; }); }
+  function aplicaEfeitos(alts) {
+    var est = estadoJornada(), porEt = indexa(est.linhas, "etapa");
+    EFE.filter(function (e) { return alts.indexOf(e.alternativa) >= 0; }).forEach(function (e) {
+      var sel = { alt: e.alternativa, mec: e.mecanismo };
+      function registra(o, campo) {
+        if (!o.muda[campo]) o.muda[campo] = { antes: o[campo], alts: [], conf: e.confianca };
+        o[campo] = e.depois; o.muda[campo].alts.push(sel); o.muda[campo].conf = maisFraca(o.muda[campo].conf, e.confianca);
+      }
+      if (e.alvo_tipo === "etapa") {
+        var r = porEt[e.alvo]; if (!r) return;
+        if (e.campo === "dono") registra(r, "dono");
+        else if (e.campo === "sistema") {
+          e.depois.split(/\s+/).forEach(function (tok) {
+            var id = tok.slice(1), s = r.sis.filter(function (x) { return x.id === id; })[0];
+            if (tok.charAt(0) === "+") { if (!s) { s = { id: id, estado: "novo", alts: [] }; r.sis.push(s); } if (s.estado === "novo") s.alts.push(sel); }
+            else if (s) { s.estado = "sai"; s.alts.push(sel); }
+          });
+          r.muda.sistema = true;
+        }
+      } else if (e.alvo_tipo === "lacuna") { /* a resposta vai para a lacuna certa: as outras da etapa continuam abertas */
+        var l = lacunaPorId(est, e.alvo);
+        if (l) l.respostas.push({ txt: e.depois, alt: e.alternativa, conf: e.confianca, mec: e.mecanismo });
+      } else {
+        var o = e.alvo_tipo === "sempre" ? est.sempre : est.passagens[e.alvo];
+        if (o) registra(o, e.campo);
+      }
+    });
+    return est;
+  }
+  /* ---------- o placar: tudo contado do dado ---------- */
+  function conta(est) {
+    return {
+      semDono: est.linhas.filter(function (r) { return r.dono === "ninguem"; }).length,
+      psgSem: Object.keys(est.passagens).filter(function (k) { return est.passagens[k].quem === "ninguem"; }).length,
+      mail: est.linhas.filter(function (r) { return r.sis.some(function (s) { return s.estado !== "sai" && COORD_HOJE.indexOf(s.id) >= 0; }); }).length,
+      lac: est.linhas.reduce(function (n, r) { return n + abertas(r).length; }, 0)
+    };
+  }
+  function freios(alts) { /* os nós da reação em cadeia (R1) que a barra de controle (B1) freia, pelas escolhas feitas */
+    var b1 = (D.loops || []).filter(function (l) { return l.loop === "B1" && alts.indexOf(l.item) >= 0; }).map(function (l) { return l.id; }), nos = {};
+    (D.loop_arestas || []).forEach(function (a) { if (a.freia === "sim" && b1.indexOf(a.de) >= 0) nos[a.para] = true; });
+    return Object.keys(nos).length;
+  }
+  function criteriosDe(alts) { return (D.criterios || []).filter(function (c) { return (c.alternativas || []).some(function (a) { return alts.indexOf(a) >= 0; }); }).length; }
+  function placarHtml(antes, depois, alts) {
+    var a = conta(antes), d = conta(depois), nR1 = (D.loops || []).filter(function (l) { return l.loop === "R1"; }).length, nCri = (D.criterios || []).length;
+    function bloco(rot, x, y, menos, sufixo, dica) {
+      var mudou = x !== y, bom = menos ? y < x : y > x;
+      return "<div class='pl" + (mudou ? (bom ? " melhora" : " piora") : " igual") + "'><span>" + rot + "</span><b>" + (mudou ? "<s>" + x + "</s> " : "") + y + (sufixo || "") + "</b></div>";
+    }
+    return "<div class='placar'>" +
+      bloco("etapas sem dono", a.semDono, d.semDono, true, "", "etapas em que ninguém responde") +
+      bloco("passagens sem dono", a.psgSem, d.psgSem, true, "", "passagens entre os eventos que ninguém conduz") +
+      bloco("etapas no e-mail ou na planilha", a.mail, d.mail, true, "", "etapas cujo registro ainda depende de e-mail ou planilha") +
+      bloco("lacunas sem resposta", a.lac, d.lac, true, "", "o que falta em cada etapa e nenhuma escolha responde") +
+      bloco("freios na reação em cadeia", 0, freios(alts), false, " de " + nR1, "nós da reação em cadeia do atraso que alguma escolha freia") +
+      bloco("critérios dos atores", 0, criteriosDe(alts), false, " de " + nCri, "critérios candidatos da Direção que as escolhas atendem") +
+      "</div>";
+  }
+
+  /* ---------- o desenho: as peças ---------- */
+  function selo(alts) {
+    return (alts || []).map(function (s) { return "<i class='alt-selo'>" + ALT_N[s.alt] + "</i>"; }).join("");
+  }
+  function classeConf(c) { return c === "aberto" ? " h-aberto" : c === "provavel" ? " h-provavel" : ""; }
+  function troca(antes, depois, m) { return "<s class='antes'>" + esc(antes) + "</s> <b class='depois" + classeConf(m.conf) + "'>" + esc(depois) + "</b>" + selo(m.alts); }
+  function quemHtml(id) { return id === "ninguem" ? "<span class='ninguem'>ninguém</span>" : "<b>" + esc(nomeAtor(id)) + "</b>"; }
+  function donoHtml(r) {
+    var m = r.muda && r.muda.dono, sd = [rel("dor_sem_dono")];
+    if (m) return "<s class='antes'>" + esc(nomeAtor(m.antes)) + "</s> <b class='depois" + classeConf(m.conf) + "'>" + esc(nomeAtor(r.dono)) + "</b>" + selo(m.alts);
+    return quemHtml(r.dono) + (r.dono === "ninguem" ? doresSelo(sd) : "");
+  }
+  /* respondido: a dor sai de cena (o número vermelho some com o texto) e fica o número verde da escolha que respondeu */
+  function liga(dores, alts) { return selo(alts); }
+  function altsDe(o) { var v = {}, out = []; Object.keys(o.muda || {}).forEach(function (k) { (o.muda[k].alts || []).forEach(function (x) { if (!v[x.alt]) { v[x.alt] = 1; out.push(x); } }); }); return out; }
+  function quemComDor(o) { /* passagem ou camada sempre: "ninguém" leva a dor; trocado, o antes riscado mantém o selo */
+    var m = o.muda.quem;
+    if (m) return "<s class='antes'>" + esc(nomeAtor(m.antes)) + "</s> <b class='depois" + classeConf(m.conf) + "'>" + esc(nomeAtor(o.quem)) + "</b>" + selo(m.alts);
+    return quemHtml(o.quem) + (o.quem === "ninguem" && !o.quebra ? doresSelo(o.dores) : "");
+  }
+  function quebraHtml(o) {
+    if (!o.quebra) return "";
+    var mexeu = o.muda.quem || o.muda.como;
+    return "<small class='jm-quebra" + (mexeu ? " respondida" : "") + "'>" + esc(o.quebra) + (mexeu ? " " + liga(o.dores, altsDe(o)) : doresSelo(o.dores)) + "</small>";
+  }
+  function comoHtml(o) { var m = o.muda.como; return m ? "<s class='antes'>" + esc(m.antes) + "</s> <span class='depois" + classeConf(m.conf) + "'>" + esc(o.como) + "</span>" + selo(m.alts) : esc(o.como); }
+  function blocoEvento(p, est) {
+    var chips = est.linhas.filter(function (r) { return r.passo === p.sigla; }).map(function (r) {
+      var et = ETAPA[r.etapa] || {};
+      var falta = r.lacunas.map(function (l) {
+        return l.respostas.length ? l.respostas.map(function (x) { return "<small class='jm-resp" + classeConf(x.conf) + "'>✓ " + esc(x.txt) + " " + liga(l.dores, [{ alt: x.alt }]) + "</small>"; }).join("") :
+          "<small class='jm-falta'>falta: " + esc(l.txt) + doresSelo(l.dores) + "</small>";
+      }).join("");
+      var respondeu = abertas(r).length < r.lacunas.length;
+      return "<button type='button' class='jm-et" + (r.muda.dono || respondeu || r.muda.sistema ? " muda" : "") + "' data-passo='" + p.sigla + "' data-etapa='" + r.etapa + "' style='--cor:" + p.cor + "'>" +
+        "<b>" + esc(et.curto || et.nome) + "</b><span>dono: " + donoHtml(r) + "</span>" + falta + "</button>";
+    }).join("");
+    return "<section class='jm-bloco' style='--cor:" + p.cor + "'>" +
+      "<button type='button' class='jm-abre' data-passo='" + p.sigla + "'><span class='jm-m'><b>" + SUP[p.sigla] + "</b>" + esc(p.nome) + "</span><small>" + esc(p.verbo) + "</small><em>os passos →</em></button>" +
+      (rel("jor_nota_" + p.sigla) ? "<p class='jm-desc'>" + esc(rel("jor_nota_" + p.sigla)) + "</p>" : "") +
+      "<div class='jm-ets'>" + chips + "</div></section>";
+  }
+  function setaPassagem(ps) {
+    if (!ps) return "<div class='jm-seta'><span class='jm-flecha'>→</span></div>";
+    return "<div class='jm-seta" + (ps.conf !== "confirmado" ? " bpv-infere" : "") + "'><span class='jm-seta-rot'>" + esc(ps.rotulo) + "</span><span class='jm-flecha' aria-hidden='true'>→</span>" +
+      "<span class='jm-quem'>passa: " + quemComDor(ps) + "</span><small class='jm-como'>" + comoHtml(ps) + "</small>" + quebraHtml(ps) + "</div>";
+  }
+  function bandaSempre(est) {
+    var s = est.sempre, rt = est.passagens.rt, volta = "";
+    if (rt) volta = "<div class='jm-ac-volta'><b>↻ " + esc(rt.rotulo) + "</b><span>passa: " + quemComDor(rt) + "</span><small>" + comoHtml(rt) + "</small>" + quebraHtml(rt) + "</div>";
+    return "<div class='jm-ac'><div class='jm-ac-txt'><b>quem acompanha: " + quemComDor(s) + "</b><span>" + comoHtml(s) + "</span></div>" + volta + "</div>";
+  }
+  function desenhaMeso(est, toBe) {
+    var cols = PASSOS.map(function (p) { return "minmax(0," + Math.max(1, etapasDoPasso(p.sigla).length) + "fr)"; }).join(" 190px ");
+    var html = "<p class='jm-cap'>OS TRÊS EVENTOS <span>clique num evento ou numa etapa para ver os seus passos</span></p><div class='jm' style='grid-template-columns:" + cols + "'>";
+    PASSOS.forEach(function (p, i) {
+      html += blocoEvento(p, est);
+      if (i < PASSOS.length - 1) html += setaPassagem(est.passagens[(p.sigla + PASSOS[i + 1].sigla).toLowerCase()]);
+    });
+    html += "</div><p class='jm-cap'>SEMPRE <span>quem acompanha a travessia inteira, e a volta do próximo ciclo</span></p>" + bandaSempre(est);
+    var dd = doresDaJornada(est);
+    if (dd.length) html += "<div class='jm-dores'><b>" + (toBe ? "AS DORES QUE CONTINUAM" : "AS DORES NESTA JORNADA") + "</b>" + dd.map(function (d) { return "<span>" + doresSelo([d]) + esc(DOR[d].nome) + "</span>"; }).join("") + "</div>";
+    else if (toBe) html += "<div class='jm-dores'><b>AS DORES QUE CONTINUAM</b><span>nenhuma: as escolhas respondem a todos os pontos marcados nesta jornada</span></div>";
+    if (!toBe) html += "<p class='jm-ir-ciclo'><button type='button' class='ep-ir' data-passo='ciclo'>⏱ o ciclo, dia a dia: os dois relógios, o da física e o da senha →</button></p>";
+    return html;
+  }
+  /* ---------- as dores: as desta jornada (os pontos vermelhos de hoje) e as que cada alternativa toca ---------- */
+  function doresDaJornada(est) { /* as dores que continuam abertas: as mesmas cujo número vermelho aparece na jornada */
+    var v = {}, sd = rel("dor_sem_dono");
+    function add(l) { (l || []).forEach(function (d) { if (DOR[d]) v[d] = 1; }); }
+    est.linhas.forEach(function (r) { abertas(r).forEach(function (l) { add(l.dores); }); if (r.dono === "ninguem") add([sd]); });
+    Object.keys(est.passagens).forEach(function (k) { var p = est.passagens[k]; if (!(p.muda.quem || p.muda.como) && (p.quebra || p.quem === "ninguem")) add(p.dores); });
+    if (est.sempre.quem === "ninguem") add(est.sempre.dores);
+    return Object.keys(v).sort(function (a, b) { return ordemNum(DOR[a].numero) - ordemNum(DOR[b].numero); });
+  }
+  var EST0 = null;
+  function est0() { return EST0 || (EST0 = estadoJornada()); }
+  function doresDaAlt(a) { /* as dores dos pontos de hoje que os efeitos da alternativa tocam */
+    var v = {}, sd = rel("dor_sem_dono"), est = est0();
+    EFE.forEach(function (e) {
+      if (e.alternativa !== a) return;
+      if (e.alvo_tipo === "etapa") {
+        var r = est.linhas.filter(function (x) { return x.etapa === e.alvo; })[0];
+        if (r && e.campo === "dono" && r.dono === "ninguem") v[sd] = 1;
+      } else if (e.alvo_tipo === "lacuna") {
+        var l = lacunaPorId(est, e.alvo);
+        if (l) l.dores.forEach(function (d) { v[d] = 1; });
+      } else if (e.alvo_tipo === "passagem") {
+        var p = est.passagens[e.alvo];
+        if (p && (p.quebra || p.quem === "ninguem")) (p.dores || []).forEach(function (d) { v[d] = 1; });
+      } else if (est.sempre.quem === "ninguem") (est.sempre.dores || []).forEach(function (d) { v[d] = 1; });
+    });
+    return Object.keys(v).filter(function (d) { return DOR[d]; }).sort(function (x, y) { return ordemNum(DOR[x].numero) - ordemNum(DOR[y].numero); });
+  }
+  /* ---------- a página do ciclo, dia a dia: o relógio grande, e o que ele diz escrito ao lado ---------- */
+  function desenhaCiclo() {
+    var i0 = isoTerapeuticos()[0], iVer = isoDeVer();
+    if (!i0) return "";
+    function fato(rot, txts) { txts = txts.filter(Boolean); return txts.length ? "<div class='cc-fato'><b>" + rot + "</b>" + txts.map(function (t) { return "<p>" + esc(ponto(t)) + "</p>"; }).join("") + "</div>" : ""; }
+    function leit(id) { return CONT[id] ? CONT[id].leitura : ""; }
+    var fatos = fato("O RELÓGIO DA FÍSICA", [i0.simbolo + ": a atividade cai pela metade a cada " + meiaVidaTxt(i0), "Cada dia de atraso leva " + pt(perdaPorDia(i0) * 100, 1) + "% da atividade"]);
+    fatos += fato("O RELÓGIO DA SENHA", [leit("senha_min"), leit("senha_max"), leit("senha_ans_dias")]) +
+      fato("A DOSE", [leit("previsao_industria"), leit("entrega_dose")]) +
+      fato("O PRÓXIMO CICLO", [leit("ciclo_intervalo_min"), leit("ciclo_intervalo_max"), leit("ciclos_min")]);
+    return "<p class='jm-trilha'><button type='button' class='jm-mae'>" + esc(rel("jor_mae") || "A jornada inteira") + "</button> › <b>O ciclo, dia a dia</b></p>" +
+      "<div class='j-topo'><h2 class='serif'>O ciclo, dia a dia</h2><p class='l-entrega'>Dois relógios. O da física é fixo: a dose decai a cada dia. O da senha varia: a operadora autoriza quando autoriza. O risco mora onde os dois se desencontram.</p></div>" +
+      "<div class='cc'><div class='cc-relogio'>" + relogioSvg(i0, { w: 680, h: 172, dias: 45, completo: true, isoVer: iVer, semFrase: true }) + "</div>" +
+      "<div class='cc-fatos'>" + fatos + "</div></div>";
+  }
+  function raiasJornada() {
+    function cls(r) { return r.fonte === "inferencia" ? " bpp-infere" : ""; }
+    function mecs(lista) { /* o porquê de cada mudança, escrito: uma linha por alternativa */
+      var vistos = {}, h = "";
+      (lista || []).forEach(function (s) { if (s.mec && !vistos[s.alt + s.mec]) { vistos[s.alt + s.mec] = 1; h += "<small class='mec'>" + selo([s]) + " " + esc(s.mec) + "</small>"; } });
+      return h;
+    }
+    return [
+      ["O PACIENTE VIVE", "sempre inferência", function (r) { return "<div class='bpp-cel bpp-infere" + (r.vive ? "" : " bpp-vazia") + "'>" + esc(r.vive) + "</div>"; }],
+      ["QUEM ATUA", "e quem decide", function (r) { return "<div class='bpp-cel" + cls(r) + "'>" + esc(r.atua) + (r.decide ? "<small>decide: " + esc(r.decide) + "</small>" : "") + "</div>"; }],
+      "vis",
+      ["BASTIDOR", "e onde fica o registro", function (r) {
+        var chips = r.sis.map(function (s) { return "<span class='chip-sis" + (s.estado === "novo" ? " novo" : s.estado === "sai" ? " sai" : "") + "'>" + esc(SIS[s.id] ? SIS[s.id].nome : s.id) + (s.estado !== "fica" ? selo(s.alts) : "") + "</span>"; }).join("");
+        var mudou = [].concat.apply([], r.sis.filter(function (s) { return s.estado !== "fica"; }).map(function (s) { return s.alts; }));
+        return "<div class='bpp-cel" + cls(r) + (r.muda.sistema ? " muda" : "") + (r.bastidor ? "" : " bpp-vazia") + "'>" + esc(r.bastidor) + (chips ? "<span class='chips'>" + chips + "</span>" : "") + mecs(mudou) + "</div>";
+      }],
+      ["DONO", "e quem paga ou autoriza", function (r) {
+        var c = r.muda.dono ? "bpp-dono muda" + classeConf(r.muda.dono.conf) : r.dono === "ninguem" ? "bpp-risco" : "bpp-dono";
+        return "<div class='bpp-cel " + c + "'>" + donoHtml(r) + ((r.paga || []).length ? "<span class='chips'>" + r.paga.map(function (k) { return tagEnq(k, true); }).join("") + "</span>" : "") + (r.muda.dono ? mecs(r.muda.dono.alts) : "") + "</div>";
+      }],
+      ["O QUE FALTA", "nesta etapa", function (r) {
+        if (!r.lacunas.length) return "<div class='bpp-cel bpp-vazia'></div>";
+        return "<div class='bpp-cel " + (abertas(r).length === r.lacunas.length ? "bpp-risco" : "muda") + "'>" + r.lacunas.map(function (l) {
+          if (!l.respostas.length) return "<span class='lac-aberta'>" + esc(l.txt) + doresSelo(l.dores) + "</span>";
+          return "<span class='respondida'>" + esc(l.txt) + "</span>" + l.respostas.map(function (x) {
+            return "<span class='resposta" + classeConf(x.conf) + "'>" + esc(x.txt) + " " + liga(l.dores, [{ alt: x.alt }]) + "</span>" + (x.mec ? "<small class='mec'>" + esc(x.mec) + "</small>" : "");
+          }).join("");
+        }).join("") + "</div>";
+      }]
+    ];
+  }
+  function desenhaMicro(est, sigla, vista) {
+    var p = PASSO[sigla], i = PASSOS.indexOf(p), ant = PASSOS[i - 1], prox = PASSOS[i + 1];
+    var linhas = est.linhas.filter(function (r) { return r.passo === sigla; });
+    var ir = function (q, rot) { return "<button type='button' class='ep-ir' data-passo='" + q.sigla + "'>" + rot + "</button>"; };
+    return "<p class='jm-trilha'><button type='button' class='jm-mae'>" + esc(rel("jor_mae") || "A jornada inteira") + "</button> › <b style='color:" + p.cor + "'>" + SUP[sigla] + " " + esc(p.nome) + "</b>" +
+      "<span class='jm-nav'>" + (ant ? ir(ant, "← " + SUP[ant.sigla] + " " + esc(ant.nome)) : "") +
+      (prox ? ir(prox, SUP[prox.sigla] + " " + esc(prox.nome) + " →") : ir(PASSOS[0], "↻ o ciclo recomeça: " + SUP[PASSOS[0].sigla] + " " + esc(PASSOS[0].nome))) + "</span></p>" +
+      "<div class='j-topo'><h2 class='serif'>" + esc(maiuscula(p.nome)) + " <small>" + esc(p.verbo) + "</small></h2>" +
+      (rel("jor_nota_" + sigla) ? "<p class='l-entrega'>" + esc(rel("jor_nota_" + sigla)) + "</p>" : "") + "</div>" +
+      desenhaBlueprint(linhas, raiasJornada(), null, null, etapaOn[vista]);
+  }
+
+  /* ---------- 4 · JORNADA AS IS ---------- */
+  function montaJornada() {
+    if (!jorPalco) return;
+    var ev = evento.jornadas, est = estadoJornada();
+    if (jorLista) escreve(jorLista, "<p class='l-coluna'>A JORNADA</p>" +
+      "<button type='button' class='j-opt j-destaque" + (!ev ? " on" : "") + "' data-passo=''>" + esc(rel("jor_mae") || "A jornada inteira") + "<small>meso</small></button>" +
+      PASSOS.map(function (p) { return "<button type='button' class='j-opt j-ev" + (ev === p.sigla ? " on" : "") + "' data-passo='" + p.sigla + "' style='--cor:" + p.cor + "'><span><i>" + SUP[p.sigla] + "</i>" + esc(p.nome) + "</span><small>" + etapasDoPasso(p.sigla).length + " passos</small></button>"; }).join("") +
+      "<button type='button' class='j-opt j-ciclo" + (ev === "ciclo" ? " on" : "") + "' data-passo='ciclo'><span>⏱ o ciclo, dia a dia</span><small>relógio</small></button>");
+    var corpo = ev === "ciclo" ? desenhaCiclo() : ev ? desenhaMicro(est, ev, "jornadas") :
+      "<div class='j-topo'><h2 class='serif'>" + esc(rel("jor_mae") || "A jornada inteira") + "</h2></div>" + desenhaMeso(est, false);
+    escreve(jorPalco, corpo + "<p class='bp-pe'><span>em itálico, o que ainda é leitura nossa: ninguém ouviu paciente nem oncologista ainda · em vermelho, o número da dor no diagnóstico (de 1.1 a 1.11), o mesmo dos slides</span>" + elo("jornadas") + "</p>");
+    if (vistaAtual === "jornadas") { var m = cam("jornadas", "manchete"); document.getElementById("manchete").textContent = m ? ponto(m) : ""; }
+  }
+  function abreEtapa(id) {
+    if (!ETAPA[id]) return;
+    evento.jornadas = ETAPA[id].passo; etapaOn.jornadas = id; selecao.jornadas = id;
+    montaJornada();
+  }
+
+  /* ---------- 6 · JORNADA TO BE ---------- */
+  function altsAtivas() { return escolhas.slice(); }
+  function porNumero(ids) { return ids.slice().sort(function (a, b) { return ordemNum(ALT_N[a]) - ordemNum(ALT_N[b]); }); }
+  function doresDasAlts(ids) { /* a união das dores que as oportunidades resolvem, na ordem 1.x */
+    var v = {}; ids.forEach(function (a) { doresDaAlt(a).forEach(function (d) { v[d] = 1; }); });
+    return Object.keys(v).sort(function (x, y) { return ordemNum(DOR[x].numero) - ordemNum(DOR[y].numero); });
+  }
+  function montaToBe() {
+    if (!tbPalco) return;
+    if (evento.tobe === "ciclo") evento.tobe = null;
+    var alts = altsAtivas(), antes = estadoJornada(), depois = aplicaEfeitos(alts), ev = evento.tobe, cAtivo = cenarioDe(alts);
+    if (tbLista) escreve(tbLista, "<p class='l-coluna'>OS CENÁRIOS</p>" +
+      CEN.map(function (c, i) {
+        var on = !!cAtivo && cAtivo.id === c.id, membros = porNumero(altsDoCenario(c.id));
+        return "<button type='button' class='tb-alt tb-cen" + (on ? " on" : "") + "' data-cenario='" + c.id + "' aria-pressed='" + on + "'><i>" + (i + 1) + "</i><span>" + esc(c.nome) +
+          "<small class='tb-asp'><em>" + esc(c.aspecto) + "</em> " + esc(c.frase) + "</small>" +
+          "<small class='tb-resolve'>" + selo(membros.map(function (a) { return { alt: a }; })) + " resolve " + doresSelo(doresDasAlts(membros)) + "</small></span></button>";
+      }).join("") +
+      "<p class='l-sub tb-sub'>AS OPORTUNIDADES<span class='tb-sua'> · " + (cAtivo ? "e as dores que resolvem" : "sua combinação") + "</span></p>" +
+      altsOrdenadas().map(function (a) {
+        var on = alts.indexOf(a.id) >= 0, fora = !temEfeito(a.id), dd = doresDaAlt(a.id);
+        return "<button type='button' class='tb-alt" + (on ? " on" : "") + (fora ? " fora" : "") + "' data-alt='" + a.id + "' aria-pressed='" + on + "'><i>" + ALT_N[a.id] + "</i><span>" + esc(a.curto) + (fora ? "<small>não muda a jornada</small>" :
+          (dd.length ? "<small class='tb-resolve'>" + doresSelo(dd) + "</small>" : "<small>muda o registro, sem dor marcada</small>")) + "</span></button>";
+      }).join("") +
+      "<p class='l-legenda j-nota'>" + esc(rel("tobe_nota")) + "</p>");
+    var aviso = alts.filter(function (a) { return !temEfeito(a); }).map(function (a) {
+      return "<p class='tb-aviso'><i class='alt-selo'>" + ALT_N[a] + "</i> " + esc(ALT[a].curto) + " não muda a jornada" + (ALT[a].camada ? ": age em " + esc(rotuloVista(ALT[a].camada).toLowerCase()) : "") + ".</p>";
+    }).join("");
+    var topo = ev ? "" : "<div class='j-topo'><h2 class='serif'>" + (cAtivo ? "Cenário " + (CEN.indexOf(cAtivo) + 1) + " · " + esc(cAtivo.nome) +
+      " <small>" + esc(cAtivo.aspecto) + " · " + esc(cAtivo.frase) + "</small>" : esc(rel("tobe_titulo") || "A jornada com as escolhas")) + "</h2><p class='l-entrega'>" + esc(rel("tobe_sub")) + "</p></div>";
+    escreve(tbPalco, topo + placarHtml(antes, depois, alts) + aviso + (ev ? desenhaMicro(depois, ev, "tobe") : desenhaMeso(depois, true)) +
+      "<p class='bp-pe'><span>riscado, como é hoje · em verde, o que muda, com o número da escolha · tracejado, hipótese a validar · o placar conta etapas, passagens e lacunas, nunca dias</span>" + elo("tobe") + "</p>");
+  }
+  function escolheUma(id) {
+    if (!ALT[id]) return;
+    escolhas = [id]; selecao.tobe = id; /* o link da Direção: só aquela oportunidade */
+    montaToBe();
+  }
+
+  /* ---------- os cliques das duas abas: um ouvinte por contêiner (o conteúdo é reescrito a cada mudança) ---------- */
+  function delega(cont, vista) {
+    if (!cont) return;
+    cont.addEventListener("click", function (ev) {
+      var b = ev.target.closest ? ev.target.closest("button") : null;
+      if (!b || !cont.contains(b) || b.classList.contains("l-elo")) return;
+      if (b.classList.contains("jm-mae")) { evento[vista] = null; etapaOn[vista] = null; }
+      else if (b.hasAttribute("data-passo")) { evento[vista] = b.getAttribute("data-passo") || null; etapaOn[vista] = b.getAttribute("data-etapa") || null; }
+      else if (b.hasAttribute("data-cenario")) escolhas = altsDoCenario(b.getAttribute("data-cenario"));
+      else if (b.hasAttribute("data-alt")) {
+        var a = b.getAttribute("data-alt"), k = escolhas.indexOf(a);
+        if (k >= 0) escolhas.splice(k, 1); else escolhas = (D.alternativas || []).map(function (x) { return x.id; }).filter(function (x) { return x === a || escolhas.indexOf(x) >= 0; });
+      }
+      else return;
+      if (vista === "jornadas") { selecao.jornadas = etapaOn.jornadas; montaJornada(); }
+      else { selecao.tobe = null; montaToBe(); }
+      estadoNaUrl();
+    });
+  }
+  delega(jorPalco, "jornadas"); delega(jorLista, "jornadas"); delega(tbPalco, "tobe"); delega(tbLista, "tobe");
 
   /* ================= 5 · DIREÇÃO: a decisão da Fase 3 =================
      À esquerda, pouco e grande: a conclusão em serifa, a espinha dos três níveis da decisão (decisao.csv) e a grade
@@ -949,6 +1268,8 @@
       return "<header class='pc-cab'><p class='pc-eyebrow'>alternativa " + a.ordem_n + " · nível " + a.nivel + " " + st(a.estado) + " " + conf(a.confianca) + (a.camada && CAM[a.camada] ? " · age em " + esc(rotuloVista(a.camada).toLowerCase()) : "") + "</p>" +
         "<h3 class='pc-tit'>" + esc(a.nome) + "</h3></header>" +
         "<p class='pc-oque'>" + esc(ponto(maiuscula(a.oque))) + ((a.terapias || []).length ? " <span class='dica'>Pesa mais em: " + a.terapias.map(function (t) { return SERV[t] ? SERV[t].curto || SERV[t].nome : t; }).join(", ") + ".</span>" : "") + "</p>" +
+        (temEfeito(a.id) ? "<p class='pc-tobe'><button type='button' class='l-elo inline pc-ver' data-vista='tobe' data-item='" + a.id + "'>ver o efeito na jornada TO BE →</button>" +
+          (doresDaAlt(a.id).length ? "<span class='pc-responde'>responde na jornada a " + doresSelo(doresDaAlt(a.id)) + "</span>" : "") + "</p>" : "") +
         "<div class='pc-pede'>" + rot("Quem pede, e por quê", crits.length) + (pede ? "<div class='pc-grupos'>" + pede + "</div>" : "<p class='dica'>nenhum critério ligado ainda</p>") + "</div>" +
         "<div class='pc-listas'>" +
         "<section>" + rot("O que já sabemos", sabe.length) + "<ul class='pc-ul'>" + (sabe.slice(0, MAX).join("") || vazio) + (resto > 0 ? "<li class='pc-vazio'>e mais " + resto + " nas camadas</li>" : "") + "</ul></section>" +
@@ -997,8 +1318,8 @@
         "<div class='pc-listas'><section>" + rot("O que já sabemos", achs.length) + "<ul class='pc-ul'>" + (achs.map(liAchado).join("") || vazio) + "</ul></section>" +
         "<section>" + rot("O que bloqueia a decisão", bloqueios.length) + "<ul class='pc-ul'>" + (bloqueios.map(function (p) { return "<li title='" + esc(p.decisao) + "'><b>" + esc(p.curto) + "</b><small>" + st(p.status) + " " + esc(p.dono) + " · " + esc(p.prazo) + "</small></li>"; }).join("") || vazio) + "</ul></section></div>";
     }
-    var alts = D.alternativas.slice().sort(function (a, b) { return (a.ordem_n || 0) - (b.ordem_n || 0); });
-    alts.forEach(function (a, i) { a.ordem_n = i + 1; });
+    var alts = altsOrdenadas(); /* 2.1 → 2.8: a ordem provisória da matriz multicritério, a mesma dos slides */
+    alts.forEach(function (a, i) { a.ordem_n = a.numero || String(i + 1); });
     var espinha = DEC.map(function (d) {
       return "<li class='est-" + d.estado + "' title='" + esc(d.pergunta) + "'><i>" + d.nivel + "</i><div><b>" + esc(d.titulo) + st(d.estado) + "</b><p>" + esc(corta(ponto(d.pergunta), 120)) + "</p>" +
         (d.nivel === 1 && (d.opcoes || []).length ? "<span class='op'>" + d.opcoes.map(function (o) { return "<button type='button' class='alt-op' data-alt='arquitetura' title='" + esc(o) + "'>" + esc(corta(o, 28)) + "</button>"; }).join("") + "</span>" : "") +
@@ -1012,7 +1333,7 @@
       "<div><p class='l-coluna'>O QUE O RELATÓRIO CONCLUI</p><p class='dc-frase'>" + esc(rel("conclusao_curta") || rel("conclusao")) + "</p></div>" +
       "<p class='l-coluna' style='margin:0'>" + esc(rel("premissa_titulo") || "A DECISÃO, EM TRÊS NÍVEIS") + "</p><ol class='espinha'>" + espinha + "</ol>" +
       "<button type='button' class='alt-op dir-loops' data-alt='loops'>↻ " + esc(rel("r1_titulo") || "por que o problema se sustenta sozinho") + "</button>" +
-      "<p class='l-coluna' style='margin:4px 0 0'>AS OITO ALTERNATIVAS</p><div class='alt-grade'>" + grade + "</div>" +
+      "<p class='l-coluna' style='margin:4px 0 0'>AS OITO ALTERNATIVAS <span class='l-ordem'>de 2.1 a 2.8, na ordem provisória da matriz multicritério</span></p><div class='alt-grade'>" + grade + "</div>" + elo("direcao") +
 
       "</div>" +
       "<div class='alt-cards'>" + alts.map(function (a) { return "<div class='alt-card' data-alt='" + a.id + "' style='--cor:" + (COR_EST[a.estado] || "#0C3A6F") + "'>" + card(a) + "</div>"; }).join("") +
@@ -1043,7 +1364,8 @@
   }
 
   /* ================= o carimbo, o estado inicial e os deep links =================
-     Um estado da peça é uma query: ?vista= · &item= · &servico= · &tempo= · &passo=. */
+     Um estado da peça é uma query: ?vista= · &item= · &tempo= · &passo= · &cenario= ou &escolhas= (TO BE).
+     Os antigos &trilha= e &servico= são ignorados: a jornada é uma só. */
   (function carimbo() {
     var c = document.getElementById("carimbo"), v = D.versao;
     if (c && v) { var d = String(v.data).split("-"); c.textContent = "Estado em " + (d.length === 3 ? d[2] + "/" + d[1] + "/" + d[0] : v.data) + " · publicação " + v.numero + " · " + v.titulo + ". Base: vault do projeto. Sem nomes de pessoas nem valores em reais nesta peça."; }
@@ -1051,16 +1373,19 @@
   function aplicaEstado(q) {
     var p = new URLSearchParams(q || ""), vista = (p.get("vista") || "abertura").toLowerCase(), item = p.get("item");
     if (!VISTAS.some(function (v) { return v.id === vista; })) vista = "abertura";
-    passoAtual = p.get("passo") || null;
-    var serv = p.get("servico"); if (serv && SERV[serv]) jornadaAtual = serv;
+    var ps = p.get("passo");
+    if ((vista === "jornadas" || vista === "tobe") && PASSO[ps]) evento[vista] = ps;
+    if (vista === "jornadas" && ps === "ciclo") evento.jornadas = "ciclo";
+    if (CENI[p.get("cenario")]) escolhas = altsDoCenario(p.get("cenario"));
+    else if (p.has("escolhas")) escolhas = (p.get("escolhas") || "").split(",").filter(function (a) { return ALT[a]; });
     var t = +p.get("tempo"); if (t === 1 || t === 2) { comparativo = false; if (vSistema) vSistema.classList.remove("cheia"); tempo(t); }
     montaAtomo(); leituraAbertura();
     var et = vista === "ecossistema" ? (p.get("passo") || "") : "", et0 = PASSOS[0] ? PASSOS[0].sigla : null;
-    if (vista === "ecossistema") selecionaEco(item || null, PASSO[et] ? et : (item ? null : et0));
-    else selecionaEco(null, et0);
+    if (vista === "ecossistema") selecionaEco(item || null, PASSO[et] ? et : null);
+    else selecionaEco(null, null);
     if (vista === "sistema" && item) selecionaSis(item);
     if (vista === "servicos" && item) selecionaServico(item);
-    abre(vista, (vista === "direcao" || vista === "abertura" || vista === "jornadas") ? (item || undefined) : undefined);
+    abre(vista, (vista === "direcao" || vista === "abertura" || vista === "jornadas" || vista === "tobe") ? (item || undefined) : undefined);
   }
   aplicaEstado(location.search);
 })();

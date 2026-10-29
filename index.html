@@ -4,23 +4,25 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Sistemática Teranóstico · Einstein</title>
-<meta name="description" content="A síntese do projeto Plataforma Teranóstica em uma tela: a abertura (o átomo teranóstico: ver, tratar, reavaliar), as quatro camadas (quem regula, paga e fornece · os sistemas que já existem · as cinco terapias · o que o paciente vive) e a direção: a decisão da Fase 3.">
+<meta name="description" content="A síntese do projeto Plataforma Teranóstica em uma tela: a abertura (o átomo teranóstico: ver, tratar, reavaliar), as quatro camadas (quem regula, paga e fornece · os sistemas que já existem · as cinco terapias · a jornada de hoje, em três eventos), a direção (a decisão da Fase 3) e a jornada com as escolhas.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Sistemática Teranóstico · enxergar o que se trata e tratar o que se vê">
-<meta property="og:description" content="Coordenação é o problema, não tecnologia. A síntese do projeto, do ecossistema à direção, em seis abas que cabem numa tela.">
+<meta property="og:description" content="Coordenação é o problema, não tecnologia. A síntese do projeto, do ecossistema à direção e à jornada com as escolhas, em sete abas que cabem numa tela.">
 <meta name="twitter:card" content="summary">
 <link rel="icon" href="img/selo_sistematica.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/styles.css?v=pub-11">
+<link rel="stylesheet" href="css/styles.css?v=pub-12">
 </head>
 <body>
+<!-- o padrão da hachura da janela da senha, uma vez só: os relógios das jornadas o usam sem duplicar o id -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs><pattern id="rl-hachura" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="6" stroke="#B3261E" stroke-width="1" opacity=".35"/></pattern></defs></svg>
 
-<!-- uma barra só (molde: a Sistemática da Longevidade e a do HDB): o selo, a marca, as seis abas como pílulas -->
+<!-- uma barra só (molde: a Sistemática da Longevidade e a do HDB): o selo, a marca, as sete abas como pílulas -->
 <nav class="barra">
   <a class="brand" href="./"><img class="brand-selo" src="img/selo_sistematica.svg" alt=""><span class="wm-nome">Sistemática<small>Teranóstico · Einstein</small></span></a>
-  <div class="nav-links" id="camadas" role="tablist" aria-label="a abertura, as quatro camadas e a direção"></div>
+  <div class="nav-links" id="camadas" role="tablist" aria-label="a abertura, as quatro camadas, a direção e a jornada com as escolhas"></div>
 </nav>
 
 <main class="palco">
@@ -58,13 +60,22 @@
       <div class="painel" id="portfolio" data-cresce="1.3"></div>
     </section>
 
-    <section class="vista v-jornadas" id="v-jornadas" role="tabpanel" aria-label="Jornadas">
+    <!-- 4 · JORNADA AS IS: os três eventos, as passagens, quem acompanha a travessia e o ciclo dia a dia; uma jornada
+         só, sem a variável terapia; à esquerda, o evento -->
+    <section class="vista v-jornadas" id="v-jornadas" role="tabpanel" aria-label="Jornada AS IS">
       <aside class="lista-jor" id="lista-jor"></aside>
       <div class="painel" id="jor-palco" data-piso="0.56"></div>
     </section>
 
     <section class="vista v-direcao" id="v-direcao" role="tabpanel" aria-label="Direção">
       <div class="painel" id="direcao" data-piso="0.55"></div>
+    </section>
+
+    <!-- 6 · JORNADA TO BE: a mesma jornada com o efeito das alternativas escolhidas (efeitos.csv), com o placar de antes e
+         depois; à esquerda, os três cenários (cenarios.csv) e as oportunidades, com as dores que cada uma resolve -->
+    <section class="vista v-tobe" id="v-tobe" role="tabpanel" aria-label="Jornada TO BE">
+      <aside class="lista-jor tobe-escolhas" id="tobe-escolhas"></aside>
+      <div class="painel" id="tobe-palco" data-piso="0.56"></div>
     </section>
   </div>
 
@@ -78,7 +89,7 @@
   </p>
 </main>
 
-<script src="js/data.js?v=pub-11"></script>
-<script src="js/script.js?v=pub-11"></script>
+<script src="js/data.js?v=pub-12"></script>
+<script src="js/script.js?v=pub-12"></script>
 </body>
 </html>
