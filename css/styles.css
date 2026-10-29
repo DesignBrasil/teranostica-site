@@ -161,82 +161,77 @@ nav.barra{position:sticky;top:0;z-index:50;height:var(--header);display:flex;ali
 .col-rot{font-size:10.5px;font-weight:700;letter-spacing:.2em;fill:var(--ink)}
 .col-sub{font-size:10.5px;fill:var(--muted);font-style:italic}
 
-/* ---- 0 · abertura: o átomo teranóstico ---- */
+/* ---- 0 · abertura: a molécula, peça por peça ---- */
 .cena-abre{padding:2px 0}
 #atomo{overflow:visible}
 #atomo text{paint-order:stroke;stroke:var(--paper);stroke-width:2.6px;stroke-linejoin:round}
 .at-titulo{font-size:9px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;fill:var(--muted)}
-.at-corpo{fill:color-mix(in srgb,var(--ink) 4%,#fff);stroke:var(--hairline-forte);stroke-width:1.1;stroke-dasharray:3 3}
-.at-corpo-rot{font-family:var(--serif);font-style:italic;font-size:9.5px;fill:var(--muted)}
-.at-quelante{fill:none;stroke:var(--ink);stroke-width:1.6}
-.at-braco{stroke:var(--ink);stroke-width:1.1;opacity:.6}
-.at-lig{fill:#fff;stroke:var(--ink);stroke-width:1.2}
-.at-lig-rot{font-size:8.5px;font-weight:600;fill:var(--ink)}
-.at-nuc{stroke:#fff;stroke-width:1.5;cursor:pointer;transition:r .15s}
+.at-sub{font-size:8px;fill:var(--muted)}
+.at-nuc{stroke:#fff;stroke-width:1.5}
 .at-nuc-rot{font-size:7.5px;font-weight:800;fill:#fff;pointer-events:none;stroke:none!important}
-.at-nuc-sub{font-size:8px;font-weight:600;pointer-events:none}
-.at-gama{fill:none;stroke:var(--ver);stroke-width:1.6;stroke-dasharray:4 3}
-.at-gama-anim{animation:gama 6s linear infinite}
-@keyframes gama{to{stroke-dashoffset:-70}}
-.at-beta{stroke:var(--tratar);stroke-width:3;stroke-linecap:round}
-.at-alfa{stroke:#0a5a48;stroke-width:4;stroke-linecap:round}
-.at-emis{cursor:pointer}
-.at-emis text{font-size:9px;font-weight:600}
-.at-emis small,.at-emis .at-sub{font-size:8px;font-weight:400;fill:var(--muted)}
-.at-emis:hover text,.at-emis.on text{text-decoration:underline}
-.at-dial{fill:none;stroke:var(--ciclo);stroke-width:2.2;stroke-linecap:round}
-.at-dial-fundo{fill:none;stroke:var(--ciclo);stroke-width:2.2;opacity:.2}
+.at-quelante{fill:none;stroke:var(--ink);stroke-width:1.6;transition:stroke .15s}
+.at-braco{stroke:var(--ink);stroke-width:1.1;opacity:.6}
+.at-lig{fill:#fff;stroke:var(--ink);stroke-width:1.2;transition:stroke .15s}
+.at-plugue{fill:#e9b7b0}
+.at-membrana{fill:color-mix(in srgb,var(--ink) 7%,#fff);stroke:var(--ink);stroke-width:1.2;transition:stroke .15s}
+.at-receptor{fill:#fff;stroke:var(--ink);stroke-width:1.4}
+.at-celula{font-family:var(--serif);font-style:italic;font-size:9px;fill:var(--muted)}
+.at-parte{cursor:pointer}
+.at-parte:hover .at-quelante,.at-parte.on .at-quelante,.at-parte:hover .at-lig,.at-parte.on .at-lig,.at-parte:hover .at-membrana,.at-parte.on .at-membrana{stroke:var(--accent)}
+.at-parte:hover .at-nuc,.at-parte.on .at-nuc{stroke:var(--ink)}
+.at-lider{stroke:var(--hairline-forte);stroke-width:1}
+.at-caixa{cursor:pointer}
+.at-caixa rect{fill:#fff;stroke:var(--hairline-forte);stroke-width:1;transition:stroke .15s,stroke-width .15s}
+.at-caixa:hover rect,.at-caixa.on rect{stroke:var(--accent);stroke-width:1.8}
+.at-caixa-n{font-family:var(--serif);font-style:italic;font-size:20px;fill:var(--ink)}
+.at-caixa-t{font-size:10.5px;font-weight:700;fill:var(--ink);letter-spacing:.04em}
+.at-caixa-f{font-size:8.5px;fill:var(--text)}
+.at-caixa-p{font-size:8.5px;fill:var(--ink);font-weight:600}
+.at-caixa-aba{font-size:8px;font-weight:700;letter-spacing:.12em;fill:var(--accent)}
 .at-mol-rot{font-size:9px;fill:var(--text)}
 .at-mol-rot.serif{font-family:var(--serif);font-style:italic;fill:var(--ink)}
-.at-mol{cursor:pointer}
-.at-mol:hover .at-quelante{stroke:var(--accent)}
-/* o relógio de decaimento */
+/* o relógio de decaimento (nas jornadas, completo: a molécula, o paciente, V · T · R e o próximo ciclo) */
 .rl-eixo{stroke:var(--hairline-forte);stroke-width:1}
 .rl-tick{font-size:8px;fill:var(--muted)}
 .rl-curva{fill:none;stroke:var(--ciclo);stroke-width:2}
 .rl-area{fill:var(--ciclo);opacity:.08}
 .rl-senha{fill:url(#rl-hachura);stroke:var(--risco);stroke-width:.8;stroke-dasharray:2 2;opacity:.9}
 .rl-senha-rot{font-size:8px;font-weight:700;fill:var(--risco)}
+.rl-ciclo{fill:var(--ciclo);opacity:.12}
 .rl-marca{stroke:var(--ink);stroke-width:1;stroke-dasharray:3 2}
 .rl-marca-rot{font-size:8px;fill:var(--ink);font-weight:600}
 .rl-meia{stroke:var(--ciclo);stroke-width:1;stroke-dasharray:2 2}
 .rl-meia-rot{font-size:8px;fill:var(--ciclo);font-weight:700}
 .rl-frase{font-family:var(--serif);font-style:italic;font-size:9.5px;fill:var(--ink)}
-.rl-frase b{font-weight:600}
-.rl-iso{cursor:pointer}
-.rl-iso rect{fill:#fff;stroke:var(--hairline-forte);stroke-width:1}
-.rl-iso text{font-size:8px;font-weight:700;fill:var(--muted)}
-.rl-iso.on rect{fill:var(--ciclo);stroke:var(--ciclo)}
-.rl-iso.on text{fill:#fff}
-.rl-aberto rect{stroke-dasharray:3 2}
-.rl-clique{cursor:pointer}
-/* R1 como reação em cadeia, B1 como barra de controle */
+.rl-sub{font-size:8px;fill:var(--muted)}
+.rl-pessoa{fill:var(--ink)}
+.rl-passo{font-size:9px;font-weight:800;letter-spacing:.06em}
+.relogio-svg text{paint-order:stroke;stroke:var(--paper);stroke-width:2.4px;stroke-linejoin:round}
+/* a reação em cadeia e a barra de controle (o cartão dos loops, na direção) */
+.loops-svg{display:block;width:auto;max-width:100%;max-height:340px;margin:0 auto;overflow:visible}
+.loops-svg text{font-family:var(--font);paint-order:stroke;stroke:#fff;stroke-width:2.4px;stroke-linejoin:round}
 .r1-no{cursor:pointer}
 .r1-no circle{stroke:#fff;stroke-width:1.5;transition:stroke-width .15s}
 .r1-no.tipo-dor circle{fill:var(--risco)}
 .r1-no.tipo-evidencia circle{fill:var(--accent)}
 .r1-no.tipo-acao circle{fill:var(--verde)}
 .r1-no:hover circle,.r1-no.on circle{stroke:var(--ink);stroke-width:2.5}
-.r1-no text{font-size:8px;font-weight:800;fill:#fff;pointer-events:none;stroke:none!important}
-.r1-aresta{fill:none;stroke:var(--risco);stroke-width:1.1;opacity:.75;transition:opacity .25s,stroke-dasharray .25s}
-.r1-aresta.freada{opacity:.25;stroke-dasharray:3 3}
+.r1-no text{font-size:9px;font-weight:800;fill:#fff;pointer-events:none;stroke:none!important}
+.r1-rot{font-size:9px;fill:var(--text)}
+.r1-aresta{fill:none;stroke:var(--risco);stroke-width:1.2;opacity:.75;transition:opacity .25s,stroke-dasharray .25s}
+.r1-aresta.freada{opacity:.2;stroke-dasharray:3 3}
 .r1-neutron{fill:var(--risco)}
 .r1-neutron.freado{opacity:0}
-.r1-sinal{font-size:7.5px;font-weight:700;fill:var(--risco)}
-.r1-pulsa{animation:pulsa 2.4s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
-@keyframes pulsa{0%,100%{transform:scale(1)}50%{transform:scale(1.07)}}
+.r1-sinal{font-size:8px;font-weight:700;fill:var(--risco)}
 .b1-barra{fill:var(--verde);opacity:.85;cursor:pointer;transition:opacity .2s}
 .b1-barra:hover,.b1-barra.on{opacity:1}
 .b1-no{cursor:pointer}
 .b1-no rect{fill:#fff;stroke:var(--verde);stroke-width:1.6}
 .b1-no:hover rect,.b1-no.on rect{fill:var(--verde-claro);stroke-width:2.4}
-.b1-no text{font-size:7.5px;font-weight:800;fill:var(--verde);pointer-events:none}
-.lg-linha{cursor:pointer}
-.lg-linha text{font-size:8.5px;fill:var(--text)}
-.lg-linha b,.lg-linha .lg-n{font-weight:800}
-.lg-linha:hover text,.lg-linha.on text{fill:var(--ink);font-weight:600}
-.lg-R1 .lg-n{fill:var(--risco)}
-.lg-B1 .lg-n{fill:var(--verde)}
+.b1-no text{font-size:8px;font-weight:800;fill:var(--verde);pointer-events:none}
+.b1-rot{font-size:9px;fill:var(--verde);font-weight:600}
+.dir-loops{align-self:flex-start;font-size:11px!important;font-weight:600;padding:2px 10px!important;border-radius:999px;border:1px solid var(--risco);color:var(--risco);background:#fff;cursor:pointer;font-family:var(--font)}
+.dir-loops:hover,.dir-loops.on{background:var(--risco);color:#fff}
 /* a capa: sete perguntas (5W2H), em duas colunas; para quem, como e quanto na largura inteira */
 .w5h{margin:0 0 6px;padding:0;display:grid;grid-template-columns:1fr 1fr;column-gap:22px}
 .w5{display:grid;grid-template-columns:72px 1fr;gap:10px;padding:4px 0;border-bottom:1px solid var(--hairline)}

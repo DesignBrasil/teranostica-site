@@ -185,7 +185,7 @@
     else if (vista === "servicos") selecionaServico(item);
     else if (vista === "jornadas") { selecao.jornadas = item; montaJornada(jornadaAtual); }
     else if (vista === "direcao") mostraAlt(item);
-    else if (vista === "abertura") acendeLoop(item);
+    else if (vista === "abertura") acendeParte(item);
   }
   var passoAtual = null, servicoAtual = null;
   function estadoNaUrl() {
@@ -229,211 +229,153 @@
   var EMISSAO_TXT = { gama: "γ", beta_mais: "β⁺ → γ", beta_menos: "β⁻", alfa: "α", beta_menos_gama: "β⁻ + γ", alfa_filhas: "α (e filhas)" };
   function relogioSvg(iso, opts) {
     opts = opts || {};
-    var W = opts.w || 440, H = opts.h || 86, x0 = 34, x1 = W - 10, y0 = 12, y1 = H - (opts.semFrase ? 14 : 32), dias = opts.dias || 30;
+    var completo = !!opts.completo, W = opts.w || 440, H = opts.h || 86, x0 = completo ? 48 : 34, x1 = W - 10, y0 = completo ? 22 : 12;
+    var y1 = H - (completo ? 46 : (opts.semFrase ? 14 : 32)), dias = opts.dias || 30;
     var T = meiaVidaDias(iso); if (!T) return "";
     function X(d) { return x0 + (x1 - x0) * d / dias; }
     function Y(a) { return y1 - (y1 - y0) * a; }
     var pts = [], i;
-    for (i = 0; i <= 60; i++) { var d = dias * i / 60; pts.push(X(d).toFixed(1) + "," + Y(Math.pow(2, -d / T)).toFixed(1)); }
-    var h = "<svg class='relogio-svg' viewBox='0 0 " + W + " " + H + "' role='img' aria-label='" + esc("a atividade da dose cai pela metade a cada " + meiaVidaTxt(iso)) + "'>";
+    for (i = 0; i <= 80; i++) { var d = dias * i / 80; pts.push(X(d).toFixed(1) + "," + Y(Math.pow(2, -d / T)).toFixed(1)); }
+    var h = "<svg class='relogio-svg' viewBox='0 0 " + W + " " + H + "' role='img' aria-label='" + esc("a atividade da dose cai pela metade a cada " + meiaVidaTxt(iso) + "; a senha chega entre " + cont("senha_min") + " e " + cont("senha_max") + " dias") + "'>";
     h += "<defs><pattern id='rl-hachura' width='6' height='6' patternUnits='userSpaceOnUse' patternTransform='rotate(45)'><line x1='0' y1='0' x2='0' y2='6' stroke='#B3261E' stroke-width='1' opacity='.35'/></pattern></defs>";
-    var smin = cont("senha_min"), smax = cont("senha_max"), prev = cont("previsao_industria"), ent = cont("entrega_dose");
+    var smin = cont("senha_min"), smax = cont("senha_max"), prev = cont("previsao_industria"), ent = cont("entrega_dose"), c0 = cont("ciclo_intervalo_min"), c1 = cont("ciclo_intervalo_max");
+    var topo = y0 + 9;
+    if (completo && c0 !== null && c1 !== null && c0 <= dias) {
+      h += "<rect class='rl-ciclo' x='" + X(c0) + "' y='" + y0 + "' width='" + (X(Math.min(c1, dias)) - X(c0)) + "' height='" + (y1 - y0) + "'/>";
+      h += "<text class='rl-meia-rot' x='" + (X(c0) + 3) + "' y='" + topo + "'>↻ próximo ciclo · " + c0 + " a " + c1 + " dias</text>";
+      topo += 10;
+    }
     if (smin !== null && smax !== null) {
       h += "<rect class='rl-senha' x='" + X(smin) + "' y='" + y0 + "' width='" + (X(Math.min(smax, dias)) - X(smin)) + "' height='" + (y1 - y0) + "'/>";
-      h += "<text class='rl-senha-rot' x='" + (X(smin) + 3) + "' y='" + (y0 + 9) + "'>a senha chega entre " + smin + " e " + smax + " dias</text>";
+      h += "<text class='rl-senha-rot' x='" + (X(smin) + 3) + "' y='" + topo + "'>a senha chega entre " + smin + " e " + smax + " dias</text>";
     }
     h += "<path class='rl-area' d='M" + X(0) + "," + y1 + " L" + pts.join(" L") + " L" + X(dias) + "," + y1 + " Z'/>";
     h += "<polyline class='rl-curva' points='" + pts.join(" ") + "'/>";
     h += "<line class='rl-eixo' x1='" + x0 + "' y1='" + y1 + "' x2='" + x1 + "' y2='" + y1 + "'/>";
-    [0, 7, 14, 21, 28].forEach(function (d) { if (d <= dias) h += "<text class='rl-tick' x='" + X(d) + "' y='" + (y1 + 10) + "' text-anchor='middle'>" + d + (d ? "" : " dias") + "</text>"; });
+    for (var t = 0; t <= dias; t += 7) h += "<text class='rl-tick' x='" + X(t) + "' y='" + (y1 + 10) + "' text-anchor='middle'>" + t + (t ? "" : " dias") + "</text>";
     h += "<text class='rl-tick' x='" + (x0 - 4) + "' y='" + (y0 + 4) + "' text-anchor='end'>100%</text><text class='rl-tick' x='" + (x0 - 4) + "' y='" + (Y(0.5) + 3) + "' text-anchor='end'>50%</text>";
     if (T <= dias) {
       h += "<line class='rl-meia' x1='" + x0 + "' y1='" + Y(0.5) + "' x2='" + X(T) + "' y2='" + Y(0.5) + "'/><line class='rl-meia' x1='" + X(T) + "' y1='" + Y(0.5) + "' x2='" + X(T) + "' y2='" + y1 + "'/>";
       h += "<text class='rl-meia-rot' x='" + (X(T) + 3) + "' y='" + (Y(0.5) - 3) + "'>meia-vida · " + meiaVidaTxt(iso) + "</text>";
     }
     if (prev !== null && prev <= dias) { h += "<line class='rl-marca' x1='" + X(prev) + "' y1='" + y0 + "' x2='" + X(prev) + "' y2='" + y1 + "'/><text class='rl-marca-rot' x='" + (X(prev) + 4) + "' y='" + (y1 - 4) + "'>pedido à indústria · " + prev + " d antes</text>"; }
-    if (ent !== null && ent <= dias && ent !== prev) { var ye = Y(Math.pow(2, -ent / T)); h += "<circle cx='" + X(ent) + "' cy='" + ye + "' r='3' fill='#0C3A6F'/><text class='rl-marca-rot' x='" + (X(ent) - 6) + "' y='" + (ye + 3) + "' text-anchor='end'>dose chega · " + ent + " d</text>"; }
+    if (ent !== null && ent <= dias && ent !== prev) {
+      var ye = Y(Math.pow(2, -ent / T));
+      h += "<circle cx='" + X(ent) + "' cy='" + ye + "' r='3' fill='#0C3A6F'/><text class='rl-marca-rot' x='" + (X(ent) - 6) + "' y='" + (ye + 3) + "' text-anchor='end'>dose chega · " + ent + " d</text>";
+      if (completo) { /* o paciente recebe no dia da dose */
+        h += "<circle class='rl-pessoa' cx='" + X(ent) + "' cy='" + (ye - 24) + "' r='4.5'/><path class='rl-pessoa' d='M" + (X(ent) - 7) + "," + (ye - 5) + " a7,7 0 0 1 14,0 z'/>";
+        h += "<text class='rl-sub' x='" + X(ent) + "' y='" + (ye - 33) + "' text-anchor='middle'>o paciente recebe</text>";
+      }
+    }
+    if (completo) { /* a molécula no dia 0: o núcleo de ver e o de tratar */
+      var iv = opts.isoVer, cx0 = X(0) + 10, cy0 = Y(1) - 2;
+      h += "<circle cx='" + (cx0 + 6) + "' cy='" + cy0 + "' r='9' class='at-nuc' fill='" + passoCor("V") + "'/><text class='at-nuc-rot' x='" + (cx0 + 6) + "' y='" + (cy0 + 2.6) + "' text-anchor='middle'>" + esc(iv ? iv.simbolo.replace(/-.*/, "") : "V") + "</text>";
+      h += "<circle cx='" + (cx0 + 20) + "' cy='" + (cy0 + 2) + "' r='10.5' class='at-nuc' fill='" + passoCor("T") + "'/><text class='at-nuc-rot' x='" + (cx0 + 20) + "' y='" + (cy0 + 4.8) + "' text-anchor='middle'>" + esc(iso.simbolo.replace(/-.*/, "")) + "</text>";
+      /* V · T · R no eixo do tempo */
+      [["V", 0, "start"], ["T", ent !== null ? ent : 21, "middle"], ["R", c0 !== null ? c0 : 28, "middle"]].forEach(function (m) {
+        if (m[1] > dias) return;
+        var p = PASSO[m[0]];
+        h += "<line x1='" + X(m[1]) + "' y1='" + y1 + "' x2='" + X(m[1]) + "' y2='" + (y1 + 16) + "' stroke='" + passoCor(m[0]) + "' stroke-width='2'/>";
+        h += "<text class='rl-passo' x='" + X(m[1]) + "' y='" + (y1 + 27) + "' text-anchor='" + m[2] + "' fill='" + passoCor(m[0]) + "'>" + (m[0] === "R" ? "↻ " : m[0] + " ") + esc(p ? p.nome : m[0]) + "</text>";
+      });
+    }
     if (!opts.semFrase) {
       var frase = (rel("relogio_frase") || "cada dia de atraso leva {perda} da atividade de {isotopo}").replace("{perda}", pt(perdaPorDia(iso) * 100, 1) + "%").replace("{isotopo}", iso.simbolo);
-      quebra(frase, Math.round(W / 5.4)).slice(0, 2).forEach(function (l, i) { h += "<text class='rl-frase' x='" + x0 + "' y='" + (H - 12 + i * 10) + "'>" + esc(l) + "</text>"; });
+      if (completo) h += "<text class='rl-frase' x='" + x0 + "' y='" + (H - 4) + "'>" + esc(quebra(frase, Math.round(W / 5.2))[0]) + "</text>";
+      else quebra(frase, Math.round(W / 5.4)).slice(0, 2).forEach(function (l, i) { h += "<text class='rl-frase' x='" + x0 + "' y='" + (H - 12 + i * 10) + "'>" + esc(l) + "</text>"; });
     }
     return h + "</svg>";
   }
 
-  /* ================= 0 · ABERTURA: o átomo teranóstico =================
-     À esquerda (svg#atomo, 480 × 440): o corpo (o tecido) com a molécula no centro — o ligante, o quelante e os dois
-     núcleos, o de ver (azul) e o de tratar (verde). Do núcleo de ver saem dois fótons opostos que atravessam o corpo (é
-     o que se vê); do de tratar, a partícula β⁻ que para a 2 mm (é o que trata) e o dial da meia-vida (é o que faz o
-     ciclo voltar). Embaixo, o relógio de decaimento contra a janela da senha. À direita, a reação em cadeia (R1) e a
-     barra de controle (B1). Tudo lido de passos · isotopos · loops · loop_arestas · contagens · relatorio. */
+  /* ================= 0 · ABERTURA: a molécula, peça por peça (29/10/2026) =================
+     À esquerda (svg#atomo, 480 × 440): a anatomia do radiofármaco, de cima para baixo — o radionuclídeo (o par: o
+     núcleo de ver e o de tratar), o quelante que o segura, o vetor que acha o alvo e o alvo na célula. À direita,
+     quatro caixas numeradas (anatomia.csv): a física da parte, o seu análogo no projeto e a aba que abre. O usuário
+     escolheu este esqueleto entre quatro (opcoes_abertura.html) porque é uma coisa só para quem bate o olho; o relógio
+     da dose foi para as Jornadas e a reação em cadeia para a Direção. */
   var atomo = document.getElementById("atomo"), leituraAbre = document.getElementById("leitura-abre");
-  var isoRelogio = null, loopNos = {}, arestasR1 = [], neutrons = [];
+  var partesEl = {}, caixasEl = {};
   function isoTerapeuticos() { return (D.isotopos || []).filter(function (i) { return (i.uso || []).indexOf("tratar") >= 0 && (i.terapias || []).length; }); }
+  function isoDeVer() { return (D.isotopos || []).filter(function (i) { return i.emissao === "beta_mais"; })[0] || (D.isotopos || []).filter(function (i) { return (i.uso || []).indexOf("ver") >= 0; })[0]; }
+  function interpola(txt, isoV, isoT) {
+    var alc = isoT && isoT.alcance_mm ? pt(num(isoT.alcance_mm), num(isoT.alcance_mm) % 1 ? 1 : 0) + " mm" : "";
+    return String(txt || "").replace(/\{ver\}/g, isoV ? isoV.simbolo : "").replace(/\{tratar\}/g, isoT ? isoT.simbolo : "").replace(/\{alcance\}/g, alc);
+  }
   function montaAtomo() {
     if (!atomo || atomo.firstChild) return;
-    var CX = 150, CY = 160, R = 112;
-    var defs = el("defs", {}, atomo);
-    var pat = el("pattern", { id: "rl-hachura", width: 6, height: 6, patternUnits: "userSpaceOnUse", patternTransform: "rotate(45)" }, defs);
-    el("line", { x1: 0, y1: 0, x2: 0, y2: 6, stroke: "#B3261E", "stroke-width": 1, opacity: .35 }, pat);
-    ["ver", "tratar", "risco"].forEach(function (k) {
-      var mk = el("marker", { id: "at-seta-" + k, viewBox: "0 0 10 10", refX: 8, refY: 5, markerWidth: 6, markerHeight: 6, orient: "auto" }, defs);
-      el("path", { d: "M0,0 L10,5 L0,10 z", fill: k === "risco" ? "#B3261E" : k === "ver" ? passoCor("V") : passoCor("T") }, mk);
-    });
-    var isoVer = (D.isotopos || []).filter(function (i) { return i.emissao === "beta_mais"; })[0] || (D.isotopos || []).filter(function (i) { return (i.uso || []).indexOf("ver") >= 0; })[0];
-    var isoTrat = isoTerapeuticos()[0];
-    isoRelogio = isoTrat;
-
-    /* o corpo: o tecido */
-    el("circle", { cx: CX, cy: CY, r: R, "class": "at-corpo" }, atomo);
-    texto(atomo, CX - R + 6, CY + R - 6, "o corpo", "at-corpo-rot");
-
-    /* a molécula: o ligante (três anéis), o quelante e os dois núcleos — clicável, abre os serviços */
-    var mol = el("g", { "class": "at-mol", role: "button", tabindex: 0, "aria-label": rel("atomo_molecula") }, atomo);
-    var lig = [[112, 186], [92, 203], [72, 220]];
-    lig.forEach(function (p, i) {
-      var pts = [];
-      for (var k = 0; k < 6; k++) { var a = Math.PI / 3 * k + Math.PI / 6; pts.push((p[0] + 8 * Math.cos(a)).toFixed(1) + "," + (p[1] + 8 * Math.sin(a)).toFixed(1)); }
-      if (i > 0) el("line", { x1: lig[i - 1][0], y1: lig[i - 1][1], x2: p[0], y2: p[1], "class": "at-braco" }, mol);
-      el("polygon", { points: pts.join(" "), "class": "at-lig" }, mol);
-    });
-    el("line", { x1: 112, y1: 186, x2: 133, y2: 177, "class": "at-braco" }, mol);
-    textoLinhas(mol, 30, 244, (rel("atomo_ligante") || "O ligante acha o alvo.").split(/\.\s/)[0].replace(/\.$/, ""), "at-lig-rot", "start", 26, 10);
-    el("circle", { cx: CX, cy: CY, r: 24, "class": "at-quelante" }, mol);
-    [45, 135, 225, 315].forEach(function (a) { var r = Math.PI * a / 180; el("line", { x1: CX + 24 * Math.cos(r), y1: CY + 24 * Math.sin(r), x2: CX + 31 * Math.cos(r), y2: CY + 31 * Math.sin(r), "class": "at-braco" }, mol); });
-    var nV = el("g", {}, mol), nT = el("g", {}, mol);
-    el("circle", { cx: CX - 9, cy: CY, r: 9.5, "class": "at-nuc", fill: passoCor("V") }, nV);
-    texto(nV, CX - 9, CY + 2.6, isoVer ? isoVer.simbolo.replace(/-.*/, "") : "V", "at-nuc-rot", "middle");
-    el("circle", { cx: CX + 10, cy: CY, r: 11, "class": "at-nuc", fill: passoCor("T") }, nT);
-    texto(nT, CX + 10, CY + 2.8, isoTrat ? isoTrat.simbolo.replace(/-.*/, "") : "T", "at-nuc-rot", "middle");
-    clicavel(mol, function () { abre("servicos"); });
-
-    /* V · ver: do núcleo de ver, dois fótons opostos atravessam o corpo e saem (PET: o par de 511 keV; SPECT: o γ) */
-    var gV = el("g", { "class": "at-emis", "data-passo": "V", role: "button", tabindex: 0, "aria-label": "V ver: o fóton sai do corpo e é visto" }, atomo);
-    function onda(x1, y1, x2, y2) {
-      var dx = x2 - x1, dy = y2 - y1, L = Math.sqrt(dx * dx + dy * dy), nx = -dy / L, ny = dx / L, n = Math.round(L / 6), d = "M" + x1 + "," + y1;
-      for (var i = 1; i <= n; i++) { var t = i / n, s = (i % 2 ? 3 : -3); d += " Q" + (x1 + dx * (t - 0.5 / n) + nx * s) + "," + (y1 + dy * (t - 0.5 / n) + ny * s) + " " + (x1 + dx * t) + "," + (y1 + dy * t); }
-      return d;
+    var ANA = (D.anatomia || []).slice(), isoT = isoTerapeuticos()[0], isoV = isoDeVer();
+    var defs = el("defs", {}, atomo), grad = el("radialGradient", { id: "at-brilho" }, defs);
+    el("stop", { offset: "0", "stop-color": "#f5d98a", "stop-opacity": .75 }, grad);
+    el("stop", { offset: "1", "stop-color": "#f5d98a", "stop-opacity": 0 }, grad);
+    var x = 92, ancora = {};
+    function parte(id, fn) {
+      var a = ANA.filter(function (r) { return r.id === id; })[0];
+      var g = el("g", { "class": "at-parte", "data-parte": id, role: "button", tabindex: 0, "aria-label": a ? a.parte + ": " + a.analogo : id }, atomo);
+      fn(g);
+      partesEl[id] = g;
+      if (a) clicavel(g, function () { acendeParte(id); abre(a.vista, a.item || undefined); });
+      return g;
     }
-    el("path", { d: onda(CX - 9, CY - 10, CX - 9, 30), "class": "at-gama at-gama-anim", "marker-end": "url(#at-seta-ver)" }, gV);
-    el("path", { d: onda(CX - 9, CY + 10, CX - 9, CY + R + 18), "class": "at-gama at-gama-anim", "marker-end": "url(#at-seta-ver)" }, gV);
-    texto(gV, CX - 9, 12, "V · " + (PASSO.V ? PASSO.V.nome : "ver"), "", "middle").setAttribute("fill", passoCor("V"));
-    texto(gV, CX - 9, 22, (isoVer ? EMISSAO_TXT[isoVer.emissao] + " · " : "") + "sai do corpo: é visto", "at-sub", "middle");
-    if (isoVer) gV.setAttribute("aria-label", "V ver: " + isoVer.simbolo + ", " + isoVer.energia_curta + ", sai do corpo e é visto");
-    quebra((PASSO.V && PASSO.V.fisica) || "o fóton atravessa o corpo e é visto de fora", 44).slice(0, 2).forEach(function (l, i) { texto(gV, CX - 9, CY + R + 30 + i * 10, l, "at-sub", "middle"); });
-    clicavel(gV, function () { passoAtual = "V"; abre("jornadas"); });
-
-    /* T · tratar: do núcleo de tratar, a partícula β⁻ anda `alcance_mm × 28` e para dentro do corpo; a α, 0,1 mm */
-    var gT = el("g", { "class": "at-emis", "data-passo": "T", role: "button", tabindex: 0, "aria-label": "T tratar: a partícula fica no tecido" }, atomo);
-    var alc = isoTrat && isoTrat.alcance_mm ? num(isoTrat.alcance_mm) : 2, L = Math.max(14, alc * 28);
-    el("line", { x1: CX + 21, y1: CY, x2: CX + 21 + L, y2: CY, "class": "at-beta", "marker-end": "url(#at-seta-tratar)" }, gT);
-    texto(gT, CX + 26 + L, CY - 4, "T · " + (PASSO.T ? PASSO.T.nome : "tratar"), "").setAttribute("fill", passoCor("T"));
-    texto(gT, CX + 26 + L, CY + 7, (isoTrat ? EMISSAO_TXT[isoTrat.emissao] + " · " + pt(alc, alc % 1 ? 1 : 0) + " mm" : "β⁻ · 2 mm") + " · fica no tecido", "at-sub");
-    var isoAlfa = (D.isotopos || []).filter(function (i) { return i.emissao === "alfa" || i.emissao === "alfa_filhas"; })[0];
-    if (isoAlfa) {
-      el("line", { x1: CX + 21, y1: CY + 12, x2: CX + 21 + Math.max(4, num(isoAlfa.alcance_mm) * 28), y2: CY + 12, "class": "at-alfa" }, gT);
-      texto(gT, CX + 30, CY + 24, "α · " + pt(num(isoAlfa.alcance_mm), 1) + " mm · " + isoAlfa.simbolo, "at-sub");
-    }
-    clicavel(gT, function () { passoAtual = "T"; abre("jornadas"); });
-
-    /* R · reavaliar: o dial da meia-vida em volta do núcleo de tratar (metade da atividade) */
-    var gR = el("g", { "class": "at-emis", "data-passo": "R", role: "button", tabindex: 0, "aria-label": "R reavaliar: a meia-vida" }, atomo);
-    var rd = 36, circ = 2 * Math.PI * rd;
-    el("circle", { cx: CX, cy: CY, r: rd, "class": "at-dial-fundo" }, gR);
-    el("circle", { cx: CX, cy: CY, r: rd, "class": "at-dial", "stroke-dasharray": (circ / 2).toFixed(1) + " " + circ.toFixed(1), transform: "rotate(-90 " + CX + " " + CY + ")" }, gR);
-    texto(gR, CX + 30, CY - 34, "↻ " + (PASSO.R ? PASSO.R.nome : "reavaliar"), "").setAttribute("fill", passoCor("R"));
-    texto(gR, CX + 30, CY - 24, "meia-vida " + (isoTrat ? meiaVidaTxt(isoTrat) : "") + " · o ciclo volta", "at-sub");
-    clicavel(gR, function () { passoAtual = "R"; abre("jornadas"); });
-
-    /* a legenda da molécula */
-    textoLinhas(atomo, CX, 326, rel("atomo_molecula") || "A mesma molécula leva o olho e o remédio. A mesma jornada precisa de um dono.", "at-mol-rot serif", "middle", 52, 11);
-
-    /* R1 como reação em cadeia: os núcleos em anel, os nêutrons voando de um ao seguinte */
-    var R1 = (D.loops || []).filter(function (l) { return l.loop === "R1"; }), B1 = (D.loops || []).filter(function (l) { return l.loop === "B1"; });
-    var ARE = D.loop_arestas || [];
-    var rx = 392, ry = 100, rr = 56, pos = {};
-    textoLinhas(atomo, 296, 9, rel("r1_titulo") || "R1 · a reação em cadeia: por que o problema se sustenta sozinho", "at-titulo", "start", 34, 9);
-    R1.forEach(function (n, i) { var a = -Math.PI / 2 + 2 * Math.PI * i / R1.length; pos[n.id] = [rx + rr * Math.cos(a), ry + rr * Math.sin(a)]; });
-    var gA = el("g", {}, atomo);
-    ARE.forEach(function (ar) {
-      var a = pos[ar.de], b = pos[ar.para];
-      if (!a || !b) return;
-      var mx = (a[0] + b[0]) / 2, my = (a[1] + b[1]) / 2, k = 0.35, cx = mx + (rx - mx) * k, cy = my + (ry - my) * k;
-      var d = "M" + a[0] + "," + a[1] + " Q" + cx + "," + cy + " " + b[0] + "," + b[1];
-      var p = el("path", { d: d, "class": "r1-aresta" + (ar.freia === "sim" ? " freavel" : ""), "marker-end": "url(#at-seta-risco)" }, gA);
-      texto(gA, (a[0] + 2 * cx + b[0]) / 4 + 4, (a[1] + 2 * cy + b[1]) / 4, ar.sinal, "r1-sinal");
-      arestasR1.push({ p: p, ar: ar });
-      if (!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches)) {
-        var c = el("circle", { r: 2.2, "class": "r1-neutron" + (ar.freia === "sim" ? " freavel" : "") }, gA);
-        var am = el("animateMotion", { dur: (3 + Math.random() * 2).toFixed(1) + "s", repeatCount: "indefinite", path: d }, c);
-        neutrons.push({ c: c, ar: ar });
-      }
+    /* 1 · o radionuclídeo: o par da mesma molécula, com o brilho da emissão */
+    parte("radionuclideo", function (g) {
+      el("circle", { cx: x + 10, cy: 62, r: 44, fill: "url(#at-brilho)" }, g);
+      el("circle", { cx: x - 8, cy: 62, r: 15, "class": "at-nuc", fill: passoCor("V") }, g);
+      texto(g, x - 8, 65, isoV ? isoV.simbolo.replace(/-.*/, "") : "V", "at-nuc-rot", "middle");
+      el("circle", { cx: x + 16, cy: 64, r: 18, "class": "at-nuc", fill: passoCor("T") }, g);
+      texto(g, x + 16, 67, isoT ? isoT.simbolo.replace(/-.*/, "") : "T", "at-nuc-rot", "middle");
     });
-    R1.forEach(function (n, i) {
-      var p = pos[n.id];
-      var g = el("g", { "class": "r1-no tipo-" + n.tipo + " r1-pulsa", "data-loop": n.id, role: "button", tabindex: 0, "aria-label": n.rotulo, style: "animation-delay:" + (i * 0.34).toFixed(2) + "s" }, atomo);
-      el("circle", { cx: p[0], cy: p[1], r: 10 }, g);
-      texto(g, p[0], p[1] + 3, String(i + 1), "", "middle");
-      loopNos[n.id] = g;
-      clicavel(g, function () { acendeLoop(n.id); abre(n.vista, n.item); });
+    ancora.radionuclideo = [x + 34, 62];
+    /* 2 · o quelante: o anel com braços e os elos da corrente */
+    parte("quelante", function (g) {
+      el("line", { x1: x + 4, y1: 82, x2: x + 4, y2: 100, "class": "at-braco" }, g);
+      el("circle", { cx: x + 4, cy: 118, r: 17, "class": "at-quelante" }, g);
+      [45, 135, 225, 315].forEach(function (a) { var r = Math.PI * a / 180; el("line", { x1: x + 4 + 17 * Math.cos(r), y1: 118 + 17 * Math.sin(r), x2: x + 4 + 24 * Math.cos(r), y2: 118 + 24 * Math.sin(r), "class": "at-braco" }, g); });
+      [142, 162, 182].forEach(function (y, i) { el("rect", { x: x + 4 - (i % 2 ? 5 : 8), y: y, width: i % 2 ? 10 : 16, height: 16, rx: 6, "class": "at-quelante" }, g); });
     });
-    /* B1 como barra de controle: entra no anel pela esquerda; enquanto inserida, as arestas que ela freia apagam */
-    var bx = 304, by0 = 38, by1 = 162;
-    var barra = el("rect", { x: bx - 5, y: by0, width: 10, height: by1 - by0, rx: 3, "class": "b1-barra", role: "button", tabindex: 0, "aria-label": rel("b1_titulo") }, atomo);
-    texto(atomo, bx, by0 - 8, "B1", "at-titulo", "middle");
-    function freia(on) {
-      arestasR1.forEach(function (x) { if (x.ar.freia === "sim") x.p.classList.toggle("freada", on); });
-      neutrons.forEach(function (x) { if (x.ar.freia === "sim") x.c.classList.toggle("freado", on); });
-      barra.classList.toggle("on", on);
-    }
-    barra.addEventListener("mouseenter", function () { freia(true); }); barra.addEventListener("mouseleave", function () { freia(false); });
-    barra.addEventListener("focus", function () { freia(true); }); barra.addEventListener("blur", function () { freia(false); });
-    clicavel(barra, function () { if (B1[0]) abre(B1[0].vista, B1[0].item); });
-    B1.forEach(function (n, i) {
-      var y = by0 + 30 + i * 52;
-      var g = el("g", { "class": "b1-no", "data-loop": n.id, role: "button", tabindex: 0, "aria-label": n.rotulo }, atomo);
-      el("rect", { x: bx - 9, y: y - 9, width: 18, height: 18, rx: 3 }, g);
-      texto(g, bx, y + 3, "B" + (i + 1), "", "middle");
-      loopNos[n.id] = g;
-      g.addEventListener("mouseenter", function () { freia(true); }); g.addEventListener("mouseleave", function () { freia(false); });
-      clicavel(g, function () { acendeLoop(n.id); abre(n.vista, n.item); });
-    });
-    /* a legenda dos nós: a reação, nó a nó; a barra, absorvedor a absorvedor (clicável, como os nós) */
-    var ly = 194;
-    R1.concat(B1).forEach(function (n, i) {
-      var idx = i < R1.length ? String(i + 1) : "B" + (i - R1.length + 1);
-      var g = el("g", { "class": "lg-linha lg-" + n.loop, "data-loop": n.id, role: "button", tabindex: 0 }, atomo);
-      var t = texto(g, 296, ly, "", "", "start");
-      var tn = el("tspan", { "class": "lg-n" }, t); tn.textContent = idx + " ";
-      var tt = el("tspan", {}, t); tt.textContent = n.curto;
-      if (i === R1.length - 1) { ly += 6; texto(atomo, 296, ly + 3, rel("b1_titulo") || "B1 · a barra de controle: o que freia o ciclo", "at-titulo"); ly += 5; }
-      ly += 12;
-      loopNos["lg-" + n.id] = g;
-      clicavel(g, function () { acendeLoop(n.id); abre(n.vista, n.item); });
-    });
-
-    /* o relógio de decaimento, com os isótopos terapêuticos como botões */
-    var rl = el("g", { "class": "rl-clique", transform: "translate(0,352)", role: "button", tabindex: 0, "aria-label": "o relógio de decaimento: a dose decai enquanto a senha não chega" }, atomo);
-    var fo = el("foreignObject", { x: 16, y: 0, width: 448, height: 88 }, rl);
-    var div = document.createElementNS("http://www.w3.org/1999/xhtml", "div"); div.setAttribute("style", "width:448px;height:88px"); fo.appendChild(div);
-    function pintaRelogio() { div.innerHTML = relogioSvg(isoRelogio, { w: 448, h: 88 }); }
-    pintaRelogio();
-    clicavel(rl, function () { abre("jornadas", "s3"); });
-    var bx2 = 308;
-    isoTerapeuticos().forEach(function (iso) {
-      var g = el("g", { "class": "rl-iso" + (iso === isoRelogio ? " on" : "") + (iso.confianca === "aberto" ? " rl-aberto" : ""), "data-iso": iso.id, role: "button", tabindex: 0, "aria-label": iso.nome + ", meia-vida " + meiaVidaTxt(iso) }, atomo);
-      el("rect", { x: bx2, y: 338, width: 46, height: 13, rx: 6.5 }, g);
-      texto(g, bx2 + 23, 347.5, iso.simbolo, "", "middle");
-      clicavel(g, function () {
-        isoRelogio = iso; pintaRelogio();
-        Array.prototype.forEach.call(atomo.querySelectorAll(".rl-iso"), function (x) { x.classList.toggle("on", x.getAttribute("data-iso") === iso.id); });
+    ancora.quelante = [x + 26, 118];
+    /* 3 · o vetor: a cadeia que acha o receptor, com o plugue na ponta */
+    parte("vetor", function (g) {
+      var lig = [[x + 4, 214], [x + 4, 236], [x + 4, 258]];
+      lig.forEach(function (p, i) {
+        var pts = [];
+        for (var k = 0; k < 6; k++) { var a = Math.PI / 3 * k + Math.PI / 6; pts.push((p[0] + 9 * Math.cos(a)).toFixed(1) + "," + (p[1] + 9 * Math.sin(a)).toFixed(1)); }
+        if (i) el("line", { x1: lig[i - 1][0], y1: lig[i - 1][1], x2: p[0], y2: p[1], "class": "at-braco" }, g);
+        el("polygon", { points: pts.join(" "), "class": "at-lig" }, g);
       });
-      bx2 += 52;
+      el("path", { d: "M" + (x - 6) + ",268 h20 v14 h-6 v8 h-8 v-8 h-6 z", "class": "at-lig at-plugue" }, g);
+      if (rel("atomo_ligante")) el("title", {}, g).textContent = rel("atomo_ligante");
     });
-    texto(atomo, 16, 348, "o relógio da dose", "at-titulo");
+    ancora.vetor = [x + 15, 236];
+    /* 4 · o alvo: o receptor que a célula expõe */
+    parte("alvo", function (g) {
+      el("path", { d: "M" + (x - 60) + ",340 C" + (x - 30) + ",316 " + (x + 38) + ",316 " + (x + 68) + ",340 L" + (x + 68) + ",372 L" + (x - 60) + ",372 Z", "class": "at-membrana" }, g);
+      el("path", { d: "M" + (x - 12) + ",324 v-10 h8 v6 h8 v-6 h8 v10 z", "class": "at-receptor" }, g);
+      texto(g, x + 4, 362, "a célula", "at-celula", "middle");
+    });
+    ancora.alvo = [x + 68, 340];
+    /* as quatro caixas: número, parte, a física, o análogo e a aba */
+    var bx = 182, bw = 284, bh = 78;
+    ANA.forEach(function (a, i) {
+      var y = 22 + i * 86, anc = ancora[a.id] || [x, y + 22];
+      var v = VISTAS.filter(function (z) { return z.id === a.vista; })[0];
+      el("line", { x1: anc[0], y1: anc[1], x2: bx, y2: y + 22, "class": "at-lider" }, atomo);
+      var g = el("g", { "class": "at-caixa", "data-parte": a.id, role: "button", tabindex: 0, "aria-label": a.parte + ": " + a.analogo }, atomo);
+      el("rect", { x: bx, y: y, width: bw, height: bh, rx: 8 }, g);
+      texto(g, bx + 12, y + 30, String(i + 1), "at-caixa-n");
+      texto(g, bx + 32, y + 20, a.parte.toUpperCase(), "at-caixa-t");
+      quebra(interpola(a.fisica, isoV, isoT), 52).slice(0, 2).forEach(function (l, k) { texto(g, bx + 32, y + 33 + k * 10, l, "at-caixa-f"); });
+      quebra(a.analogo, 52).slice(0, 2).forEach(function (l, k) { texto(g, bx + 32, y + 55 + k * 10, l, "at-caixa-p"); });
+      if (v) texto(g, bx + bw - 10, y + bh - 8, "→ " + v.n + " " + v.rot, "at-caixa-aba", "end");
+      caixasEl[a.id] = g;
+      clicavel(g, function () { acendeParte(a.id); abre(a.vista, a.item || undefined); });
+    });
+    textoLinhas(atomo, 240, 386, rel("atomo_molecula") || "A mesma molécula leva o olho e o remédio. A mesma jornada precisa de um dono.", "at-mol-rot serif", "middle", 60, 12);
+    texto(atomo, 240, 424, "clique numa parte ou numa caixa: abre a aba onde ela mora", "at-sub", "middle");
   }
-  function acendeLoop(id) {
+  function acendeParte(id) {
     selecao.abertura = id || null;
-    Object.keys(loopNos).forEach(function (k) { loopNos[k].classList.toggle("on", !!id && (k === id || k === "lg-" + id)); });
+    Object.keys(caixasEl).forEach(function (k) { caixasEl[k].classList.toggle("on", k === id); });
+    Object.keys(partesEl).forEach(function (k) { partesEl[k].classList.toggle("on", k === id); });
     if (vistaAtual === "abertura") estadoNaUrl();
   }
   /* a capa: sete perguntas (5W2H) para quem chega sem contexto; "para quem" mostra os oito grupos com a cobertura
@@ -816,7 +758,7 @@
     });
     return html;
   }
-  function desenhaBlueprint(linhas, raias, iso) {
+  function desenhaBlueprint(linhas, raias, iso, isoVer) {
     var n = linhas.length;
     function celula(txt, e, cls) { return "<div class='bpp-cel" + (e.fonte === "inferencia" ? " bpp-infere" : "") + (txt ? "" : " bpp-vazia") + (cls ? " " + cls : "") + "'>" + (txt || "") + "</div>"; }
     var html = "<div class='bpp' style='--bpp-n:" + n + ";grid-template-columns:120px repeat(" + n + ", minmax(0,1fr))'>" +
@@ -830,7 +772,7 @@
       if (r === "vis") { html += "<div class='bpp-vis'><span>linha de visibilidade</span></div>"; return; }
       html += "<div class='bpp-rot'><b>" + r[0] + "</b><small>" + r[1] + "</small></div>" + linhas.map(r[2]).join("");
     });
-    if (iso) html += "<div class='bpp-rot'><b>O RELÓGIO DA DOSE</b><small>" + esc(iso.simbolo) + " · meia-vida " + meiaVidaTxt(iso) + "</small></div><div class='bpp-relogio'>" + relogioSvg(iso, { w: 900, h: 64, dias: 30, semFrase: true }) + "</div>";
+    if (iso) html += "<div class='bpp-rot'><b>OS DOIS RELÓGIOS</b><small>o da física é fixo: " + esc(iso.simbolo) + ", meia-vida " + meiaVidaTxt(iso) + " · o da senha varia</small></div><div class='bpp-relogio'>" + relogioSvg(iso, { w: 900, h: 118, dias: 45, completo: true, isoVer: isoVer }) + "</div>";
     return html + "</div>";
   }
   function montaJornada(id) {
@@ -843,13 +785,13 @@
       var linhas = (D.jornada || []).slice();
       html = "<div class='j-topo'><h2 class='serif'>" + esc(rel("jor_mae") || "O ciclo inteiro") + "</h2><p class='l-entrega'>" + esc(rel("jor_mae_sub") || "") + "</p></div>" +
         desenhaBlueprint(linhas, [
-          ["O PACIENTE VIVE", "sempre inferência", function (j) { return "<div class='bpp-cel bpp-infere" + (j.vive ? "" : " bpp-vazia") + "' title='" + esc(j.vive) + "'>" + esc(corta(j.vive, 90)) + "</div>"; }],
+          ["O PACIENTE VIVE", "sempre inferência", function (j) { return "<div class='bpp-cel bpp-infere" + (j.vive ? "" : " bpp-vazia") + "' title='" + esc(j.vive) + "'>" + esc(corta(j.vive, 72)) + "</div>"; }],
           ["QUEM ATUA", "e quem decide", function (j) { return "<div class='bpp-cel" + (j.fonte === "inferencia" ? " bpp-infere" : "") + "' title='" + esc(j.atua) + "'>" + esc(corta(j.atua, 70)) + (j.decide ? "<small>decide: " + esc(corta(j.decide, 40)) + "</small>" : "") + "</div>"; }],
           "vis",
-          ["BASTIDOR", "e onde fica o registro", function (j) { return "<div class='bpp-cel" + (j.fonte === "inferencia" ? " bpp-infere" : "") + (j.bastidor ? "" : " bpp-vazia") + "' title='" + esc(j.bastidor) + "'>" + esc(corta(j.bastidor, 90)) + ((j.sistema || []).length ? "<span class='chips'>" + (j.sistema || []).map(function (s) { return "<span class='chip-sis'>" + esc(SIS[s] ? SIS[s].nome : s) + "</span>"; }).join("") + "</span>" : "") + "</div>"; }],
+          ["BASTIDOR", "e onde fica o registro", function (j) { return "<div class='bpp-cel" + (j.fonte === "inferencia" ? " bpp-infere" : "") + (j.bastidor ? "" : " bpp-vazia") + "' title='" + esc(j.bastidor) + "'>" + esc(corta(j.bastidor, 72)) + ((j.sistema || []).length ? "<span class='chips'>" + (j.sistema || []).map(function (s) { return "<span class='chip-sis'>" + esc(SIS[s] ? SIS[s].nome : s) + "</span>"; }).join("") + "</span>" : "") + "</div>"; }],
           ["DONO", "e quem paga ou autoriza", function (j) { return (j.dono === "ninguem" ? "<div class='bpp-cel bpp-risco'>ninguém" : "<div class='bpp-cel bpp-dono" + (j.dono ? "" : " bpp-vazia") + "'>" + esc(ATOR[j.dono] ? ATOR[j.dono].curto : j.dono)) + ((j.paga || []).length ? "<span class='chips'>" + (j.paga || []).map(function (k) { return tagEnq(k, true); }).join("") + "</span>" : "") + "</div>"; }],
           ["O QUE FALTA", "nesta etapa", function (j) { var et = ETAPA[j.etapa]; return "<div class='bpp-cel" + (et && et.gate ? " bpp-risco" : " bpp-vazia") + "'>" + esc(et && et.gate ? et.gate : "") + "</div>"; }]
-        ], isoMae) + rodape;
+        ], isoMae, isoDeVer()) + rodape;
     } else {
       var s = SERV[id], etapas = (D.jornada_servico || []).filter(function (j) { return j.servico === id; });
       if (!s) { montaJornada("mae"); return; }
@@ -861,7 +803,7 @@
           "vis",
           ["BASTIDOR", "o que ele não vê", function (j) { return "<div class='bpp-cel" + (j.fonte === "inferencia" ? " bpp-infere" : "") + (j.bastidor ? "" : " bpp-vazia") + "' title='" + esc(j.bastidor) + "'>" + esc(corta(j.bastidor, 90)) + "</div>"; }],
           ["DONO", "quem responde", function (j) { var m = (D.jornada || []).filter(function (x) { return x.etapa === j.etapa; })[0]; return !m ? "<div class='bpp-cel bpp-vazia'></div>" : m.dono === "ninguem" ? "<div class='bpp-cel bpp-risco'>ninguém</div>" : "<div class='bpp-cel bpp-dono'>" + esc(ATOR[m.dono] ? ATOR[m.dono].curto : m.dono) + "</div>"; }]
-        ], ISO[s.isotopo_tratar] || isoMae) +
+        ], ISO[s.isotopo_tratar] || isoMae, ISO[s.isotopo_ver] || isoDeVer()) +
         "<p class='bpp-dinheiro'><span class='l-sub' style='margin:0'>Quem paga esta linha</span>" + tagEnq(s.enquadramento) + "</p>" + rodape;
     }
     escreve(jorPalco, html);
@@ -910,6 +852,37 @@
         (naoOuvidos.length ? rot("Quem não ouvimos") + "<ul class='pc-ul'>" + naoOuvidos.map(function (g) { return "<li class='pc-ouvir' title='" + esc(g.por_que + " — como ouvir: " + g.como_ouvir) + "'><b>" + esc(g.nome) + " · " + g.cobertura + "</b></li>"; }).join("") + "</ul>" : "") +
         "</section></div>";
     }
+    function cardLoops() {
+      var R1 = (D.loops || []).filter(function (l) { return l.loop === "R1"; }), B1 = (D.loops || []).filter(function (l) { return l.loop === "B1"; }), ARE = D.loop_arestas || [];
+      if (!R1.length) return "";
+      var rx = 300, ry = 165, rr = 96, pos = {}, h = "", reduz = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      R1.forEach(function (n, i) { var a = -Math.PI / 2 + 2 * Math.PI * i / R1.length; pos[n.id] = [rx + rr * Math.cos(a), ry + rr * Math.sin(a), a]; });
+      h += "<svg class='loops-svg' viewBox='0 0 480 330' role='img' aria-label='" + esc(rel("r1_titulo")) + "'><defs><marker id='lp-seta' viewBox='0 0 10 10' refX='8' refY='5' markerWidth='6' markerHeight='6' orient='auto'><path d='M0,0 L10,5 L0,10 z' fill='#B3261E'/></marker></defs>";
+      ARE.forEach(function (ar, i) {
+        var a = pos[ar.de], b = pos[ar.para]; if (!a || !b) return;
+        var mx = (a[0] + b[0]) / 2, my = (a[1] + b[1]) / 2, k = 0.3, cx = mx + (rx - mx) * k, cy = my + (ry - my) * k;
+        var d = "M" + a[0].toFixed(1) + "," + a[1].toFixed(1) + " Q" + cx.toFixed(1) + "," + cy.toFixed(1) + " " + b[0].toFixed(1) + "," + b[1].toFixed(1);
+        h += "<path class='r1-aresta" + (ar.freia === "sim" ? " freavel" : "") + "' d='" + d + "' marker-end='url(#lp-seta)'/>";
+        h += "<text class='r1-sinal' x='" + ((a[0] + 2 * cx + b[0]) / 4 + 5).toFixed(1) + "' y='" + ((a[1] + 2 * cy + b[1]) / 4).toFixed(1) + "'>" + esc(ar.sinal) + "</text>";
+        if (!reduz) h += "<circle class='r1-neutron" + (ar.freia === "sim" ? " freavel" : "") + "' r='2.4'><animateMotion dur='" + (3 + (i % 5) * 0.4).toFixed(1) + "s' repeatCount='indefinite' path='" + d + "'/></circle>";
+      });
+      R1.forEach(function (n, i) {
+        var p = pos[n.id], lx = rx + (rr + 24) * Math.cos(p[2]), ly = ry + (rr + 24) * Math.sin(p[2]), anc = Math.cos(p[2]) > 0.3 ? "start" : Math.cos(p[2]) < -0.3 ? "end" : "middle";
+        h += "<g class='r1-no tipo-" + n.tipo + "' data-loop='" + n.id + "' role='button' tabindex='0' aria-label='" + esc(n.rotulo) + "'><circle cx='" + p[0].toFixed(1) + "' cy='" + p[1].toFixed(1) + "' r='14'/><text x='" + p[0].toFixed(1) + "' y='" + (p[1] + 3.2).toFixed(1) + "' text-anchor='middle'>" + (i + 1) + "</text></g>";
+        var ls = quebra(n.curto, 22);
+        ls.forEach(function (l, k) { h += "<text class='r1-rot' x='" + lx.toFixed(1) + "' y='" + (ly + 3 - (ls.length - 1) * 5 + k * 10).toFixed(1) + "' text-anchor='" + anc + "'>" + esc(l) + "</text>"; });
+      });
+      var bx = 56;
+      h += "<text class='at-titulo' x='" + bx + "' y='52' text-anchor='middle'>B1</text><rect class='b1-barra' data-loop='" + (B1[0] ? B1[0].id : "") + "' x='" + (bx - 6) + "' y='60' width='12' height='210' rx='3' role='button' tabindex='0' aria-label='" + esc(rel("b1_titulo")) + "'/>";
+      B1.forEach(function (n, i) {
+        var y = 110 + i * 100;
+        h += "<g class='b1-no' data-loop='" + n.id + "' role='button' tabindex='0' aria-label='" + esc(n.rotulo) + "'><rect x='" + (bx - 11) + "' y='" + (y - 11) + "' width='22' height='22' rx='4'/><text x='" + bx + "' y='" + (y + 3) + "' text-anchor='middle'>B" + (i + 1) + "</text></g>";
+        quebra(n.curto, 16).forEach(function (l, k) { h += "<text class='b1-rot' x='" + (bx + 18) + "' y='" + (y - 2 + k * 10) + "'>" + esc(l) + "</text>"; });
+      });
+      h += "<text class='at-titulo' x='" + bx + "' y='296'>" + esc(rel("b1_titulo")) + "</text><text class='at-sub' x='" + bx + "' y='310'>passe o mouse na barra: as arestas que ela freia apagam</text></svg>";
+      return "<header class='pc-cab'><p class='pc-eyebrow'>o sistêmico · R1 reforço · B1 equilíbrio</p><h3 class='pc-tit'>" + esc(rel("r1_titulo") || "Por que o problema se sustenta sozinho") + "</h3></header>" + h +
+        (rel("loops_nota") ? "<p class='pc-oque'>" + esc(rel("loops_nota")) + "</p>" : "");
+    }
     function cardArquitetura() {
       var d1 = DEC.filter(function (d) { return d.nivel === 1; })[0];
       if (!d1) return "";
@@ -934,18 +907,33 @@
       "<div class='dir-grade'><div class='dir-col'>" +
       "<div><p class='l-coluna'>O QUE O RELATÓRIO CONCLUI</p><p class='dc-frase'>" + esc(rel("conclusao_curta") || rel("conclusao")) + "</p></div>" +
       "<p class='l-coluna' style='margin:0'>" + esc(rel("premissa_titulo") || "A DECISÃO, EM TRÊS NÍVEIS") + "</p><ol class='espinha'>" + espinha + "</ol>" +
+      "<button type='button' class='alt-op dir-loops' data-alt='loops'>↻ " + esc(rel("r1_titulo") || "por que o problema se sustenta sozinho") + "</button>" +
       "<p class='l-coluna' style='margin:4px 0 0'>AS OITO ALTERNATIVAS</p><div class='alt-grade'>" + grade + "</div>" +
 
       "</div>" +
       "<div class='alt-cards'>" + alts.map(function (a) { return "<div class='alt-card' data-alt='" + a.id + "' style='--cor:" + (COR_EST[a.estado] || "#0C3A6F") + "'>" + card(a) + "</div>"; }).join("") +
       "<div class='alt-card' data-alt='arquitetura' style='--cor:#0C3A6F'>" + cardArquitetura() + "</div>" +
+      "<div class='alt-card alt-loops' data-alt='loops' style='--cor:#B3261E'>" + cardLoops() + "</div>" +
       "</div></div>");
     Array.prototype.forEach.call(direcao.querySelectorAll(".alt-b,.alt-op"), function (b) { b.addEventListener("click", function () { mostraAlt(b.dataset.alt); estadoNaUrl(); }); });
+    /* o cartão dos loops: cada nó abre a aba onde o problema mora; a barra, inserida, apaga o que freia */
+    var lsvg = direcao.querySelector(".loops-svg");
+    if (lsvg) {
+      function freia(on) { Array.prototype.forEach.call(lsvg.querySelectorAll(".freavel"), function (x) { x.classList.toggle(x.tagName === "circle" ? "freado" : "freada", on); }); var b = lsvg.querySelector(".b1-barra"); if (b) b.classList.toggle("on", on); }
+      Array.prototype.forEach.call(lsvg.querySelectorAll(".b1-barra,.b1-no"), function (x) {
+        x.addEventListener("mouseenter", function () { freia(true); }); x.addEventListener("mouseleave", function () { freia(false); });
+        x.addEventListener("focus", function () { freia(true); }); x.addEventListener("blur", function () { freia(false); });
+      });
+      Array.prototype.forEach.call(lsvg.querySelectorAll("[data-loop]"), function (x) {
+        var n = LOOP[x.getAttribute("data-loop")];
+        if (n) clicavel(x, function () { abre(n.vista, n.item); });
+      });
+    }
     mostraAlt(alts[0].id);
   })();
   function mostraAlt(id) {
     if (!direcao) return;
-    if (!id || !(ALT[id] || id === "arquitetura")) id = (D.alternativas || [])[0] ? D.alternativas[0].id : null;
+    if (!id || !(ALT[id] || id === "arquitetura" || id === "loops")) id = (D.alternativas || [])[0] ? D.alternativas[0].id : null;
     selecao.direcao = id;
     Array.prototype.forEach.call(direcao.querySelectorAll(".alt-b,.alt-card,.alt-op"), function (x) { x.classList.toggle("on", x.dataset.alt === id); });
   }

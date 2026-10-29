@@ -1,9 +1,9 @@
 /* GERADO por 08_sintese/dados/build_dados.py a partir dos CSVs. Não editar à mão. */
 window.TERA = {
  "versao": {
-  "numero": 1,
-  "data": "2026-10-28",
-  "titulo": "A peça nasce: seis abas, do ecossistema à direção"
+  "numero": 2,
+  "data": "2026-10-29",
+  "titulo": "A abertura peça por peça, os dois relógios nas jornadas"
  },
  "relatorio": {
   "titulo": {
@@ -131,7 +131,7 @@ window.TERA = {
    "confianca": "provavel"
   },
   "revela_abertura": {
-   "texto": "O ciclo tem dois relógios. O da física é fixo e conhecido. O da autorização varia e ninguém o enxerga inteiro.",
+   "texto": "A mesma molécula leva o olho e o remédio. Cada parte dela tem um análogo no projeto: o isótopo é o que se vê e o que trata, o quelante é a coordenação, o vetor é a navegação, o alvo é o paciente.",
    "confianca": "provavel"
   },
   "revela_direcao": {
@@ -176,6 +176,10 @@ window.TERA = {
   },
   "frase_unica": {
    "texto": "Ver e tratar já funcionam. Coordenar, ainda não.",
+   "confianca": "provavel"
+  },
+  "loops_nota": {
+   "texto": "Cada nó abre a aba onde o problema mora. A barra de controle abre as alternativas que o freiam: o navegador dedicado e o controle de prazos.",
    "confianca": "provavel"
   }
  },
@@ -1960,6 +1964,44 @@ window.TERA = {
    "tipo": "dor",
    "vista": "sistema",
    "item": "xls",
+   "confianca": "provavel"
+  }
+ ],
+ "anatomia": [
+  {
+   "id": "radionuclideo",
+   "parte": "Radionuclídeo",
+   "fisica": "ver: {ver} (pósitron, fótons que saem do corpo) · tratar: {tratar} (beta, {alcance} no tecido)",
+   "analogo": "= o que se vê e o que trata: as 5 terapias, cada uma com o seu par",
+   "vista": "servicos",
+   "item": "",
+   "confianca": "confirmado"
+  },
+  {
+   "id": "quelante",
+   "parte": "Quelante",
+   "fisica": "segura o isótopo preso à molécula, para ele não se soltar no caminho",
+   "analogo": "= a coordenação segura a dose no tempo: a senha, a encomenda, o prazo e o histórico",
+   "vista": "sistema",
+   "item": "coord",
+   "confianca": "provavel"
+  },
+  {
+   "id": "vetor",
+   "parte": "Vetor",
+   "fisica": "a molécula que acha o receptor certo na célula e se liga a ele",
+   "analogo": "= a navegação acha o paciente certo e o leva do início ao fim",
+   "vista": "jornadas",
+   "item": "",
+   "confianca": "provavel"
+  },
+  {
+   "id": "alvo",
+   "parte": "Alvo",
+   "fisica": "o receptor que a célula expõe na superfície",
+   "analogo": "= o paciente elegível, e quem autoriza chegar até ele: a operadora, o rol, a cota",
+   "vista": "ecossistema",
+   "item": "a:paciente",
    "confianca": "provavel"
   }
  ],
@@ -4309,6 +4351,12 @@ window.TERA = {
    "titulo": "A peça nasce: seis abas, do ecossistema à direção",
    "o_que_mudou": "Primeira publicação da Sistemática Teranóstico. A abertura traz o átomo teranóstico (ver, tratar, reavaliar) e o relógio de decaimento da dose contra o prazo da senha. As camadas 1 a 4 saem dos diagramas da preparação da Fase 3 e dos 61 achados das 9 entrevistas. A Direção abre pela decisão da Fase 3, em 3 níveis e 8 alternativas.",
    "versao": 1
+  },
+  {
+   "data": "2026-10-29",
+   "titulo": "A abertura peça por peça, os dois relógios nas jornadas",
+   "o_que_mudou": "A aba 0 passou a mostrar a anatomia do radiofármaco em quatro partes (radionuclídeo · quelante · vetor · alvo), cada uma com o seu análogo no projeto e a aba que abre · o relógio da dose saiu da abertura e ganhou, nas jornadas, a forma completa: a curva contra a janela da senha, a molécula no dia 0, o paciente no dia da dose, ver · tratar · reavaliar no eixo e o próximo ciclo · a reação em cadeia e a barra de controle viraram um cartão da Direção",
+   "versao": 2
   }
  ]
 };
