@@ -56,8 +56,8 @@
   function padroesDe(camada) { /* um padrão mora na camada dos seus achados (a primeira) */
     return PAD.filter(function (p) { return (p.achados || []).some(function (s) { var a = ACH.filter(function (x) { return x.slug === s; })[0]; return a && a.camada === camada; }); });
   }
-  function achadoHtml(a, cls) {
-    return "<div class='achado " + (cls || "mini") + "'><b>" + esc(a.curto) + "</b>" + (a.citacao ? "<span>«" + esc(a.citacao) + "»</span>" : "") +
+  function achadoHtml(a, cls, semCitacao) {
+    return "<div class='achado " + (cls || "mini") + "'" + (semCitacao && a.citacao ? " title='" + esc(a.citacao) + "'" : "") + "><b>" + esc(a.curto) + "</b>" + (a.citacao && !semCitacao ? "<span>«" + esc(a.citacao) + "»</span>" : "") +
       (a.papel ? "<span class='papel'>" + esc(a.papel) + "</span>" : "") + "</div>";
   }
   function padraoHtml(p) {
@@ -427,34 +427,48 @@
       var mk = el("marker", { id: "m-enq-" + k, viewBox: "0 0 10 10", refX: 9, refY: 5, markerWidth: 6, markerHeight: 6, orient: "auto" }, defs);
       el("path", { d: "M0,0 L10,5 L0,10 z", fill: ENQ[k].cor }, mk);
     });
-    var dentro = D.atores.filter(function (a) { return a.lado === "dentro"; }), fora = D.atores.filter(function (a) { return a.lado === "fora"; });
-    var pos = {}, BW = 262, BH = 40;
-    texto(eco, 250, 40, "DENTRO DO EINSTEIN", "grupo-rotulo", "middle");
-    texto(eco, 690, 40, "FORA DO EINSTEIN", "grupo-rotulo", "middle");
-    [[dentro, 250, "e"], [fora, 690, "d"]].forEach(function (col) {
-      var n = col[0].length, y0 = 76, y1 = 520, passo = n > 1 ? (y1 - y0) / (n - 1) : 0;
-      col[0].forEach(function (a, i) {
-        var y = y0 + i * passo;
-        pos[a.id] = { x: col[1], y: y, col: col[2] };
-        var g = el("g", { "class": "estacao e-" + a.lado + " c-" + a.confianca, transform: "translate(" + col[1] + "," + y + ")", role: "button", tabindex: 0, "aria-label": a.nome }, eco);
+    /* quatro colunas (colunas_ecossistema.csv): quem chega · Einstein clínico · Einstein de apoio · fora do Einstein.
+       Um ator com `contem` (o Centro de Teranóstico) é o hub da sua coluna: fica no alto, em destaque, com uma chave
+       até as suas equipes; selecioná-lo mostra tudo o que chega e sai delas. */
+    var COLS = (D.colunas_ecossistema || []).slice(), n = COLS.length || 1, cw = 945 / n, BW = Math.min(262, cw - 40), BH = 42;
+    var pos = {};
+    COLS.forEach(function (c, ci) {
+      var cx = cw * ci + cw / 2, lista = D.atores.filter(function (a) { return a.coluna === c.id; });
+      texto(eco, cx, 34, c.rotulo, "grupo-rotulo", "middle");
+      texto(eco, cx, 48, c.sub, "grupo-sub", "middle");
+      var y0 = 84, y1 = 516, passo = lista.length > 1 ? Math.min(66, (y1 - y0) / (lista.length - 1)) : 0;
+      lista.forEach(function (a, i) {
+        var y = y0 + i * passo, hub = (a.contem || []).length > 0;
+        pos[a.id] = { x: cx, y: y, col: ci };
+        var g = el("g", { "class": "estacao e-" + a.lado + " c-" + a.confianca + (hub ? " e-centro" : ""), transform: "translate(" + cx + "," + y + ")", role: "button", tabindex: 0, "aria-label": a.nome }, eco);
         el("rect", { x: -BW / 2, y: -BH / 2, width: BW, height: BH, rx: 9 }, g);
         texto(g, 0, -3, a.curto, "nome", "middle");
-        texto(g, 0, 11, quebra(a.papel, 48)[0] + (quebra(a.papel, 48).length > 1 ? "…" : ""), "papel", "middle");
+        texto(g, 0, 12, quebra(a.papel, 50)[0] + (quebra(a.papel, 50).length > 1 ? "…" : ""), "papel", "middle");
         caixasEco[a.id] = g;
         clicavel(g, function () { selecionaEco(selecao.ecossistema === "a:" + a.id ? null : "a:" + a.id); estadoNaUrl(); });
+      });
+      /* a chave do hub até as equipes que ele contém */
+      lista.forEach(function (a) {
+        if (!(a.contem || []).length) return;
+        var ys = a.contem.map(function (id) { return pos[id] ? pos[id].y : null; }).filter(function (y) { return y !== null; });
+        if (!ys.length) return;
+        var xk = cx - BW / 2 - 7, ya = Math.min.apply(null, ys) - BH / 2, yb = Math.max.apply(null, ys) + BH / 2;
+        el("path", { d: "M" + (xk + 5) + "," + (pos[a.id].y + BH / 2) + " L" + xk + "," + (pos[a.id].y + BH / 2) + " L" + xk + "," + yb, "class": "eco-chave" }, eco);
+        ys.forEach(function (y) { el("line", { x1: xk, y1: y, x2: xk + 5, y2: y, "class": "eco-chave" }, eco); });
       });
     });
     var gS = el("g", {}, eco), usados = {};
     (D.fluxos || []).forEach(function (f) {
       var a = pos[f.de], b = pos[f.para];
       if (!a || !b) return;
-      var par = [f.de, f.para].sort().join("|"), nth = (usados[par] = (usados[par] || 0) + 1) - 1, desvio = nth * 12 * (f.de < f.para ? 1 : -1), d, lx, ly;
-      if (a.col === b.col) {
-        var lado = a.col === "e" ? -1 : 1, borda = a.x + lado * BW / 2, prof = 50 + Math.abs(b.y - a.y) * 0.14 + nth * 18, cx = borda + lado * prof, my = (a.y + b.y) / 2;
-        d = "M" + borda + "," + a.y + " Q" + cx + "," + my + " " + borda + "," + b.y; lx = (borda + cx) / 2; ly = my;
+      var par = [f.de, f.para].sort().join("|"), nth = (usados[par] = (usados[par] || 0) + 1) - 1, desvio = nth * 10 * (f.de < f.para ? 1 : -1), d, lx, ly;
+      if (a.col === b.col) { /* na mesma coluna: um arco pela calha à direita da coluna */
+        var borda = a.x + BW / 2, cx2 = borda + 14 + nth * 6, my = (a.y + b.y) / 2;
+        d = "M" + borda + "," + a.y + " Q" + cx2 + "," + my + " " + borda + "," + b.y; lx = (borda + cx2) / 2 + 4; ly = my;
       } else {
-        var x1 = a.x + (a.col === "e" ? BW / 2 : -BW / 2), y1 = a.y + desvio, x2 = b.x + (b.col === "e" ? BW / 2 : -BW / 2), y2 = b.y + desvio;
-        var c1 = x1 + (a.col === "e" ? 100 : -100), c2 = x2 + (b.col === "e" ? 100 : -100);
+        var dir = a.col < b.col ? 1 : -1;
+        var x1 = a.x + dir * BW / 2, y1 = a.y + desvio, x2 = b.x - dir * BW / 2, y2 = b.y + desvio;
+        var c1 = x1 + dir * 60, c2 = x2 - dir * 60;
         d = "M" + x1 + "," + y1 + " C" + c1 + "," + y1 + " " + c2 + "," + y2 + " " + x2 + "," + y2; lx = (x1 + 3 * c1 + 3 * c2 + x2) / 8; ly = (y1 + y2) / 2;
       }
       var p = el("path", { d: d, "class": "fluxo t-" + f.tipo + " f-enq-" + f.enquadramento, "marker-end": "url(#m-enq-" + f.enquadramento + ")" }, gS);
@@ -463,43 +477,51 @@
       var t = texto(r, lx, ly + 3.5, "", "", "middle");
       setasEco.push({ f: f, p: p, r: r, t: t });
     });
-    texto(eco, 925, 540, "setas: cor = quem paga ou autoriza · cheia = acontece · tracejada = a confirmar · pontilhada = regra", "nota-svg", "end");
+    texto(eco, 940, 542, "setas: cor = quem paga ou autoriza · cheia = acontece · tracejada = a confirmar · pontilhada = regra", "nota-svg", "end");
   })();
   var numFluxo = {};
   function selecionaEco(item) {
     selecao.ecossistema = item || null;
     var ator = item && item.indexOf("a:") === 0 ? item.slice(2) : (item && ATOR[item] ? item : null);
     var fluxo = item && item.indexOf("f:") === 0 ? item.slice(2) : null;
+    /* um hub (o Centro) responde pelas suas equipes: o que chega e sai delas é dele também */
+    var grupoAtor = {}; if (ator) { grupoAtor[ator] = true; ((ATOR[ator] || {}).contem || []).forEach(function (id) { grupoAtor[id] = true; }); }
     var tocados = {};
     numFluxo = {};
     var n = 0;
     setasEco.forEach(function (s) {
-      var on = (ator && (s.f.de === ator || s.f.para === ator)) || (fluxo && s.f.id === fluxo);
+      var on = (ator && (grupoAtor[s.f.de] || grupoAtor[s.f.para])) || (fluxo && s.f.id === fluxo);
       if (on) { n += 1; numFluxo[s.f.id] = n; s.t.textContent = String(n); tocados[s.f.de] = tocados[s.f.para] = true; }
       s.p.classList.toggle("vis", !!on); s.r.classList.toggle("vis", !!on);
     });
     if (ator) tocados[ator] = true;
     Object.keys(caixasEco).forEach(function (id) {
-      caixasEco[id].classList.toggle("foco", !!tocados[id] && (id === ator || !!fluxo));
+      caixasEco[id].classList.toggle("foco", !!tocados[id] && (id === ator || !!grupoAtor[id] || !!fluxo));
       caixasEco[id].classList.toggle("apagada", !!(ator || fluxo) && !tocados[id]);
     });
     leituraEcossistema(ator, fluxo);
   }
   function itemFluxo(f, ativo) {
     var nn = numFluxo[f.id], e = ENQ[f.enquadramento] || {};
-    return "<li class='clicavel t-" + f.tipo + (ativo ? " on" : "") + "' tabindex='0' data-fluxo='" + f.id + "' style='border-left-color:" + (e.cor || "#ccc") + "'>" +
+    return "<li class='clicavel t-" + f.tipo + (ativo ? " on" : "") + "' tabindex='0' data-fluxo='" + f.id + "' style='border-left-color:" + (e.cor || "#ccc") + "' title='" + esc((f.etapas || []).map(function (s) { return ETAPA[s] ? ETAPA[s].nome : s; }).join(" · ")) + "'>" +
       (nn ? "<span class='n' style='background:" + e.cor + "'>" + nn + "</span>" : "") +
       "<b>" + esc(ATOR[f.de] ? ATOR[f.de].curto : f.de) + " → " + esc(ATOR[f.para] ? ATOR[f.para].curto : f.para) + "</b>: " + esc(f.oque) +
-      (f.etapas && f.etapas.length ? "<span class='et'>" + f.etapas.map(function (s) { return ETAPA[s] ? ETAPA[s].curto : s; }).join(" · ") + "</span>" : "") + "</li>";
+"</li>";
   }
   function leituraEcossistema(ator, fluxo) {
     var html = "";
     if (ator && ATOR[ator]) {
-      var a = ATOR[ator], seus = (D.fluxos || []).filter(function (f) { return f.de === ator || f.para === ator; });
-      html += "<div class='bloco ficha'><div class='rotulo'>" + (a.lado === "dentro" ? "Dentro do Einstein" : "Fora do Einstein") + (a.grupo && GRUPO[a.grupo] ? " · " + esc(GRUPO[a.grupo].nome) : "") + " " + conf(a.confianca) + "</div><h3>" + esc(a.nome) + "</h3><p>" + esc(ponto(maiuscula(a.papel))) + "</p></div>";
-      html += "<div class='bloco'><div class='rotulo'>O que chega e sai</div><ul class='lista'>" + (seus.length ? seus.map(function (f) { return itemFluxo(f, false); }).join("") : "<li>nenhuma relação registrada ainda</li>") + "</ul></div>";
-      var achs = achadosDe("ecossistema").slice(0, 2);
-      if (achs.length) html += "<div class='bloco'><div class='rotulo'>O que já sabemos nesta camada</div>" + achs.map(function (x) { return achadoHtml(x, "mini"); }).join("") + "</div>";
+      var a = ATOR[ator], meus = {}; meus[ator] = true; (a.contem || []).forEach(function (id) { meus[id] = true; });
+      var seus = (D.fluxos || []).filter(function (f) { return meus[f.de] || meus[f.para]; });
+      var col = (D.colunas_ecossistema || []).filter(function (c) { return c.id === a.coluna; })[0];
+      html += "<div class='bloco ficha'><div class='rotulo'>" + esc(col ? col.rotulo : (a.lado === "dentro" ? "Dentro do Einstein" : "Fora do Einstein")) + (a.grupo && GRUPO[a.grupo] ? " · " + esc(GRUPO[a.grupo].nome) : "") + " " + conf(a.confianca) + "</div><h3>" + esc(a.nome) + "</h3><p>" + esc(ponto(maiuscula(a.papel))) + "</p>" +
+        ((a.contem || []).length ? "<p class='dica'>Contém: " + a.contem.map(function (id) { return ATOR[id] ? ATOR[id].curto : id; }).join(" · ") + ".</p>" : "") + "</div>";
+      /* um hub lista as primeiras relações e manda clicar numa equipe para ver só as dela (senão a ficha não cabe) */
+      var MAXREL = 8, mostra = seus.slice(0, MAXREL);
+      html += "<div class='bloco'><div class='rotulo'>O que chega e sai <span class='conf'>" + seus.length + "</span></div><ul class='lista'>" + (seus.length ? mostra.map(function (f) { return itemFluxo(f, false); }).join("") : "<li>nenhuma relação registrada ainda</li>") +
+        (seus.length > MAXREL ? "<li class='dica'>e mais " + (seus.length - MAXREL) + " relações: clique numa equipe do Centro para ver só as dela</li>" : "") + "</ul></div>";
+      var achs = (a.contem || []).length ? [] : achadosDe("ecossistema").slice(0, 2);
+      if (achs.length) html += "<div class='bloco'><div class='rotulo'>O que já sabemos nesta camada</div>" + achs.map(function (x) { return achadoHtml(x, "mini", true); }).join("") + "</div>";
     } else if (fluxo) {
       var fl = (D.fluxos || []).filter(function (f) { return f.id === fluxo; })[0];
       if (fl) html += "<div class='bloco'><div class='rotulo'>Uma relação " + tagEnq(fl.enquadramento, true) + " " + conf(fl.confianca) + "</div><ul class='lista'>" + itemFluxo(fl, true) + "</ul></div>";
@@ -948,8 +970,8 @@
     var serv = p.get("servico"); if (serv && SERV[serv]) jornadaAtual = serv;
     var t = +p.get("tempo"); if (t === 1 || t === 2) { comparativo = false; if (vSistema) vSistema.classList.remove("cheia"); tempo(t); }
     montaAtomo(); leituraAbertura();
-    if (vista === "ecossistema") selecionaEco(item || "a:conv");
-    else selecionaEco("a:conv");
+    if (vista === "ecossistema") selecionaEco(item || "a:centro");
+    else selecionaEco("a:centro");
     if (vista === "sistema" && item) selecionaSis(item);
     if (vista === "servicos" && item) selecionaServico(item);
     abre(vista, (vista === "direcao" || vista === "abertura" || vista === "jornadas") ? (item || undefined) : undefined);

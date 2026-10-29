@@ -1,9 +1,9 @@
 /* GERADO por 08_sintese/dados/build_dados.py a partir dos CSVs. Não editar à mão. */
 window.TERA = {
  "versao": {
-  "numero": 3,
+  "numero": 4,
   "data": "2026-10-29",
-  "titulo": "A figura da abertura legível no celular"
+  "titulo": "O ecossistema em três colunas, com o Centro de Teranóstico"
  },
  "relatorio": {
   "titulo": {
@@ -488,106 +488,20 @@ window.TERA = {
    "curto": "Paciente e acompanhante",
    "lado": "fora",
    "grupo": "paciente",
-   "confianca": "aberto"
+   "confianca": "aberto",
+   "coluna": "fora",
+   "contem": []
   },
   {
-   "id": "onco",
-   "nome": "Oncologista titular",
-   "papel": "indica o tratamento e mantém o caso antes e depois do ciclo. Quase sempre de fora da medicina nuclear",
-   "curto": "Oncologista titular",
+   "id": "onco_ext",
+   "nome": "Oncologista de fora do Einstein",
+   "papel": "indica o tratamento e mantém o caso de fora. Quando entra, o fluxo foge do controle do Centro",
+   "curto": "Oncologista de fora",
    "lado": "fora",
    "grupo": "onco",
-   "confianca": "provavel"
-  },
-  {
-   "id": "mn",
-   "nome": "Medicina nuclear",
-   "papel": "confirma a elegibilidade, planeja e executa o ciclo. Hoje coordena de memória e dispara até 4 demandas por consulta",
-   "curto": "Medicina nuclear",
-   "lado": "dentro",
-   "grupo": "mn",
-   "confianca": "confirmado"
-  },
-  {
-   "id": "fis",
-   "nome": "Física médica",
-   "papel": "radioproteção, dosimetria e alta radiológica. Só ela libera o paciente",
-   "curto": "Física médica",
-   "lado": "dentro",
-   "grupo": "mn",
-   "confianca": "confirmado"
-  },
-  {
-   "id": "enf",
-   "nome": "Enfermagem dos leitos terapêuticos",
-   "papel": "cuida do paciente internado com radioatividade. Entram 34 enfermeiros por ano",
-   "curto": "Enfermagem terapêutica",
-   "lado": "dentro",
-   "grupo": "enf",
-   "confianca": "confirmado"
-  },
-  {
-   "id": "nav",
-   "nome": "Navegação",
-   "papel": "coordena o paciente nos procedimentos de gargalo. Hoje sem papel dedicado ao teranóstico",
-   "curto": "Navegação",
-   "lado": "dentro",
-   "grupo": "nav",
-   "confianca": "confirmado"
-  },
-  {
-   "id": "com",
-   "nome": "Comercial",
-   "papel": "negocia os acordos com as operadoras, os códigos e as taxas próprias do hospital",
-   "curto": "Comercial",
-   "lado": "dentro",
-   "grupo": "com",
-   "confianca": "confirmado"
-  },
-  {
-   "id": "senhas",
-   "nome": "Controle de senhas",
-   "papel": "pede a autorização à operadora e acompanha a senha até o dia do atendimento",
-   "curto": "Controle de senhas",
-   "lado": "dentro",
-   "grupo": "com",
-   "confianca": "provavel"
-  },
-  {
-   "id": "aud",
-   "nome": "Auditoria de contas",
-   "papel": "confere cobertura e elegibilidade do plano antes e depois do atendimento. Até 15 minutos por senha, em 5 a 6 telas",
-   "curto": "Auditoria de contas",
-   "lado": "dentro",
-   "grupo": "com",
-   "confianca": "confirmado"
-  },
-  {
-   "id": "rf",
-   "nome": "Radiofarmácia",
-   "papel": "produz o diagnóstico, encomenda e unitariza a dose terapêutica. Não compra sem aprovação",
-   "curto": "Radiofarmácia",
-   "lado": "dentro",
-   "grupo": "rf",
-   "confianca": "confirmado"
-  },
-  {
-   "id": "ipen",
-   "nome": "IPEN, o fornecedor público",
-   "papel": "produz iodo e lutécio-dotatato no país. Falha com regularidade e parou o iodo-123",
-   "curto": "IPEN (fornecedor público)",
-   "lado": "fora",
-   "grupo": "",
-   "confianca": "confirmado"
-  },
-  {
-   "id": "ind",
-   "nome": "Indústria fornecedora",
-   "papel": "fabrica a dose terapêutica fora do Brasil. Previsão fixa de 3 semanas, cancela em 1",
-   "curto": "Indústria fornecedora",
-   "lado": "fora",
-   "grupo": "",
-   "confianca": "confirmado"
+   "confianca": "confirmado",
+   "coluna": "fora",
+   "contem": []
   },
   {
    "id": "conv",
@@ -596,25 +510,9 @@ window.TERA = {
    "curto": "Operadora e convênio",
    "lado": "fora",
    "grupo": "",
-   "confianca": "confirmado"
-  },
-  {
-   "id": "cnen",
-   "nome": "CNEN",
-   "papel": "aprova o plano de radioproteção e a cota semanal de atividade por isótopo",
-   "curto": "CNEN (cota semanal)",
-   "lado": "fora",
-   "grupo": "",
-   "confianca": "confirmado"
-  },
-  {
-   "id": "anvisa",
-   "nome": "Anvisa",
-   "papel": "licencia o software de dosimetria e a planta de produção",
-   "curto": "Anvisa (licença)",
-   "lado": "fora",
-   "grupo": "",
-   "confianca": "confirmado"
+   "confianca": "confirmado",
+   "coluna": "fora",
+   "contem": []
   },
   {
    "id": "ans",
@@ -623,7 +521,168 @@ window.TERA = {
    "curto": "ANS (rol e prazo)",
    "lado": "fora",
    "grupo": "",
-   "confianca": "confirmado"
+   "confianca": "confirmado",
+   "coluna": "fora",
+   "contem": []
+  },
+  {
+   "id": "cnen",
+   "nome": "CNEN",
+   "papel": "aprova o plano de radioproteção e a cota semanal de atividade por isótopo",
+   "curto": "CNEN (cota semanal)",
+   "lado": "fora",
+   "grupo": "",
+   "confianca": "confirmado",
+   "coluna": "fora",
+   "contem": []
+  },
+  {
+   "id": "anvisa",
+   "nome": "Anvisa",
+   "papel": "licencia o software de dosimetria e a planta de produção",
+   "curto": "Anvisa (licença)",
+   "lado": "fora",
+   "grupo": "",
+   "confianca": "confirmado",
+   "coluna": "fora",
+   "contem": []
+  },
+  {
+   "id": "ind",
+   "nome": "Indústria fornecedora",
+   "papel": "fabrica a dose terapêutica fora do Brasil. Previsão fixa de 3 semanas, cancela em 1",
+   "curto": "Indústria fornecedora",
+   "lado": "fora",
+   "grupo": "",
+   "confianca": "confirmado",
+   "coluna": "fora",
+   "contem": []
+  },
+  {
+   "id": "ipen",
+   "nome": "IPEN, o fornecedor público",
+   "papel": "produz iodo e lutécio-dotatato no país. Falha com regularidade e parou o iodo-123",
+   "curto": "IPEN (fornecedor público)",
+   "lado": "fora",
+   "grupo": "",
+   "confianca": "confirmado",
+   "coluna": "fora",
+   "contem": []
+  },
+  {
+   "id": "centro",
+   "nome": "Centro de Teranóstico",
+   "papel": "a unidade de medicina nuclear, imagem molecular e teranóstica do Einstein: o médico nuclear, a física médica, a enfermagem terapêutica e a radiofarmácia. Planeja e executa o ciclo, mas ninguém nela responde pela jornada inteira",
+   "curto": "Centro de Teranóstico",
+   "lado": "dentro",
+   "grupo": "mn",
+   "confianca": "confirmado",
+   "coluna": "clinico",
+   "contem": [
+    "mn",
+    "fis",
+    "enf",
+    "rf"
+   ]
+  },
+  {
+   "id": "mn",
+   "nome": "Medicina nuclear",
+   "papel": "confirma a elegibilidade, planeja e executa o ciclo. Hoje coordena de memória e dispara até 4 demandas por consulta",
+   "curto": "Medicina nuclear",
+   "lado": "dentro",
+   "grupo": "mn",
+   "confianca": "confirmado",
+   "coluna": "clinico",
+   "contem": []
+  },
+  {
+   "id": "fis",
+   "nome": "Física médica",
+   "papel": "radioproteção, dosimetria e alta radiológica. Só ela libera o paciente",
+   "curto": "Física médica",
+   "lado": "dentro",
+   "grupo": "mn",
+   "confianca": "confirmado",
+   "coluna": "clinico",
+   "contem": []
+  },
+  {
+   "id": "enf",
+   "nome": "Enfermagem dos leitos terapêuticos",
+   "papel": "cuida do paciente internado com radioatividade. Entram 34 enfermeiros por ano",
+   "curto": "Enfermagem terapêutica",
+   "lado": "dentro",
+   "grupo": "enf",
+   "confianca": "confirmado",
+   "coluna": "clinico",
+   "contem": []
+  },
+  {
+   "id": "nav",
+   "nome": "Navegação",
+   "papel": "coordena o paciente nos procedimentos de gargalo. Hoje sem papel dedicado ao teranóstico",
+   "curto": "Navegação",
+   "lado": "dentro",
+   "grupo": "nav",
+   "confianca": "confirmado",
+   "coluna": "apoio",
+   "contem": []
+  },
+  {
+   "id": "com",
+   "nome": "Comercial",
+   "papel": "negocia os acordos com as operadoras, os códigos e as taxas próprias do hospital",
+   "curto": "Comercial",
+   "lado": "dentro",
+   "grupo": "com",
+   "confianca": "confirmado",
+   "coluna": "apoio",
+   "contem": []
+  },
+  {
+   "id": "senhas",
+   "nome": "Controle de senhas",
+   "papel": "pede a autorização à operadora e acompanha a senha até o dia do atendimento",
+   "curto": "Controle de senhas",
+   "lado": "dentro",
+   "grupo": "com",
+   "confianca": "provavel",
+   "coluna": "apoio",
+   "contem": []
+  },
+  {
+   "id": "aud",
+   "nome": "Auditoria de contas",
+   "papel": "confere cobertura e elegibilidade do plano antes e depois do atendimento. Até 15 minutos por senha, em 5 a 6 telas",
+   "curto": "Auditoria de contas",
+   "lado": "dentro",
+   "grupo": "com",
+   "confianca": "confirmado",
+   "coluna": "apoio",
+   "contem": []
+  },
+  {
+   "id": "rf",
+   "nome": "Radiofarmácia",
+   "papel": "produz o diagnóstico, encomenda e unitariza a dose terapêutica. Não compra sem aprovação",
+   "curto": "Radiofarmácia",
+   "lado": "dentro",
+   "grupo": "rf",
+   "confianca": "confirmado",
+   "coluna": "clinico",
+   "contem": []
+  },
+  {
+   "id": "onco",
+   "nome": "Oncologista do Einstein",
+   "papel": "indica o tratamento e mantém o caso dentro de casa, antes e depois do ciclo. Na iodoterapia o grupo interno dá conta",
+   "curto": "Oncologista do Einstein",
+   "lado": "dentro",
+   "grupo": "onco",
+   "confianca": "provavel",
+   "coluna": "clinico",
+   "contem": []
   },
   {
    "id": "parque",
@@ -632,7 +691,9 @@ window.TERA = {
    "curto": "Parque Global (2027)",
    "lado": "dentro",
    "grupo": "gestao",
-   "confianca": "provavel"
+   "confianca": "provavel",
+   "coluna": "apoio",
+   "contem": []
   },
   {
    "id": "gestao",
@@ -641,7 +702,26 @@ window.TERA = {
    "curto": "Gestão",
    "lado": "dentro",
    "grupo": "gestao",
-   "confianca": "aberto"
+   "confianca": "aberto",
+   "coluna": "apoio",
+   "contem": []
+  }
+ ],
+ "colunas_ecossistema": [
+  {
+   "id": "fora",
+   "rotulo": "FORA DO EINSTEIN",
+   "sub": "quem chega, quem regula, paga e fornece"
+  },
+  {
+   "id": "clinico",
+   "rotulo": "EINSTEIN CLÍNICO",
+   "sub": "o Centro de Teranóstico, as suas equipes e o oncologista da casa"
+  },
+  {
+   "id": "apoio",
+   "rotulo": "EINSTEIN · APOIO",
+   "sub": "navegação, comercial, senhas, auditoria, gestão"
   }
  ],
  "fluxos": [
@@ -649,7 +729,7 @@ window.TERA = {
    "id": "F01",
    "de": "onco",
    "para": "mn",
-   "oque": "indica o tratamento e mantém o caso",
+   "oque": "indica o tratamento e mantém o caso dentro de casa, com canal interno",
    "tipo": "indicacao",
    "enquadramento": "hospital",
    "confianca": "confirmado",
@@ -797,7 +877,7 @@ window.TERA = {
    "id": "F13",
    "de": "mn",
    "para": "onco",
-   "oque": "devolve o paciente depois do ciclo",
+   "oque": "devolve o paciente depois do ciclo, para o oncologista da casa",
    "tipo": "indicacao",
    "enquadramento": "hospital",
    "confianca": "confirmado",
@@ -964,6 +1044,30 @@ window.TERA = {
    "etapas": [
     "s5",
     "s6"
+   ]
+  },
+  {
+   "id": "F27",
+   "de": "onco_ext",
+   "para": "mn",
+   "oque": "indica o tratamento de fora: o caso entra sem canal formal e o fluxo foge do controle do Centro",
+   "tipo": "indicacao",
+   "enquadramento": "sem_dono",
+   "confianca": "confirmado",
+   "etapas": [
+    "s1"
+   ]
+  },
+  {
+   "id": "F28",
+   "de": "mn",
+   "para": "onco_ext",
+   "oque": "devolve o paciente depois do ciclo, para o oncologista de fora",
+   "tipo": "indicacao",
+   "enquadramento": "sem_dono",
+   "confianca": "provavel",
+   "etapas": [
+    "s7"
    ]
   }
  ],
@@ -1923,7 +2027,7 @@ window.TERA = {
    "curto": "Credibilidade perante oncologistas",
    "tipo": "evidencia",
    "vista": "ecossistema",
-   "item": "onco",
+   "item": "onco_ext",
    "confianca": "provavel"
   },
   {
@@ -1933,7 +2037,7 @@ window.TERA = {
    "curto": "Encaminhamentos de oncologistas",
    "tipo": "evidencia",
    "vista": "ecossistema",
-   "item": "onco",
+   "item": "onco_ext",
    "confianca": "provavel"
   },
   {
@@ -4363,6 +4467,12 @@ window.TERA = {
    "titulo": "A figura da abertura legível no celular",
    "o_que_mudou": "Abaixo de 600 px a figura da abertura deixa de encolher: mantém 600 px de largura e rola para o lado dentro do próprio painel, como as cenas do ecossistema e do sistema",
    "versao": 3
+  },
+  {
+   "data": "2026-10-29",
+   "titulo": "O ecossistema em três colunas, com o Centro de Teranóstico",
+   "o_que_mudou": "A aba 1 passou de duas colunas (dentro · fora) para três: fora do Einstein (quem chega: o paciente e o oncologista · quem regula, paga e fornece) · Einstein clínico (o Centro de Teranóstico e as suas equipes: médico nuclear, física médica, enfermagem terapêutica, radiofarmácia) · Einstein de apoio (navegação, comercial, senhas, auditoria, gestão, Parque Global) . O oncologista virou dois: o do Einstein, na coluna clínica, e o de fora, que abre a coluna de fora. O Centro entrou como ator próprio, em destaque: clicar nele mostra tudo o que chega e sai das suas equipes",
+   "versao": 4
   }
  ]
 };
