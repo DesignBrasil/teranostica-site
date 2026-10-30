@@ -1,9 +1,9 @@
 /* GERADO por 08_sintese/dados/build_dados.py a partir dos CSVs. Não editar à mão. */
 window.TERA = {
  "versao": {
-  "numero": 12,
+  "numero": 13,
   "data": "2026-10-29",
-  "titulo": "AS IS e TO BE"
+  "titulo": "Pré, jornada e pós · tom neutro"
  },
  "relatorio": {
   "titulo": {
@@ -15,7 +15,7 @@ window.TERA = {
    "confianca": "confirmado"
   },
   "pergunta_abertura": {
-   "texto": "Enxergar o que se trata e tratar o que se vê. Por que, entre ver e tratar, o paciente espera 60 dias?",
+   "texto": "Enxergar o que se trata e tratar o que se vê. Por que, entre o encaminhamento e o dia da terapia, passam 60 dias?",
    "confianca": "provavel"
   },
   "pergunta_direcao": {
@@ -23,15 +23,11 @@ window.TERA = {
    "confianca": "confirmado"
   },
   "w_oque": {
-   "texto": "Uma camada de coordenação para o ciclo teranóstico: quem faz o quê, até quando, com histórico. Ela coordena os sistemas que já existem. Não substitui nenhum.",
+   "texto": "Uma camada de coordenação para o ciclo teranóstico: quem faz o quê, até quando, com histórico. Ela coordena os sistemas que já existem, sem substituí-los.",
    "confianca": "confirmado"
   },
   "w_porque": {
-   "texto": "Coordenação é o problema, não tecnologia. O médico nuclear decide com informação espalhada em 4 sistemas e uma planilha. O paciente sente descontinuidade e retrabalho.",
-   "confianca": "confirmado"
-  },
-  "w_quem": {
-   "texto": "Quem pediu: 10 pessoas em 9 entrevistas, da medicina nuclear ao comercial. Quem ainda não foi ouvido: o oncologista, a gestão e o paciente.",
+   "texto": "O desafio é de coordenação, não de tecnologia. O médico nuclear decide com informação distribuída em 4 sistemas e uma planilha. O paciente percebe a passagem por muitas áreas.",
    "confianca": "confirmado"
   },
   "w_onde": {
@@ -43,19 +39,19 @@ window.TERA = {
    "confianca": "confirmado"
   },
   "w_como": {
-   "texto": "Três passos que se repetem a cada ciclo, como o par de isótopos da mesma molécula.",
+   "texto": "Três momentos que se repetem a cada ciclo: antes, durante e depois da jornada.",
    "confianca": "provavel"
   },
   "w_como_1": {
-   "texto": "Ver: o par diagnóstico mostra onde a doença está e se o paciente é elegível.",
+   "texto": "O oncologista encaminha e a medicina nuclear confirma, na consulta, se o paciente é elegível.",
    "confianca": "confirmado"
   },
   "w_como_2": {
-   "texto": "Tratar: a dose terapêutica é autorizada, encomendada, infundida e liberada.",
+   "texto": "A cobertura e a autorização, o pedido, a produção e o recebimento da dose, o preparo e o dia da terapia.",
    "confianca": "confirmado"
   },
   "w_como_3": {
-   "texto": "Reavaliar: o paciente volta ao oncologista e o ciclo recomeça a cada 4 a 6 semanas.",
+   "texto": "A alta, a conta e a auditoria, e o próximo ciclo ou o retorno ao oncologista.",
    "confianca": "provavel"
   },
   "w_quanto": {
@@ -79,7 +75,7 @@ window.TERA = {
    "confianca": "confirmado"
   },
   "atomo_molecula": {
-   "texto": "A mesma molécula leva o olho e o remédio. A mesma jornada precisa de um dono.",
+   "texto": "A mesma molécula leva o olho e o remédio. A mesma jornada pede alguém que a acompanhe do início ao fim.",
    "confianca": "provavel"
   },
   "atomo_ligante": {
@@ -103,15 +99,15 @@ window.TERA = {
    "confianca": "confirmado"
   },
   "manchete_sistema": {
-   "texto": "Os sistemas existem e executam. O que falta é quem coordena por cima: hoje é a planilha, o e-mail e a memória.",
+   "texto": "Os sistemas existem e executam. A coordenação entre eles hoje se apoia na planilha, no e-mail e na experiência das equipes.",
    "confianca": "confirmado"
   },
   "manchete_servicos": {
-   "texto": "A mesma regra vale para 5 terapias. A coordenação informal basta na iodoterapia e quebra quando a oncologia externa entra.",
+   "texto": "A mesma regra vale para 5 terapias. A coordenação informal funciona bem na iodoterapia e fica mais exigente quando a oncologia externa entra.",
    "confianca": "provavel"
   },
   "manchete_jornadas": {
-   "texto": "Sete pontos de contato e nenhum dono do início ao fim. O risco mora entre a encomenda da dose e a senha.",
+   "texto": "Dez etapas em três momentos, acompanhadas por várias áreas, sem um responsável formal do início ao fim. O ponto de maior atenção fica entre o pedido da dose e a senha.",
    "confianca": "confirmado"
   },
   "conclusao": {
@@ -131,7 +127,7 @@ window.TERA = {
    "confianca": "provavel"
   },
   "revela_abertura": {
-   "texto": "A mesma molécula leva o olho e o remédio. Cada parte dela tem um análogo no projeto: o isótopo é o que se vê e o que trata, o quelante é a coordenação, o vetor é a navegação, o alvo é o paciente.",
+   "texto": "A mesma molécula leva o olho e o remédio. Cada parte dela tem um análogo no projeto: o isótopo é o que se vê e o que trata, o quelante é a coordenação, o vetor é a navegação, que guia e acompanha o paciente, o alvo é o paciente.",
    "confianca": "provavel"
   },
   "revela_direcao": {
@@ -139,7 +135,7 @@ window.TERA = {
    "confianca": "provavel"
   },
   "tempo1_titulo": {
-   "texto": "1 Hoje, de memória",
+   "texto": "1 Hoje, com a experiência das equipes",
    "confianca": "confirmado"
   },
   "tempo1_sub": {
@@ -151,31 +147,31 @@ window.TERA = {
    "confianca": "provavel"
   },
   "tempo2_sub": {
-   "texto": "um dono por etapa · prazos e histórico por cima do que já existe",
+   "texto": "um responsável por etapa · prazos e histórico por cima do que já existe",
    "confianca": "provavel"
   },
   "jor_mae": {
-   "texto": "A jornada inteira, em três eventos",
+   "texto": "A jornada inteira, em três momentos",
    "confianca": "confirmado"
   },
   "jor_mae_sub": {
-   "texto": "Ver, tratar e reavaliar: as passagens entre eles, quem acompanha a travessia e o relógio da dose. Clique num evento para ver os seus passos.",
+   "texto": "Pré-jornada, jornada e pós-jornada: as passagens entre eles, quem acompanha a travessia e o relógio da dose. Clique num momento para ver as suas etapas.",
    "confianca": "confirmado"
   },
-  "jor_nota_V": {
-   "texto": "O oncologista indica e a medicina nuclear confirma a elegibilidade. O caso ainda é do oncologista.",
+  "jor_nota_PRE": {
+   "texto": "O oncologista encaminha e a medicina nuclear confirma a elegibilidade. O caso segue com o oncologista.",
    "confianca": "provavel"
   },
-  "jor_nota_T": {
-   "texto": "A senha, a dose e a infusão. É aqui que os dois relógios se desencontram.",
+  "jor_nota_JOR": {
+   "texto": "Da cobertura ao dia da terapia. É aqui que o prazo da senha e o prazo da dose precisam se encontrar.",
    "confianca": "confirmado"
   },
-  "jor_nota_R": {
-   "texto": "A física libera, o paciente volta ao oncologista. A cada ciclo, nova elegibilidade e nova senha.",
+  "jor_nota_POS": {
+   "texto": "A física libera, a conta é fechada e auditada, e o paciente volta ao oncologista. A cada ciclo, nova elegibilidade e nova senha.",
    "confianca": "confirmado"
   },
   "frase_unica": {
-   "texto": "Ver e tratar já funcionam. Coordenar, ainda não.",
+   "texto": "Ver e tratar já funcionam. Coordenar o caminho entre eles é o próximo passo.",
    "confianca": "provavel"
   },
   "loops_nota": {
@@ -207,7 +203,7 @@ window.TERA = {
    "confianca": "provavel"
   },
   "tobe_nota": {
-   "texto": "Três cenários, cada um uma junção de oportunidades: operacional, assistencial e comercial. A reserva de sala fica fora deles, porque é infraestrutura física. Abre na desfragmentação. A validar com os atores.",
+   "texto": "Três cenários, cada um uma junção de oportunidades: operacional, assistencial e comercial. Abre na desfragmentação. A validar com os atores.",
    "confianca": "provavel"
   },
   "dor_sem_dono": {
@@ -219,11 +215,27 @@ window.TERA = {
    "confianca": "confirmado"
   },
   "jor_sempre_como": {
-   "texto": "ninguém responde pela travessia inteira · o médico nuclear coordena à mão, por e-mail",
+   "texto": "o acompanhamento é informal e distribuído entre a medicina nuclear, a navegação e o comercial · o médico nuclear articula as áreas por e-mail",
    "confianca": "confirmado"
   },
   "jor_sempre_dores": {
    "texto": "dono-jornada",
+   "confianca": "confirmado"
+  },
+  "ciclo_sub": {
+   "texto": "Dois relógios correm juntos. O da dose é fixo: ela é pedida, produzida e entregue com data marcada, e depois decai. O da senha varia de operadora para operadora. O ponto de atenção é o intervalo em que os dois não se encontram.",
+   "confianca": "confirmado"
+  },
+  "ciclo_passo_1": {
+   "texto": "A dose é pedida à indústria e chega em {entrega_dose} dias. Cancelar a menos de {cancelamento_industria} dias da produção custa a dose.",
+   "confianca": "confirmado"
+  },
+  "ciclo_passo_2": {
+   "texto": "A senha da operadora chega entre {senha_min} e {senha_max} dias. O prazo oficial da ANS é de {senha_ans_dias} dias.",
+   "confianca": "confirmado"
+  },
+  "ciclo_passo_3": {
+   "texto": "Se a senha chega depois da dose, a dose espera, e o {isotopo} perde {perda} da atividade a cada dia.",
    "confianca": "confirmado"
   }
  },
@@ -237,68 +249,62 @@ window.TERA = {
   },
   "sistema": {
    "nivel": "meso",
-   "manchete": "Os sistemas existem e executam. O que falta é quem coordena por cima: hoje é a planilha, o e-mail e a memória.",
+   "manchete": "Os sistemas existem e executam. A coordenação entre eles hoje se apoia na planilha, no e-mail e na experiência das equipes.",
    "pergunta": "que sistemas já executam o trabalho, e quem coordena por cima?",
    "pergunta_pessoa": "em quantas telas e e-mails passa o meu caso?",
    "revela": "A camada proposta coordena sem substituir: um módulo onde já existe sistema, um painel onde não existe, histórico onde hoje é e-mail."
   },
   "servicos": {
    "nivel": "meso",
-   "manchete": "A mesma regra vale para 5 terapias. A coordenação informal basta na iodoterapia e quebra quando a oncologia externa entra.",
+   "manchete": "A mesma regra vale para 5 terapias. A coordenação informal funciona bem na iodoterapia e fica mais exigente quando a oncologia externa entra.",
    "pergunta": "a mesma regra vale para terapias diferentes?",
    "pergunta_pessoa": "o meu tratamento é dos que o hospital já faz há décadas?",
    "revela": "A iodoterapia é interna e madura: o calendário compartilhado basta. PSMA e Dotatate cruzam a oncologia externa e custam uma dose cara: pedem sistematização."
   },
   "jornadas": {
    "nivel": "micro",
-   "manchete": "Sete pontos de contato e nenhum dono do início ao fim. O risco mora entre a encomenda da dose e a senha.",
+   "manchete": "Dez etapas em três momentos, acompanhadas por várias áreas, sem um responsável formal do início ao fim.",
    "pergunta": "o que o paciente vive em cada ponto de contato, e quem responde?",
    "pergunta_pessoa": "quem cuida de mim do início ao fim?",
-   "revela": "Entre a encomenda da dose e a senha está a janela de risco. Ninguém é dono da jornada inteira: o médico nuclear coordena de memória."
+   "revela": "Entre o pedido da dose e a senha está o ponto de maior atenção. A jornada é acompanhada de forma informal e distribuída: o médico nuclear coordena com a experiência da equipe."
   }
  },
  "passos": [
   {
-   "sigla": "V",
-   "nome": "ver",
-   "verbo": "enxergar o que se trata",
-   "fisica": "O isótopo de ver emite fótons gama ou pósitrons. Eles saem do corpo e viram imagem no PET ou no SPECT.",
+   "sigla": "PRE",
+   "nome": "pré-jornada",
+   "verbo": "encaminhar e confirmar a elegibilidade",
+   "descricao": "O oncologista encaminha e a medicina nuclear confirma, na consulta, se o paciente é elegível.",
    "cor": "#1774DE",
-   "emissoes": [
-    "gama",
-    "beta_mais"
-   ],
    "etapas": [
     "s1",
     "s2"
    ]
   },
   {
-   "sigla": "T",
-   "nome": "tratar",
-   "verbo": "tratar o que se vê",
-   "fisica": "O isótopo de tratar emite partículas beta ou alfa. Elas ficam no tecido: 2 milímetros para o beta, 0,1 milímetro para o alfa.",
+   "sigla": "JOR",
+   "nome": "jornada",
+   "verbo": "autorizar, receber a dose e tratar",
+   "descricao": "Da cobertura ao dia da terapia: a senha, o pedido, a produção e a chegada da dose, o agendamento e o preparo.",
    "cor": "#0f7a64",
-   "emissoes": [
-    "beta_menos",
-    "alfa"
-   ],
    "etapas": [
     "s3",
     "s4",
-    "s5"
+    "s5",
+    "s6",
+    "s7"
    ]
   },
   {
-   "sigla": "R",
-   "nome": "reavaliar",
-   "verbo": "voltar a ver",
-   "fisica": "A atividade cai pela metade a cada meia-vida. O ciclo volta a cada 4 a 6 semanas, de 4 a 6 vezes.",
+   "sigla": "POS",
+   "nome": "pós-jornada",
+   "verbo": "liberar, fechar a conta e voltar",
+   "descricao": "A alta e os cuidados depois da dose, a conta e a auditoria, e o próximo ciclo ou o retorno ao oncologista.",
    "cor": "#9c5518",
-   "emissoes": [],
    "etapas": [
-    "s6",
-    "s7"
+    "s8",
+    "s9",
+    "s10"
    ]
   }
  ],
@@ -512,8 +518,8 @@ window.TERA = {
    "fundo": "#DDF2E6"
   },
   "sem_dono": {
-   "rotulo": "Sem dono: ninguém responde",
-   "curto": "sem dono",
+   "rotulo": "Sem responsável formal",
+   "curto": "sem responsável formal",
    "cor": "#B3261E",
    "fundo": "#FBE4E1"
   },
@@ -605,7 +611,7 @@ window.TERA = {
   {
    "id": "ipen",
    "nome": "IPEN, o fornecedor público",
-   "papel": "produz iodo e lutécio-dotatato no país. Falha com regularidade e parou o iodo-123",
+   "papel": "produz iodo e lutécio-dotatato no país. As entregas têm atrasos recorrentes e a produção do iodo-123 foi interrompida",
    "curto": "IPEN (fornecedor público)",
    "lado": "fora",
    "grupo": "",
@@ -616,7 +622,7 @@ window.TERA = {
   {
    "id": "centro",
    "nome": "Centro de Teranóstico",
-   "papel": "a unidade de medicina nuclear, imagem molecular e teranóstica do Einstein: o médico nuclear, a física médica, a enfermagem terapêutica e a radiofarmácia. Planeja e executa o ciclo, mas ninguém nela responde pela jornada inteira",
+   "papel": "a unidade de medicina nuclear, imagem molecular e teranóstica do Einstein: o médico nuclear, a física médica, a enfermagem terapêutica e a radiofarmácia. Planeja e executa o ciclo, e a jornada inteira ainda não tem um responsável formal",
    "curto": "Centro de Teranóstico",
    "lado": "dentro",
    "grupo": "mn",
@@ -632,7 +638,7 @@ window.TERA = {
   {
    "id": "mn",
    "nome": "Medicina nuclear",
-   "papel": "confirma a elegibilidade, planeja e executa o ciclo. Hoje coordena de memória e dispara até 4 demandas por consulta",
+   "papel": "confirma a elegibilidade, planeja e executa o ciclo. Hoje articula as áreas com a experiência da equipe e abre até 4 demandas por consulta",
    "curto": "Medicina nuclear",
    "lado": "dentro",
    "grupo": "mn",
@@ -864,7 +870,8 @@ window.TERA = {
    "enquadramento": "fornecedor",
    "confianca": "confirmado",
    "etapas": [
-    "s4"
+    "s4",
+    "s6"
    ]
   },
   {
@@ -876,7 +883,7 @@ window.TERA = {
    "enquadramento": "fornecedor",
    "confianca": "confirmado",
    "etapas": [
-    "s4"
+    "s6"
    ]
   },
   {
@@ -888,7 +895,7 @@ window.TERA = {
    "enquadramento": "regulador",
    "confianca": "confirmado",
    "etapas": [
-    "s6"
+    "s8"
    ]
   },
   {
@@ -901,7 +908,8 @@ window.TERA = {
    "confianca": "confirmado",
    "etapas": [
     "s2",
-    "s5"
+    "s5",
+    "s7"
    ]
   },
   {
@@ -914,7 +922,8 @@ window.TERA = {
    "confianca": "provavel",
    "etapas": [
     "s3",
-    "s5"
+    "s5",
+    "s7"
    ]
   },
   {
@@ -926,7 +935,7 @@ window.TERA = {
    "enquadramento": "hospital",
    "confianca": "confirmado",
    "etapas": [
-    "s7"
+    "s10"
    ]
   },
   {
@@ -950,7 +959,7 @@ window.TERA = {
    "enquadramento": "regulador",
    "confianca": "confirmado",
    "etapas": [
-    "s6"
+    "s8"
    ]
   },
   {
@@ -974,7 +983,7 @@ window.TERA = {
    "enquadramento": "fornecedor",
    "confianca": "confirmado",
    "etapas": [
-    "s4"
+    "s6"
    ]
   },
   {
@@ -986,19 +995,19 @@ window.TERA = {
    "enquadramento": "fornecedor",
    "confianca": "confirmado",
    "etapas": [
-    "s4"
+    "s6"
    ]
   },
   {
    "id": "F19",
    "de": "ipen",
    "para": "rf",
-   "oque": "entrega iodo e lutécio-dotatato, mas falha com regularidade",
+   "oque": "entrega iodo e lutécio-dotatato, com atrasos recorrentes",
    "tipo": "entrega",
    "enquadramento": "fornecedor",
    "confianca": "confirmado",
    "etapas": [
-    "s4"
+    "s6"
    ]
   },
   {
@@ -1010,7 +1019,7 @@ window.TERA = {
    "enquadramento": "hospital",
    "confianca": "provavel",
    "etapas": [
-    "s4"
+    "s6"
    ]
   },
   {
@@ -1023,7 +1032,7 @@ window.TERA = {
    "confianca": "confirmado",
    "etapas": [
     "s3",
-    "s5"
+    "s9"
    ]
   },
   {
@@ -1035,7 +1044,7 @@ window.TERA = {
    "enquadramento": "convenio",
    "confianca": "provavel",
    "etapas": [
-    "s7"
+    "s9"
    ]
   },
   {
@@ -1048,7 +1057,7 @@ window.TERA = {
    "confianca": "confirmado",
    "etapas": [
     "s4",
-    "s5"
+    "s9"
    ]
   },
   {
@@ -1060,7 +1069,8 @@ window.TERA = {
    "enquadramento": "sem_codigo",
    "confianca": "confirmado",
    "etapas": [
-    "s3"
+    "s3",
+    "s9"
    ]
   },
   {
@@ -1074,7 +1084,7 @@ window.TERA = {
    "etapas": [
     "s2",
     "s3",
-    "s7"
+    "s10"
    ]
   },
   {
@@ -1086,8 +1096,8 @@ window.TERA = {
    "enquadramento": "hospital",
    "confianca": "confirmado",
    "etapas": [
-    "s5",
-    "s6"
+    "s7",
+    "s8"
    ]
   },
   {
@@ -1111,7 +1121,7 @@ window.TERA = {
    "enquadramento": "sem_dono",
    "confianca": "provavel",
    "etapas": [
-    "s7"
+    "s10"
    ]
   }
  ],
@@ -1127,7 +1137,7 @@ window.TERA = {
   {
    "id": "ciaf",
    "nome": "CIAF",
-   "faz": "Registra o pedido de senha de autorização e acompanha o mapa cirúrgico e ambulatorial · a navegação o chama de arcaico",
+   "faz": "Registra o pedido de senha de autorização e acompanha o mapa cirúrgico e ambulatorial · a navegação aguarda uma atualização, ainda sem data",
    "grupo": "navegacao",
    "estado": "existe",
    "confianca": "confirmado"
@@ -1215,7 +1225,7 @@ window.TERA = {
   {
    "id": "xls",
    "nome": "Planilha manual",
-   "faz": "Controla os prazos de pedido e de cancelamento da dose · funciona enquanto alguém lembra de olhar",
+   "faz": "Controla os prazos de pedido e de cancelamento da dose · depende de conferência manual",
    "grupo": "coordenacao_hoje",
    "estado": "existe",
    "confianca": "confirmado"
@@ -1231,7 +1241,7 @@ window.TERA = {
   {
    "id": "coord",
    "nome": "Camada de coordenação",
-   "faz": "Coordena sem substituir · dá a cada etapa um dono, um prazo e um histórico, lendo os sistemas que já existem",
+   "faz": "Coordena sem substituir · dá a cada etapa um responsável, um prazo e um histórico, lendo os sistemas que já existem",
    "grupo": "proposta",
    "estado": "proposto",
    "confianca": "provavel"
@@ -1413,58 +1423,82 @@ window.TERA = {
  "etapas": [
   {
    "id": "s1",
-   "nome": "Indicação",
-   "curto": "Indicação",
+   "nome": "Encaminhamento",
+   "curto": "Encaminhamento",
    "dono_hoje": "onco",
-   "passo": "V",
+   "passo": "PRE",
    "confianca": "confirmado"
   },
   {
    "id": "s2",
-   "nome": "Elegibilidade",
-   "curto": "Elegibilidade",
+   "nome": "Consulta e elegibilidade",
+   "curto": "Consulta e elegibilidade",
    "dono_hoje": "mn",
-   "passo": "V",
+   "passo": "PRE",
    "confianca": "confirmado"
   },
   {
    "id": "s3",
-   "nome": "Autorização",
-   "curto": "Autorização",
+   "nome": "Cobertura e autorização",
+   "curto": "Cobertura e autorização",
    "dono_hoje": "ninguem",
-   "passo": "T",
+   "passo": "JOR",
    "confianca": "confirmado"
   },
   {
    "id": "s4",
-   "nome": "Encomenda da dose",
-   "curto": "Encomenda da dose",
+   "nome": "Pedido da dose",
+   "curto": "Pedido da dose",
    "dono_hoje": "ninguem",
-   "passo": "T",
+   "passo": "JOR",
    "confianca": "confirmado"
   },
   {
    "id": "s5",
-   "nome": "Infusão",
-   "curto": "Infusão",
+   "nome": "Agendamento e preparo",
+   "curto": "Agendamento e preparo",
    "dono_hoje": "mn",
-   "passo": "T",
-   "confianca": "confirmado"
+   "passo": "JOR",
+   "confianca": "provavel"
   },
   {
    "id": "s6",
-   "nome": "Alta radiológica",
-   "curto": "Alta radiológica",
-   "dono_hoje": "fis",
-   "passo": "R",
+   "nome": "Produção, trânsito e recebimento",
+   "curto": "Produção e recebimento",
+   "dono_hoje": "rf",
+   "passo": "JOR",
    "confianca": "confirmado"
   },
   {
    "id": "s7",
-   "nome": "Retorno",
-   "curto": "Retorno ao oncologista",
+   "nome": "Dia da terapia",
+   "curto": "Dia da terapia",
+   "dono_hoje": "mn",
+   "passo": "JOR",
+   "confianca": "confirmado"
+  },
+  {
+   "id": "s8",
+   "nome": "Alta e pós-dose",
+   "curto": "Alta e pós-dose",
+   "dono_hoje": "fis",
+   "passo": "POS",
+   "confianca": "confirmado"
+  },
+  {
+   "id": "s9",
+   "nome": "Conta e auditoria",
+   "curto": "Conta e auditoria",
+   "dono_hoje": "aud",
+   "passo": "POS",
+   "confianca": "confirmado"
+  },
+  {
+   "id": "s10",
+   "nome": "Próximo ciclo ou retorno ao oncologista",
+   "curto": "Próximo ciclo ou retorno",
    "dono_hoje": "onco",
-   "passo": "R",
+   "passo": "POS",
    "confianca": "provavel"
   }
  ],
@@ -1481,7 +1515,7 @@ window.TERA = {
   {
    "id": "l-senha",
    "etapa": "s3",
-   "texto": "senha por ciclo, prazo de 3 a 30 dias, sem dono",
+   "texto": "senha por ciclo, prazo de 3 a 30 dias, sem responsável formal",
    "confianca": "confirmado",
    "dores": [
     "dono-jornada",
@@ -1491,33 +1525,15 @@ window.TERA = {
   {
    "id": "l-dose-senha",
    "etapa": "s4",
-   "texto": "encomenda antes da senha: risco sem dono",
+   "texto": "a dose é pedida antes da senha: o risco não tem responsável formal",
    "confianca": "confirmado",
    "dores": [
     "dose-antes-senha"
    ]
   },
   {
-   "id": "l-fornecedor",
-   "etapa": "s4",
-   "texto": "dose importada · o fornecedor público falha com regularidade",
-   "confianca": "confirmado",
-   "dores": [
-    "fornecimento-importado"
-   ]
-  },
-  {
-   "id": "l-box",
-   "etapa": "s5",
-   "texto": "box disputado com o diagnóstico, sem programação",
-   "confianca": "confirmado",
-   "dores": [
-    "sala-box"
-   ]
-  },
-  {
    "id": "l-equipe",
-   "etapa": "s5",
+   "etapa": "s7",
    "texto": "a enfermagem do andar radioativo troca o ano inteiro",
    "confianca": "confirmado",
    "dores": [
@@ -1525,9 +1541,18 @@ window.TERA = {
    ]
   },
   {
+   "id": "l-conta",
+   "etapa": "s9",
+   "texto": "o item pode ser glosado depois de autorizado, por não ter código próprio",
+   "confianca": "provavel",
+   "dores": [
+    "cobertura-sem-categoria"
+   ]
+  },
+  {
    "id": "l-retorno",
-   "etapa": "s7",
-   "texto": "ninguém avisa o oncologista por sistema",
+   "etapa": "s10",
+   "texto": "o retorno ao oncologista é feito por contato direto, sem registro em sistema",
    "confianca": "provavel",
    "dores": [
     "fragmentacao"
@@ -1571,6 +1596,21 @@ window.TERA = {
    "particular": "nao"
   },
   {
+   "servico": "dotatate",
+   "etapa": "s8",
+   "particular": "nao"
+  },
+  {
+   "servico": "dotatate",
+   "etapa": "s9",
+   "particular": "nao"
+  },
+  {
+   "servico": "dotatate",
+   "etapa": "s10",
+   "particular": "nao"
+  },
+  {
    "servico": "iodoterapia",
    "etapa": "s1",
    "particular": "nao"
@@ -1593,7 +1633,7 @@ window.TERA = {
   {
    "servico": "iodoterapia",
    "etapa": "s5",
-   "particular": "nao"
+   "particular": "sim"
   },
   {
    "servico": "iodoterapia",
@@ -1606,6 +1646,21 @@ window.TERA = {
    "particular": "nao"
   },
   {
+   "servico": "iodoterapia",
+   "etapa": "s8",
+   "particular": "nao"
+  },
+  {
+   "servico": "iodoterapia",
+   "etapa": "s9",
+   "particular": "nao"
+  },
+  {
+   "servico": "iodoterapia",
+   "etapa": "s10",
+   "particular": "nao"
+  },
+  {
    "servico": "mibg",
    "etapa": "s1",
    "particular": "nao"
@@ -1641,6 +1696,21 @@ window.TERA = {
    "particular": "nao"
   },
   {
+   "servico": "mibg",
+   "etapa": "s8",
+   "particular": "nao"
+  },
+  {
+   "servico": "mibg",
+   "etapa": "s9",
+   "particular": "nao"
+  },
+  {
+   "servico": "mibg",
+   "etapa": "s10",
+   "particular": "nao"
+  },
+  {
    "servico": "psma",
    "etapa": "s1",
    "particular": "nao"
@@ -1676,6 +1746,21 @@ window.TERA = {
    "particular": "nao"
   },
   {
+   "servico": "psma",
+   "etapa": "s8",
+   "particular": "nao"
+  },
+  {
+   "servico": "psma",
+   "etapa": "s9",
+   "particular": "nao"
+  },
+  {
+   "servico": "psma",
+   "etapa": "s10",
+   "particular": "nao"
+  },
+  {
    "servico": "radio223",
    "etapa": "s1",
    "particular": "nao"
@@ -1708,6 +1793,21 @@ window.TERA = {
   {
    "servico": "radio223",
    "etapa": "s7",
+   "particular": "nao"
+  },
+  {
+   "servico": "radio223",
+   "etapa": "s8",
+   "particular": "nao"
+  },
+  {
+   "servico": "radio223",
+   "etapa": "s9",
+   "particular": "nao"
+  },
+  {
+   "servico": "radio223",
+   "etapa": "s10",
    "particular": "nao"
   }
  ],
@@ -1759,7 +1859,7 @@ window.TERA = {
   {
    "etapa": "s3",
    "quando": "semana 2 a 6",
-   "vive": "Espera sem notícia · pode receber uma negativa, assinar um termo para pagar se o convênio negar, ou perder o plano no meio do caminho",
+   "vive": "Aguarda a autorização, sem um canal de acompanhamento · pode receber uma negativa, assinar um termo para pagar se o convênio negar, ou perder o plano no meio do caminho",
    "atua": "a navegação triagem a cobertura e aciona o controle de senhas · o controle de senhas pede a autorização no portal da operadora",
    "bastidor": "a operadora responde entre 3 e 30 dias, sem padrão · a senha vale por ciclo e pode expirar antes do uso · o comercial só entra quando o prazo estoura",
    "decide": "a operadora autoriza ou nega",
@@ -1783,7 +1883,7 @@ window.TERA = {
    "quando": "semana 3 a 6",
    "vive": "Não vê nada desta etapa · só sente quando a data muda",
    "atua": "a radiofarmácia pede a dose na plataforma do fabricante, 3 semanas antes, e só com a senha em mãos · para o ítrio, só às quintas",
-   "bastidor": "a dose chega em 17 dias com lote, atividade e data de uso · o prazo de cancelamento fica numa planilha que alguém precisa lembrar de olhar · se o paciente desiste ou piora, o custo cai na área",
+   "bastidor": "o prazo de cancelamento fica numa planilha, conferida manualmente · se o paciente desiste ou piora, o custo cai na área",
    "decide": "a medicina nuclear exige senha antes de pedir · a radiofarmácia cancela se a senha não vier",
    "dono": "ninguem",
    "fonte": "primaria",
@@ -1803,14 +1903,59 @@ window.TERA = {
   },
   {
    "etapa": "s5",
+   "quando": "semana 3 a 6",
+   "vive": "Recebe a data da terapia e as orientações de preparo · na iodoterapia, a dieta sem iodo de 30 dias e a injeção de estímulo",
+   "atua": "a medicina nuclear marca o dia da terapia e o leito ou o box · a enfermagem orienta o preparo",
+   "bastidor": "a agenda é montada a partir da senha e da data de entrega da dose · a elegibilidade do plano deveria ser reconferida antes do dia",
+   "decide": "o médico nuclear, com a agenda do serviço",
+   "dono": "mn",
+   "fonte": "inferencia",
+   "espera": "",
+   "sistema": [
+    "wise",
+    "pron",
+    "mail"
+   ],
+   "paga": [
+    "convenio",
+    "particular"
+   ],
+   "ganha": [
+    "paciente"
+   ]
+  },
+  {
+   "etapa": "s6",
+   "quando": "semana 3 a 6",
+   "vive": "Não vê esta etapa · conhece só a data marcada para a terapia",
+   "atua": "a indústria produz em lote semanal e envia com lote, atividade e data de uso · a radiofarmácia recebe, confere em dupla checagem e registra",
+   "bastidor": "a dose chega 17 dias depois do pedido · a previsão à indústria é fixa, de 3 semanas, e o cancelamento fecha 1 semana antes da produção",
+   "decide": "a indústria fixa o lote e a data de entrega",
+   "dono": "rf",
+   "fonte": "primaria",
+   "espera": "≈ 17 dias",
+   "sistema": [
+    "fab",
+    "xls"
+   ],
+   "paga": [
+    "convenio",
+    "particular"
+   ],
+   "ganha": [
+    "rf"
+   ]
+  },
+  {
+   "etapa": "s7",
    "quando": "dia D",
    "vive": "Recebe a dose por via oral ou na veia · ouve de novo os cuidados para não expor a família · vai para casa ou para o quarto blindado",
    "atua": "o médico nuclear conduz · a enfermagem do andar radioativo aplica e observa · a física médica mede",
-   "bastidor": "o box é o mesmo do diagnóstico e o horário é escolhido de memória · a elegibilidade do plano deveria ser conferida de novo neste dia",
+   "bastidor": "a elegibilidade do plano deveria ser conferida de novo neste dia · tudo que toca o paciente passa a ser rejeito controlado",
    "decide": "o médico nuclear",
    "dono": "mn",
    "fonte": "primaria",
-   "espera": "≈ 17 dias",
+   "espera": "",
    "sistema": [
     "wise",
     "pron",
@@ -1825,9 +1970,9 @@ window.TERA = {
    ]
   },
   {
-   "etapa": "s6",
+   "etapa": "s8",
    "quando": "dia D a D+3",
-   "vive": "Fica isolado até a radiação cair · a família espera a liberação",
+   "vive": "Fica isolado até a radiação cair, ou vai para casa com os cuidados de radioproteção · a família espera a liberação",
    "atua": "a física médica mede a radiação todos os dias e libera o paciente pela radioproteção · fraciona e registra",
    "bastidor": "tudo que tocou o paciente vira rejeito e vai para o cofre do subsolo por meses · a imagem pós-dose só vira dosimetria em pesquisa",
    "decide": "a física médica libera",
@@ -1847,11 +1992,34 @@ window.TERA = {
    ]
   },
   {
-   "etapa": "s7",
+   "etapa": "s9",
+   "quando": "depois da alta",
+   "vive": "Pode receber a cobrança do que o plano não cobriu, quando assinou o termo antes da terapia",
+   "atua": "o faturamento fecha a conta e a auditoria a confere com o que foi autorizado · o comercial trata com a operadora o que ficou em aberto",
+   "bastidor": "o teranóstico não tem código próprio: a conta combina dois códigos e pode ser glosada depois de autorizada · as taxas próprias do hospital nem sempre estão no contrato",
+   "decide": "a operadora paga ou glosa",
+   "dono": "aud",
+   "fonte": "primaria",
+   "espera": "",
+   "sistema": [
+    "siaf",
+    "portais",
+    "mail"
+   ],
+   "paga": [
+    "convenio",
+    "particular"
+   ],
+   "ganha": [
+    "aud"
+   ]
+  },
+  {
+   "etapa": "s10",
    "quando": "semana 4 a 6 depois",
    "vive": "Volta ao oncologista · sabe que em 4 a 6 semanas o ciclo recomeça, com nova senha e nova elegibilidade",
    "atua": "o médico nuclear devolve o paciente e escreve o relatório do ciclo · o oncologista retoma o cuidado",
-   "bastidor": "o retorno ao oncologista é mais uma demanda manual do médico nuclear · ninguém acompanha o intervalo entre ciclos por sistema · o primeiro paciente de PSMA do serviço teve a dose esquecida entre ciclos",
+   "bastidor": "o retorno ao oncologista é feito pelo médico nuclear, caso a caso · o intervalo entre ciclos não tem acompanhamento em sistema · já houve dose não reagendada entre ciclos",
    "decide": "o oncologista titular, com o tumor board",
    "dono": "onco",
    "fonte": "inferencia",
@@ -1872,13 +2040,13 @@ window.TERA = {
  ],
  "passagens": [
   {
-   "id": "vt",
-   "de": "V",
-   "para": "T",
-   "rotulo": "da elegibilidade à senha e à dose",
+   "id": "prejor",
+   "de": "PRE",
+   "para": "JOR",
+   "rotulo": "da elegibilidade à cobertura",
    "quem_hoje": "mn",
-   "como_hoje": "o médico nuclear dispara à mão até 4 demandas, por e-mail",
-   "quebra": "ninguém responde pela senha nem pela encomenda da dose",
+   "como_hoje": "o médico nuclear abre até 4 demandas por e-mail",
+   "quebra": "a senha e o pedido da dose são acompanhados de forma informal",
    "confianca": "confirmado",
    "etapas": [
     "s2",
@@ -1891,34 +2059,33 @@ window.TERA = {
    ]
   },
   {
-   "id": "tr",
-   "de": "T",
-   "para": "R",
-   "rotulo": "da infusão ao retorno",
+   "id": "jorpos",
+   "de": "JOR",
+   "para": "POS",
+   "rotulo": "do dia da terapia à alta",
    "quem_hoje": "mn",
    "como_hoje": "o médico nuclear devolve o paciente e escreve o relatório do ciclo",
-   "quebra": "o retorno ao oncologista é mais uma demanda manual",
+   "quebra": "o retorno ao oncologista é feito caso a caso, sem registro em sistema",
    "confianca": "provavel",
    "etapas": [
-    "s5",
-    "s6",
-    "s7"
+    "s7",
+    "s8"
    ],
    "dores": [
     "fragmentacao"
    ]
   },
   {
-   "id": "rt",
-   "de": "R",
-   "para": "T",
+   "id": "pospre",
+   "de": "POS",
+   "para": "PRE",
    "rotulo": "o próximo ciclo, de 4 a 6 semanas",
    "quem_hoje": "ninguem",
    "como_hoje": "cada ciclo pede nova elegibilidade, nova senha e nova dose",
-   "quebra": "ninguém acompanha o intervalo · uma dose já foi esquecida",
+   "quebra": "o intervalo entre ciclos não tem acompanhamento formal",
    "confianca": "confirmado",
    "etapas": [
-    "s7",
+    "s10",
     "s2",
     "s3"
    ],
@@ -1976,7 +2143,7 @@ window.TERA = {
    "alvo": "l-retorno",
    "campo": "resposta",
    "depois": "o oncologista vê o status do caso pelo painel, sem perder a titularidade",
-   "mecanismo": "o oncologista acompanha o ciclo sem precisar ser avisado à mão",
+   "mecanismo": "o oncologista acompanha o ciclo sem depender de aviso manual",
    "confianca": "aberto",
    "achados": [
     "papel-medico-nuclear-coadjuvante",
@@ -2031,7 +2198,7 @@ window.TERA = {
    "alvo_tipo": "lacuna",
    "alvo": "l-senha",
    "campo": "resposta",
-   "depois": "a senha tem dono · o prazo da operadora continua de 3 a 30 dias",
+   "depois": "a senha tem um responsável · o prazo da operadora continua de 3 a 30 dias",
    "mecanismo": "alguém acompanha a senha, mas a operadora segue no seu ritmo",
    "confianca": "provavel",
    "achados": [
@@ -2056,7 +2223,7 @@ window.TERA = {
    "id": "e10",
    "alternativa": "a3",
    "alvo_tipo": "passagem",
-   "alvo": "vt",
+   "alvo": "prejor",
    "campo": "quem",
    "depois": "nav",
    "mecanismo": "as demandas saem do navegador, não da memória do médico",
@@ -2069,7 +2236,7 @@ window.TERA = {
    "id": "e11",
    "alternativa": "a3",
    "alvo_tipo": "passagem",
-   "alvo": "tr",
+   "alvo": "jorpos",
    "campo": "quem",
    "depois": "nav",
    "mecanismo": "o navegador devolve o caso ao oncologista com o relatório do ciclo",
@@ -2082,7 +2249,7 @@ window.TERA = {
    "id": "e12",
    "alternativa": "a3",
    "alvo_tipo": "passagem",
-   "alvo": "rt",
+   "alvo": "pospre",
    "campo": "quem",
    "depois": "nav",
    "mecanismo": "o navegador acompanha o intervalo e abre o próximo ciclo",
@@ -2121,17 +2288,17 @@ window.TERA = {
    ]
   },
   {
-   "id": "e15",
-   "alternativa": "a5",
+   "id": "e26",
+   "alternativa": "a4",
    "alvo_tipo": "lacuna",
-   "alvo": "l-fornecedor",
+   "alvo": "l-conta",
    "campo": "resposta",
-   "depois": "um bloqueio de fornecedor aparece para todos os pacientes de uma vez",
-   "mecanismo": "a situação do fornecedor é vista no nível do hospital, não paciente a paciente",
-   "confianca": "provavel",
+   "depois": "a combinação de terapia e exame chega à conta já conferida contra a cobertura",
+   "mecanismo": "a glosa depois da autorização fica mais rara",
+   "confianca": "aberto",
    "achados": [
-    "fornecedor-bloqueado-divida-outro-departamento",
-    "ipen-falha-entrega-vs-industria-privada"
+    "teranostico-sem-codigo-tus-proprio",
+    "glosa-mecanismo-fluxo-caixa-operadora"
    ]
   },
   {
@@ -2179,10 +2346,10 @@ window.TERA = {
    "id": "e19",
    "alternativa": "a6",
    "alvo_tipo": "etapa",
-   "alvo": "s7",
+   "alvo": "s10",
    "campo": "sistema",
    "depois": "-mail +coord",
-   "mecanismo": "o retorno a quem indicou vira mensagem com dono",
+   "mecanismo": "o retorno a quem indicou vira mensagem com responsável",
    "confianca": "provavel",
    "achados": [
     "coordenacao-via-email-sem-rastreabilidade"
@@ -2192,9 +2359,9 @@ window.TERA = {
    "id": "e20",
    "alternativa": "a6",
    "alvo_tipo": "passagem",
-   "alvo": "vt",
+   "alvo": "prejor",
    "campo": "como",
-   "depois": "as demandas viram mensagens com dono e prazo, rastreáveis",
+   "depois": "as demandas viram mensagens com responsável e prazo, rastreáveis",
    "mecanismo": "o que hoje sai por e-mail passa a ter responsável e histórico",
    "confianca": "provavel",
    "achados": [
@@ -2234,25 +2401,12 @@ window.TERA = {
    "alvo": "l-elegibilidade",
    "campo": "resposta",
    "depois": "checklist em 2 camadas: o plano a cada atendimento, a clínica a cada ciclo",
-   "mecanismo": "a elegibilidade deixa de depender de quem lembra de conferir",
+   "mecanismo": "a conferência da elegibilidade passa a ser parte do fluxo",
    "confianca": "provavel",
    "achados": [
     "elegibilidade-segue-rol-mas-pode-extrapolar",
     "elegibilidade-convenio-deve-ser-checada-toda-visita",
     "elegibilidade-dinamica-por-ciclo"
-   ]
-  },
-  {
-   "id": "e25",
-   "alternativa": "a8",
-   "alvo_tipo": "lacuna",
-   "alvo": "l-box",
-   "campo": "resposta",
-   "depois": "a reserva troca a agenda de memória por uma regra visível",
-   "mecanismo": "diagnóstico e tratamento deixam de disputar o box no dia",
-   "confianca": "aberto",
-   "achados": [
-    "conflito-sala-diagnostico-vs-tratamento"
    ]
   }
  ],
@@ -2260,7 +2414,7 @@ window.TERA = {
   {
    "id": "sobrecarga",
    "loop": "R1",
-   "rotulo": "Sobrecarga de quem coordena de memória",
+   "rotulo": "Sobrecarga de quem coordena sem apoio de sistema",
    "curto": "Sobrecarga de quem coordena",
    "tipo": "dor",
    "vista": "sistema",
@@ -2371,7 +2525,7 @@ window.TERA = {
    "id": "vetor",
    "parte": "Vetor",
    "fisica": "a molécula que acha o receptor certo na célula e se liga a ele",
-   "analogo": "a navegação acha o paciente certo e o leva ao fim",
+   "analogo": "a navegação guia e acompanha o paciente certo e o leva ao fim",
    "vista": "jornadas",
    "item": "",
    "confianca": "provavel"
@@ -2398,7 +2552,7 @@ window.TERA = {
    "de": "atraso",
    "para": "credib",
    "sinal": "-",
-   "verbo": "corrói",
+   "verbo": "reduz",
    "freia": "nao"
   },
   {
@@ -2492,7 +2646,7 @@ window.TERA = {
    "estado": "depende",
    "nivel": 2,
    "opcoes": [
-    "uma das 8 alternativas candidatas",
+    "uma das 6 alternativas candidatas",
     "resposta única para o teranóstico ou diferente por terapia: leve na iodoterapia, pesada em PSMA e Dotatate"
    ]
   }
@@ -2523,7 +2677,7 @@ window.TERA = {
     "psma",
     "dotatate"
    ],
-   "numero": "2.6"
+   "numero": "2.3"
   },
   {
    "id": "a3",
@@ -2550,31 +2704,19 @@ window.TERA = {
    "confianca": "provavel",
    "nivel": 2,
    "terapias": [],
-   "numero": "2.5"
-  },
-  {
-   "id": "a5",
-   "nome": "Registro institucional da situação de cada fornecedor",
-   "curto": "Registro de situação do fornecedor",
-   "oque": "Um registro, no nível do hospital e não por paciente, da situação de cada fornecedor: pendências, cortes semanais, falhas. Um bloqueio atinge todos os pacientes daquele fornecedor de uma vez.",
-   "estado": "nao_existe",
-   "camada": "ecossistema",
-   "confianca": "provavel",
-   "nivel": 2,
-   "terapias": [],
-   "numero": "2.7"
+   "numero": "2.6"
   },
   {
    "id": "a6",
    "nome": "Canal formal de coordenação entre áreas, com trilha de auditoria",
    "curto": "Canal de coordenação com trilha",
-   "oque": "Um canal único para a coordenação entre áreas, com histórico e responsável por mensagem. Substitui o e-mail e as mensagens de celular, de onde hoje ninguém extrai o status.",
+   "oque": "Um canal único para a coordenação entre áreas, com histórico e responsável por mensagem. Substitui o e-mail e as mensagens de celular, em que o status hoje fica disperso.",
    "estado": "nao_existe",
    "camada": "sistema",
    "confianca": "provavel",
    "nivel": 1,
    "terapias": [],
-   "numero": "2.3"
+   "numero": "2.4"
   },
   {
    "id": "a7",
@@ -2586,19 +2728,7 @@ window.TERA = {
    "confianca": "provavel",
    "nivel": 2,
    "terapias": [],
-   "numero": "2.4"
-  },
-  {
-   "id": "a8",
-   "nome": "Reserva de sala e box para diagnóstico e tratamento",
-   "curto": "Reserva de sala e box",
-   "oque": "Um sistema de reserva dos boxes que diagnóstico e tratamento disputam hoje. Troca o conhecimento tácito da agenda de um médico por uma regra visível.",
-   "estado": "nao_existe",
-   "camada": "sistema",
-   "confianca": "aberto",
-   "nivel": 2,
-   "terapias": [],
-   "numero": "2.8"
+   "numero": "2.5"
   }
  ],
  "cenarios": [
@@ -2617,7 +2747,7 @@ window.TERA = {
    "id": "c2",
    "nome": "Paciente acompanhado",
    "aspecto": "assistencial",
-   "frase": "um dono do pedido ao retorno, e a elegibilidade conferida a cada ciclo",
+   "frase": "um responsável do pedido ao retorno, e a elegibilidade conferida a cada ciclo",
    "confianca": "provavel",
    "alternativas": [
     "a3",
@@ -2628,12 +2758,11 @@ window.TERA = {
    "id": "c3",
    "nome": "Dose garantida",
    "aspecto": "comercial",
-   "frase": "a cobertura, a senha e o fornecedor antes da encomenda",
+   "frase": "a cobertura e a senha antes do pedido da dose",
    "confianca": "provavel",
    "alternativas": [
     "a4",
-    "a2",
-    "a5"
+    "a2"
    ]
   }
  ],
@@ -2641,7 +2770,7 @@ window.TERA = {
   {
    "id": "dose-antes-senha",
    "numero": "1.1",
-   "nome": "Dose encomendada antes da senha"
+   "nome": "Senha ou elegibilidade expirada após a encomenda da dose"
   },
   {
    "id": "email",
@@ -2651,7 +2780,7 @@ window.TERA = {
   {
    "id": "dono-jornada",
    "numero": "1.3",
-   "nome": "Falta de dono da jornada"
+   "nome": "Jornada sem responsável formal"
   },
   {
    "id": "sessenta-dias",
@@ -2659,39 +2788,24 @@ window.TERA = {
    "nome": "60 dias entre indicação e infusão"
   },
   {
-   "id": "fornecimento-importado",
-   "numero": "1.5",
-   "nome": "Fornecimento importado (atraso do IPEN)"
-  },
-  {
    "id": "fragmentacao",
-   "numero": "1.6",
+   "numero": "1.5",
    "nome": "Fragmentação da jornada"
   },
   {
    "id": "operadora-elegibilidade",
-   "numero": "1.7",
+   "numero": "1.6",
    "nome": "Operadora suspende elegibilidade"
   },
   {
    "id": "cobertura-sem-categoria",
-   "numero": "1.8",
+   "numero": "1.7",
    "nome": "Teranóstico sem categoria de cobertura"
   },
   {
    "id": "conhecimento-pessoas",
-   "numero": "1.9",
+   "numero": "1.8",
    "nome": "Conhecimento que mora em pessoas"
-  },
-  {
-   "id": "sala-box",
-   "numero": "1.10",
-   "nome": "Sala e box disputados"
-  },
-  {
-   "id": "teto-cnen",
-   "numero": "1.11",
-   "nome": "Teto regulatório de capacidade (CNEN)"
   }
  ],
  "grupos": [
@@ -2701,7 +2815,7 @@ window.TERA = {
    "curto": "Medicina nuclear",
    "papeis": "coordenação médica · médicos nucleares · física médica e radioproteção",
    "cobertura": "coberto",
-   "por_que": "Decide a elegibilidade, planeja e executa o ciclo. Hoje o médico é o hub que dispara as demandas de memória e cobra os prazos.",
+   "por_que": "Decide a elegibilidade, planeja e executa o ciclo. Hoje o médico articula as demandas entre as áreas e acompanha os prazos.",
    "como_ouvir": "Já ouvida em 4 entrevistas. Validar os critérios no grupo focal.",
    "foco": ""
   },
@@ -2711,7 +2825,7 @@ window.TERA = {
    "curto": "Oncologista",
    "papeis": "oncologistas clínicos que indicam o paciente e mantêm a titularidade do caso",
    "cobertura": "ausente",
-   "por_que": "Indica o paciente, mantém a titularidade e o recebe de volta. É onde a coordenação informal quebra hoje, e ninguém desse lado foi ouvido.",
+   "por_que": "Indica o paciente, mantém a titularidade e o recebe de volta. É onde a coordenação informal fica mais exigente, e esse grupo ainda não foi ouvido.",
    "como_ouvir": "Uma entrevista curta com 2 oncologistas que já indicaram PSMA ou Dotatate, antes de qualquer pesagem de critério.",
    "foco": ""
   },
@@ -2721,7 +2835,7 @@ window.TERA = {
    "curto": "Navegação",
    "papeis": "navegação de alta complexidade · navegação oncológica · centro de comando operacional",
    "cobertura": "coberto",
-   "por_que": "Duas estruturas de navegação existem e nenhuma cobre o teranóstico. É o grupo que receberia o papel de navegador.",
+   "por_que": "Duas estruturas de navegação existem, e o teranóstico ainda não está no escopo delas. É o grupo que receberia o papel de navegador.",
    "como_ouvir": "Já ouvida. Validar no grupo focal com a coordenação da navegação.",
    "foco": ""
   },
@@ -2771,7 +2885,7 @@ window.TERA = {
    "curto": "Paciente",
    "papeis": "pacientes em ciclo de teranóstico · acompanhantes",
    "cobertura": "ausente",
-   "por_que": "Vive os 60 dias de espera, o isolamento e a conta. Nenhum paciente foi ouvido ainda: tudo sobre ele nesta peça é inferência.",
+   "por_que": "Vive os 60 dias de espera, o isolamento e a conta. Os pacientes ainda não foram ouvidos: tudo sobre eles nesta peça é inferência.",
    "como_ouvir": "Aplicar o roteiro curto já pronto a 3 pacientes e acompanhantes: como soube do tratamento, onde se perdeu, o que o convênio cobria.",
    "foco": "sim"
   }
@@ -2808,7 +2922,7 @@ window.TERA = {
   {
    "id": "c07",
    "grupo": "nav",
-   "criterio": "Substituir o sistema arcaico de navegação por um fluxo estruturado",
+   "criterio": "Atualizar o sistema de navegação para um fluxo estruturado",
    "confianca": "confirmado",
    "alternativas": [
     "a1",
@@ -2915,19 +3029,6 @@ window.TERA = {
    ]
   },
   {
-   "id": "c11",
-   "grupo": "rf",
-   "criterio": "Ver a situação de cada fornecedor no nível da instituição",
-   "confianca": "confirmado",
-   "alternativas": [
-    "a5"
-   ],
-   "achados": [
-    "fornecedor-bloqueado-divida-outro-departamento",
-    "radiofarmaco-unico-por-fabricante-sem-substituicao"
-   ]
-  },
-  {
    "id": "c14",
    "grupo": "com",
    "criterio": "Rastrear o status da senha fora do e-mail",
@@ -2947,8 +3048,7 @@ window.TERA = {
    "criterio": "Receber com antecedência a agenda de internação e procedimento",
    "confianca": "provavel",
    "alternativas": [
-    "a1",
-    "a8"
+    "a1"
    ],
    "achados": [
     "grupo-sentinela-coordenacao-interna",
@@ -3006,17 +3106,6 @@ window.TERA = {
    "achados": [
     "navegador-teranostico-ausente",
     "navegacao-alta-complexidade-vs-oncologica"
-   ]
-  },
-  {
-   "id": "c12",
-   "grupo": "rf",
-   "criterio": "Saber a topologia futura da radiofarmácia no Parque Global",
-   "confianca": "aberto",
-   "alternativas": [],
-   "achados": [
-    "incerteza-parque-global-radiofarmacia-descentralizada",
-    "planta-gmp-parque-global-2027"
    ]
   },
   {
@@ -3086,7 +3175,7 @@ window.TERA = {
   {
    "id": "c05",
    "grupo": "mn",
-   "criterio": "Tirar do médico o papel de disparar as demandas de memória",
+   "criterio": "Tirar do médico a tarefa de abrir as demandas sem apoio de sistema",
    "confianca": "confirmado",
    "alternativas": [
     "a3",
@@ -3271,7 +3360,7 @@ window.TERA = {
   {
    "id": "p17",
    "curto": "Mapear o lado de fora da fronteira com a oncologia",
-   "decisao": "O fluxo quebra quando a oncologia externa entra, e ninguém desse lado foi ouvido. Entra no mapeamento As-Is comercial e no refinamento das jornadas.",
+   "decisao": "A coordenação fica mais exigente quando a oncologia externa entra, e esse grupo ainda não foi ouvido. Entra no mapeamento As-Is comercial e no refinamento das jornadas.",
    "tipo": "aberta",
    "dono": "equipe do HDLab",
    "prazo": "Fase 2",
@@ -3279,18 +3368,6 @@ window.TERA = {
    "alternativas": [
     "a3",
     "a6"
-   ]
-  },
-  {
-   "id": "p18",
-   "curto": "Topologia da radiofarmácia no Parque Global",
-   "decisao": "Centralizada ou distribuída com o Morumbi: nem a radiofarmácia sabe. Define onde a dose chega e quem a libera a partir de 2027.",
-   "tipo": "aberta",
-   "dono": "gestão institucional · radiofarmácia",
-   "prazo": "a definir",
-   "status": "aberta",
-   "alternativas": [
-    "a5"
    ]
   },
   {
@@ -3310,7 +3387,7 @@ window.TERA = {
    "rotulo": "Da indicação à infusão, hoje",
    "unidade": "dias",
    "leitura": "Entre a indicação e a infusão passam, em média, 60 dias.",
-   "passo": "T",
+   "passo": "JOR",
    "confianca": "provavel",
    "valor": 60
   },
@@ -3319,7 +3396,7 @@ window.TERA = {
    "rotulo": "Autorização comercial",
    "unidade": "dias",
    "leitura": "A autorização comercial toma 21 dias do ciclo.",
-   "passo": "T",
+   "passo": "JOR",
    "confianca": "provavel",
    "valor": 21
   },
@@ -3328,7 +3405,7 @@ window.TERA = {
    "rotulo": "Entrega da dose",
    "unidade": "dias",
    "leitura": "A dose chega 17 dias depois de pedida na plataforma do fabricante.",
-   "passo": "T",
+   "passo": "JOR",
    "confianca": "provavel",
    "valor": 17
   },
@@ -3337,7 +3414,7 @@ window.TERA = {
    "rotulo": "Meta do projeto",
    "unidade": "dias úteis",
    "leitura": "A meta do projeto é fechar o ciclo em 15 dias úteis.",
-   "passo": "T",
+   "passo": "JOR",
    "confianca": "confirmado",
    "valor": 15
   },
@@ -3346,7 +3423,7 @@ window.TERA = {
    "rotulo": "Senha, no melhor caso",
    "unidade": "dias",
    "leitura": "A operadora autoriza em 3 dias no melhor caso.",
-   "passo": "T",
+   "passo": "JOR",
    "confianca": "provavel",
    "valor": 3
   },
@@ -3355,7 +3432,7 @@ window.TERA = {
    "rotulo": "Senha, no pior caso",
    "unidade": "dias",
    "leitura": "No pior caso, a senha leva 30 dias.",
-   "passo": "T",
+   "passo": "JOR",
    "confianca": "provavel",
    "valor": 30
   },
@@ -3364,7 +3441,7 @@ window.TERA = {
    "rotulo": "Prazo oficial da ANS",
    "unidade": "dias",
    "leitura": "O prazo oficial da ANS para autorizar é de 21 dias.",
-   "passo": "T",
+   "passo": "JOR",
    "confianca": "confirmado",
    "valor": 21
   },
@@ -3373,7 +3450,7 @@ window.TERA = {
    "rotulo": "Previsão da indústria",
    "unidade": "dias",
    "leitura": "A indústria exige o pedido 3 semanas antes de produzir.",
-   "passo": "T",
+   "passo": "JOR",
    "confianca": "confirmado",
    "valor": 21
   },
@@ -3382,7 +3459,7 @@ window.TERA = {
    "rotulo": "Prazo de cancelamento",
    "unidade": "dias",
    "leitura": "Cancelar a menos de 1 semana da produção custa a dose.",
-   "passo": "T",
+   "passo": "JOR",
    "confianca": "confirmado",
    "valor": 7
   },
@@ -3391,7 +3468,7 @@ window.TERA = {
    "rotulo": "Da encomenda à chegada",
    "unidade": "dias",
    "leitura": "Da encomenda à chegada da dose, 17 dias.",
-   "passo": "T",
+   "passo": "JOR",
    "confianca": "provavel",
    "valor": 17
   },
@@ -3400,7 +3477,7 @@ window.TERA = {
    "rotulo": "Senha pedida com antecedência",
    "unidade": "dias",
    "leitura": "A senha é pedida 30 dias antes para viabilizar a importação.",
-   "passo": "T",
+   "passo": "JOR",
    "confianca": "provavel",
    "valor": 30
   },
@@ -3409,7 +3486,7 @@ window.TERA = {
    "rotulo": "Senha pedida com antecedência, máximo",
    "unidade": "dias",
    "leitura": "Pedida até 40 dias antes, a senha pode perder efeito se o plano cair.",
-   "passo": "T",
+   "passo": "JOR",
    "confianca": "provavel",
    "valor": 40
   },
@@ -3418,7 +3495,7 @@ window.TERA = {
    "rotulo": "Intervalo entre ciclos, mínimo",
    "unidade": "dias",
    "leitura": "Um ciclo novo a cada 4 semanas, no mínimo.",
-   "passo": "R",
+   "passo": "POS",
    "confianca": "provavel",
    "valor": 28
   },
@@ -3427,7 +3504,7 @@ window.TERA = {
    "rotulo": "Intervalo entre ciclos, máximo",
    "unidade": "dias",
    "leitura": "Um ciclo novo a cada 6 semanas, no máximo.",
-   "passo": "R",
+   "passo": "POS",
    "confianca": "provavel",
    "valor": 42
   },
@@ -3436,7 +3513,7 @@ window.TERA = {
    "rotulo": "Ciclos por tratamento, mínimo",
    "unidade": "ciclos",
    "leitura": "Um tratamento tem de 4 a 6 ciclos.",
-   "passo": "R",
+   "passo": "POS",
    "confianca": "provavel",
    "valor": 4
   },
@@ -3445,7 +3522,7 @@ window.TERA = {
    "rotulo": "Ciclos por tratamento, máximo",
    "unidade": "ciclos",
    "leitura": "Seis ciclos, cada um com sua senha e sua elegibilidade.",
-   "passo": "R",
+   "passo": "POS",
    "confianca": "provavel",
    "valor": 6
   },
@@ -3463,7 +3540,7 @@ window.TERA = {
    "rotulo": "Telas por senha",
    "unidade": "telas",
    "leitura": "Uma senha passa por 5 a 6 telas.",
-   "passo": "T",
+   "passo": "JOR",
    "confianca": "provavel",
    "valor": 6
   },
@@ -3472,7 +3549,7 @@ window.TERA = {
    "rotulo": "Minutos por senha",
    "unidade": "minutos",
    "leitura": "Até 15 minutos por senha, navegando entre sistemas.",
-   "passo": "T",
+   "passo": "JOR",
    "confianca": "provavel",
    "valor": 15
   },
@@ -3480,8 +3557,8 @@ window.TERA = {
    "id": "demandas_por_consulta",
    "rotulo": "Demandas por consulta",
    "unidade": "demandas",
-   "leitura": "A cada consulta, o médico nuclear dispara até 4 demandas à mão.",
-   "passo": "V",
+   "leitura": "A cada consulta, o médico nuclear abre até 4 demandas por e-mail.",
+   "passo": "PRE",
    "confianca": "provavel",
    "valor": 4
   },
@@ -3490,7 +3567,7 @@ window.TERA = {
    "rotulo": "Enfermeiros que entram por ano",
    "unidade": "enfermeiros por ano",
    "leitura": "Entram 34 enfermeiros por ano nos leitos terapêuticos. É contagem, não porcentagem.",
-   "passo": "T",
+   "passo": "JOR",
    "confianca": "confirmado",
    "valor": 34
   },
@@ -3544,7 +3621,7 @@ window.TERA = {
    "rotulo": "Preparo da iodoterapia",
    "unidade": "dias",
    "leitura": "A iodoterapia exige 30 dias de dieta e 30 dias de antecedência no pedido.",
-   "passo": "V",
+   "passo": "PRE",
    "confianca": "provavel",
    "valor": 30
   },
@@ -3553,7 +3630,7 @@ window.TERA = {
    "rotulo": "Corte semanal do ítrio",
    "unidade": "dias",
    "leitura": "Perder a quinta do pedido de ítrio custa 1 semana inteira.",
-   "passo": "T",
+   "passo": "JOR",
    "confianca": "provavel",
    "valor": 7
   },
@@ -3589,72 +3666,72 @@ window.TERA = {
   {
    "termo": "teranóstico",
    "explicacao": "Terapia e diagnóstico na mesma molécula: o mesmo ligante leva o isótopo que mostra a doença e o que a trata.",
-   "passo": "V"
+   "passo": "PRE"
   },
   {
    "termo": "radiofármaco",
    "explicacao": "Remédio com um isótopo radioativo. O de diagnóstico é produzido no hospital. O terapêutico vem de fora do país.",
-   "passo": "T"
+   "passo": "JOR"
   },
   {
    "termo": "ligante",
    "explicacao": "A parte da molécula que acha o alvo no tumor, como o PSMA na próstata.",
-   "passo": "V"
+   "passo": "PRE"
   },
   {
    "termo": "meia-vida",
    "explicacao": "O tempo em que a atividade cai pela metade. No lutécio-177 são 6,64 dias: a dose decai enquanto a senha não chega.",
-   "passo": "R"
+   "passo": "POS"
   },
   {
    "termo": "dosimetria",
    "explicacao": "Medir a dose de radiação que cada órgão recebeu, com imagens em 3 momentos depois da infusão. Hoje só como pesquisa.",
-   "passo": "R"
+   "passo": "POS"
   },
   {
    "termo": "senha de autorização",
    "explicacao": "A aprovação da operadora para um procedimento. No teranóstico, uma senha por ciclo.",
-   "passo": "T"
+   "passo": "JOR"
   },
   {
    "termo": "elegibilidade",
    "explicacao": "Se o paciente pode receber o tratamento: a clínica (rim, sangue) e a do plano (o convênio ainda vale no dia).",
-   "passo": "V"
+   "passo": "PRE"
   },
   {
    "termo": "rol da ANS",
    "explicacao": "A lista de procedimentos que o plano de saúde é obrigado a cobrir. O teranóstico não está nela como categoria própria.",
-   "passo": "T"
+   "passo": "JOR"
   },
   {
    "termo": "glosa",
    "explicacao": "A operadora nega o pagamento depois de autorizar e de o procedimento acontecer. Concentra-se no fim e no início do ano.",
-   "passo": "R"
+   "passo": "POS"
   },
   {
    "termo": "janela de risco",
    "explicacao": "O intervalo em que a dose já foi encomendada e a senha ainda não chegou, ou em que a senha chegou e pode expirar antes do uso.",
-   "passo": "T"
+   "passo": "JOR"
   },
   {
    "termo": "navegador",
-   "explicacao": "Profissional que acompanha o paciente de ponta a ponta. Existem 2 navegações no hospital e nenhuma é do teranóstico.",
+   "explicacao": "Profissional que acompanha o paciente de ponta a ponta. Existem 2 navegações no hospital, e o teranóstico ainda não está no escopo delas.",
    "passo": ""
   },
   {
    "termo": "tumor board",
    "explicacao": "Reunião em que médicos de várias especialidades decidem o caso. O teranóstico ganhou o seu em 2026.",
-   "passo": "V"
+   "passo": "PRE"
   },
   {
    "termo": "alta radiológica",
    "explicacao": "A liberação do paciente pela física médica, quando a radiação medida permite. Só a física libera.",
-   "passo": "R"
+   "passo": "POS"
   },
   {
    "termo": "cota semanal",
    "explicacao": "O limite de atividade por isótopo que a CNEN aprova no plano de radioproteção. Define quantos pacientes cabem na semana.",
-   "passo": "T"
+   "passo": "JOR"
   },
   {
    "termo": "grupo Sentinela",
@@ -3663,7 +3740,7 @@ window.TERA = {
   },
   {
    "termo": "camada de coordenação",
-   "explicacao": "A proposta do projeto: um dono por etapa, prazos e histórico, por cima dos sistemas que já existem.",
+   "explicacao": "A proposta do projeto: um responsável por etapa, prazos e histórico, por cima dos sistemas que já existem.",
    "passo": ""
   }
  ],
@@ -3680,15 +3757,14 @@ window.TERA = {
    "terapias": [],
    "camada": "ecossistema",
    "alternativas": [
-    "a2",
-    "a5"
+    "a2"
    ],
    "padrao_de": [],
    "ordem": 1
   },
   {
    "slug": "fluxo-quebra-quando-oncologia-externa-entra",
-   "curto": "Funciona enquanto é interno: quebra quando a oncologia externa entra",
+   "curto": "Funciona bem enquanto é interno e fica mais exigente quando a oncologia externa entra",
    "titulo": "A coordenação \"azeitada\" da iodoterapia só funciona porque é 100% interna — quebra quando a oncologia externa entra",
    "citacao": "no caso de [PSMA/dotatate] os oncologistas estão envolvidos [...] a parte burocrática administrativa de compra de fármacos não compete só a gente aqui [...] o caso da tireoide funciona super bem. Nos outros, é um pouco mais amplo, envolve…",
    "papel": "coordenador médico da medicina nuclear",
@@ -3860,7 +3936,7 @@ window.TERA = {
   },
   {
    "slug": "fluxo-demandas-disparadas-por-atendimento",
-   "curto": "A cada consulta, o médico dispara de memória até 4 demandas",
+   "curto": "A cada consulta, o médico abre até 4 demandas por e-mail",
    "titulo": "A cada consulta, o médico nuclear dispara manualmente até 4 demandas paralelas para áreas diferentes — hoje ele mesmo é o \"hub\" que deveria ser do navegador",
    "citacao": "o médico nuclear começa a disparar demandas [...] tem essas 3 [e uma quarta] [...] de tempos em tempos ele é acionado por um desses [...] Ela é totalmente fragmentada.",
    "papel": "gerente da imagem molecular e teranóstica",
@@ -3890,15 +3966,13 @@ window.TERA = {
    ],
    "terapias": [],
    "camada": "ecossistema",
-   "alternativas": [
-    "a5"
-   ],
+   "alternativas": [],
    "padrao_de": [],
    "ordem": 5
   },
   {
    "slug": "sistema-ciaf-wise-navegacao-arcaico",
-   "curto": "O sistema de navegação é arcaico e a melhoria não tem previsão",
+   "curto": "O sistema de navegação aguarda uma atualização, ainda sem data",
    "titulo": "O sistema atual de navegação (CIAF + Wise) é descrito pela própria usuária como \"arcaico\", melhoria está em andamento mas sem previsão",
    "citacao": "é um pouquinho ainda tá um pouquinho arcaico [...] justamente essa acompanhar as etapas do paciente, a jornada dele [...] esse é o objetivo [...] mas ainda não está pronto.",
    "papel": "enfermeira sênior da navegação",
@@ -3964,9 +4038,7 @@ window.TERA = {
     "psma"
    ],
    "camada": "ecossistema",
-   "alternativas": [
-    "a5"
-   ],
+   "alternativas": [],
    "padrao_de": [],
    "ordem": 6
   },
@@ -4032,7 +4104,7 @@ window.TERA = {
   },
   {
    "slug": "ipen-falha-entrega-vs-industria-privada",
-   "curto": "A indústria quase não falha. O fornecedor público falha com frequência",
+   "curto": "A indústria entrega no prazo, o fornecedor público tem atrasos recorrentes",
    "titulo": "Fornecedores industriais privados quase nunca falham, o IPEN (fornecedor público) falha com regularidade — reagendamentos concentram-se em Lutécio/Dotatato",
    "citacao": "quando é uma indústria farmacêutica, tipo Nova Artes ou Tecs, eles não falham [...] mas, por exemplo, o IPEN, que é o fornecedor público, ele falha nessa entrega [...] essas duas terapias a gente sofre um pouco mais com necessidade de…",
    "papel": "gerente da imagem molecular e teranóstica",
@@ -4043,9 +4115,7 @@ window.TERA = {
     "dotatate"
    ],
    "camada": "ecossistema",
-   "alternativas": [
-    "a5"
-   ],
+   "alternativas": [],
    "padrao_de": [
     "fornecedor-bloqueado-divida-outro-departamento"
    ],
@@ -4102,9 +4172,7 @@ window.TERA = {
     "iodoterapia"
    ],
    "camada": "ecossistema",
-   "alternativas": [
-    "a5"
-   ],
+   "alternativas": [],
    "padrao_de": [],
    "ordem": 8
   },
@@ -4121,8 +4189,7 @@ window.TERA = {
    "terapias": [],
    "camada": "sistema",
    "alternativas": [
-    "a6",
-    "a5"
+    "a6"
    ],
    "padrao_de": [],
    "ordem": 8
@@ -4200,9 +4267,7 @@ window.TERA = {
     "psma"
    ],
    "camada": "sistema",
-   "alternativas": [
-    "a8"
-   ],
+   "alternativas": [],
    "padrao_de": [],
    "ordem": 9
   },
@@ -4273,9 +4338,7 @@ window.TERA = {
     "psma"
    ],
    "camada": "sistema",
-   "alternativas": [
-    "a8"
-   ],
+   "alternativas": [],
    "padrao_de": [],
    "ordem": 10
   },
@@ -4382,9 +4445,7 @@ window.TERA = {
    ],
    "terapias": [],
    "camada": "ecossistema",
-   "alternativas": [
-    "a5"
-   ],
+   "alternativas": [],
    "padrao_de": [],
    "ordem": 12
   },
@@ -4409,7 +4470,7 @@ window.TERA = {
   },
   {
    "slug": "navegacao-alta-complexidade-vs-oncologica",
-   "curto": "Há 2 navegações no hospital. Nenhuma é dedicada ao teranóstico",
+   "curto": "Há 2 navegações no hospital, e o teranóstico ainda não está no escopo delas",
    "titulo": "Existem 2 navegações distintas no Einstein — nenhuma delas é formalmente dedicada ao teranóstico",
    "citacao": "eu entendo que isso ainda não está mapeado dentro [do] global [...] as terapias que elas acompanham hoje dentro da medicina nuclear, ela é aqui a nível matriz mesmo.",
    "papel": "enfermeira sênior da navegação",
@@ -4464,7 +4525,7 @@ window.TERA = {
   },
   {
    "slug": "credibilidade-erodida-por-atraso",
-   "curto": "Atraso repetido corrói a credibilidade e reduz os encaminhamentos",
+   "curto": "Atrasos repetidos pesam na confiança e reduzem os encaminhamentos",
    "titulo": "Atraso repetido não só piora o desfecho clínico — corrói a credibilidade da modalidade e reduz referenciamento futuro",
    "citacao": "o outro ponto que eu acho que é crítico também é a credibilidade do médico titular do paciente e do próprio paciente nessa modalidade de terapia [...] se não for cumprido dentro do prazo adequado [...] ninguém manda, aquilo demora demais.",
    "papel": "gerente da imagem molecular e teranóstica",
@@ -4645,9 +4706,7 @@ window.TERA = {
     "dotatate"
    ],
    "camada": "ecossistema",
-   "alternativas": [
-    "a5"
-   ],
+   "alternativas": [],
    "padrao_de": [],
    "ordem": 17
   },
@@ -4730,9 +4789,7 @@ window.TERA = {
    ],
    "curto": "Um fornecedor já bloqueou o hospital inteiro por nota de outra área",
    "camada": "ecossistema",
-   "alternativas": [
-    "a5"
-   ],
+   "alternativas": [],
    "ordem": 4
   },
   {
@@ -4780,7 +4837,7 @@ window.TERA = {
     "fluxo-demandas-disparadas-por-atendimento",
     "navegacao-alta-complexidade-vs-oncologica"
    ],
-   "curto": "Ninguém responde pela jornada inteira: não há navegador do teranóstico",
+   "curto": "A jornada inteira ainda não tem um responsável formal: não há navegador do teranóstico",
    "camada": "jornadas",
    "alternativas": [
     "a3"
@@ -4819,7 +4876,7 @@ window.TERA = {
     "autorização e convênio"
    ],
    "achados": [],
-   "curto": "Há seguro para a dose perdida por paciente inapto, acionado à mão",
+   "curto": "Há seguro para a dose perdida por paciente inapto, acionado manualmente",
    "camada": "servicos",
    "alternativas": [
     "a6"
@@ -4899,6 +4956,12 @@ window.TERA = {
    "titulo": "AS IS e TO BE",
    "o_que_mudou": "A aba 4 virou JORNADA AS IS: os três eventos (ver, tratar, reavaliar), as passagens entre eles, quem acompanha a travessia inteira e o ciclo dia a dia, e um clique num evento abre só os seus passos. Uma jornada só, sem a escolha de terapia: o que falta em cada etapa, de todas as terapias, numa leitura geral. Nova aba 6, JORNADA TO BE: a mesma jornada com o efeito das alternativas escolhidas, calculado e não desenhado, com um placar de antes e depois, e três cenários para escolher: desfragmentação (operacional), paciente acompanhado (assistencial) e dose garantida (comercial). Uma numeração só liga as abas e os slides: as dores de 1.1 a 1.11 marcam os pontos vermelhos da jornada de hoje, e as alternativas de 2.1 a 2.8, pela ordem provisória da matriz multicritério, aparecem na Direção e na jornada com as escolhas",
    "versao": 12
+  },
+  {
+   "data": "2026-10-29",
+   "titulo": "Pré, jornada e pós · tom neutro",
+   "o_que_mudou": "Depois da conversa com o par de projeto: a peça passa a se ler em pré-jornada, jornada e pós-jornada, e a jornada ganha 10 etapas, com agendamento e preparo, produção e recebimento da dose, e conta e auditoria. O diagnóstico fica só com os pilares do escopo (comercial, assistencial, operacional e sistema), renumerado, com 8 dores e 6 alternativas. O texto de toda a peça foi revisto num tom neutro, para coordenadores e executivos. O ciclo, dia a dia, ganhou duas raias, a da dose e a da senha, com a janela de risco entre elas.",
+   "versao": 13
   }
  ]
 };

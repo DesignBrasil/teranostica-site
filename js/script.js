@@ -3,11 +3,11 @@
      0 abertura    — o átomo teranóstico: a mesma molécula leva o que vê e o que trata; a dose decai enquanto a senha
                      não chega; a reação em cadeia (R1) e a barra de controle (B1)
      1 ecossistema — quem regula, paga, fornece e trata, e o que cada um impõe ao ciclo
-     2 sistema     — os sistemas que já existem, hoje coordenados de memória; e a camada de coordenação por cima
+     2 sistema     — os sistemas que já existem, hoje coordenados com a experiência das equipes; e a camada de coordenação por cima
      3 serviços    — as cinco terapias: o mesmo ciclo, coordenação diferente
-     4 jornada AS IS — os três eventos (ver, tratar, reavaliar), as passagens entre eles e quem acompanha a travessia;
-                     um clique num evento abre os seus passos; uma jornada só, sem a variável terapia
-     5 direção     — a decisão da Fase 3: a premissa, a arquitetura e o que construir primeiro; as oito alternativas
+     4 jornada AS IS — os três momentos (pré-jornada, jornada, pós-jornada) em 10 etapas, as passagens entre eles e quem
+                     acompanha a travessia; um clique num momento abre as suas etapas; uma jornada só, sem a variável terapia
+     5 direção     — a decisão da Fase 3: a premissa, a arquitetura e o que construir primeiro; as alternativas
      6 jornada TO BE — a mesma jornada com o efeito das alternativas escolhidas, calculado (efeitos.csv), com um placar
    Dados: js/data.js, GERADO de 08_sintese/dados/*.csv (não editar à mão). Sem nomes de pessoas, sem reais.
    Motor herdado da Sistemática do Health Data Brasil (encaixa/dimensiona, estado na URL, cartões empilhados) e da
@@ -27,7 +27,9 @@
   var ISO = indexa(D.isotopos, "id"), PASSO = indexa(D.passos, "sigla"), ALT = indexa(D.alternativas, "id"), GRUPO = indexa(D.grupos, "id");
   var LOOP = indexa(D.loops, "id"), CONT = indexa(D.contagens, "id");
   var ETAPAS = D.etapas || [], PASSOS = D.passos || [], ACH = D.achados || [], PAD = D.padroes || [];
-  var SUP = { V: "V", T: "T", R: "↻" };
+  var SUP = { PRE: "1", JOR: "2", POS: "3" }; /* os três momentos (29/10/2026): pré-jornada, jornada, pós-jornada */
+  var COR_ISO = { ver: "#1774DE", tratar: "#0f7a64" }; /* o isótopo de ver e o de tratar: a física da molécula, não os momentos */
+  var EXTENSO = { 2: "DUAS", 3: "TRÊS", 4: "QUATRO", 5: "CINCO", 6: "SEIS", 7: "SETE", 8: "OITO", 9: "NOVE", 10: "DEZ" };
 
   /* ---------- utilidades ---------- */
   function el(tag, attrs, pai) { var e = document.createElementNS(NS, tag); for (var k in attrs) e.setAttribute(k, attrs[k]); if (pai) pai.appendChild(e); return e; }
@@ -76,7 +78,7 @@
 
   /* ---------- as cores vêm do dado: os passos e os enquadramentos viram CSS ---------- */
   (function () {
-    var regras = [":root{" + PASSOS.map(function (p) { return "--" + ({ V: "ver", T: "tratar", R: "ciclo" }[p.sigla] || p.sigla) + ":" + p.cor; }).join(";") + "}"];
+    var regras = [":root{" + PASSOS.map(function (p) { return "--passo-" + p.sigla.toLowerCase() + ":" + p.cor; }).join(";") + "}"];
     Object.keys(ENQ).forEach(function (k) {
       var e = ENQ[k];
       regras.push(".enq-" + k + "{background:" + e.fundo + ";color:" + e.cor + ";border-color:" + e.cor + "55}",
@@ -279,14 +281,13 @@
     }
     if (completo) { /* a molécula no dia 0: o núcleo de ver e o de tratar */
       var iv = opts.isoVer, cx0 = X(0) + 10, cy0 = Y(1) - 2;
-      h += "<circle cx='" + (cx0 + 6) + "' cy='" + cy0 + "' r='9' class='at-nuc' fill='" + passoCor("V") + "'/><text class='at-nuc-rot' x='" + (cx0 + 6) + "' y='" + (cy0 + 2.6) + "' text-anchor='middle'>" + esc(iv ? iv.simbolo.replace(/-.*/, "") : "V") + "</text>";
-      h += "<circle cx='" + (cx0 + 20) + "' cy='" + (cy0 + 2) + "' r='10.5' class='at-nuc' fill='" + passoCor("T") + "'/><text class='at-nuc-rot' x='" + (cx0 + 20) + "' y='" + (cy0 + 4.8) + "' text-anchor='middle'>" + esc(iso.simbolo.replace(/-.*/, "")) + "</text>";
-      /* V · T · R no eixo do tempo */
-      [["V", 0, "start"], ["T", ent !== null ? ent : 21, "middle"], ["R", c0 !== null ? c0 : 28, "middle"]].forEach(function (m) {
+      h += "<circle cx='" + (cx0 + 6) + "' cy='" + cy0 + "' r='9' class='at-nuc' fill='" + COR_ISO.ver + "'/><text class='at-nuc-rot' x='" + (cx0 + 6) + "' y='" + (cy0 + 2.6) + "' text-anchor='middle'>" + esc(iv ? iv.simbolo.replace(/-.*/, "") : "V") + "</text>";
+      h += "<circle cx='" + (cx0 + 20) + "' cy='" + (cy0 + 2) + "' r='10.5' class='at-nuc' fill='" + COR_ISO.tratar + "'/><text class='at-nuc-rot' x='" + (cx0 + 20) + "' y='" + (cy0 + 4.8) + "' text-anchor='middle'>" + esc(iso.simbolo.replace(/-.*/, "")) + "</text>";
+      /* no eixo do tempo: o encaminhamento (pré-jornada), o dia da terapia (jornada) e o próximo ciclo (pós-jornada) */
+      [["PRE", 0, "start", "encaminhamento"], ["JOR", ent !== null ? ent : 21, "middle", "dia da terapia"], ["POS", c0 !== null ? c0 : 28, "middle", "↻ próximo ciclo"]].forEach(function (m) {
         if (m[1] > dias) return;
-        var p = PASSO[m[0]];
         h += "<line x1='" + X(m[1]) + "' y1='" + y1 + "' x2='" + X(m[1]) + "' y2='" + (y1 + 16) + "' stroke='" + passoCor(m[0]) + "' stroke-width='2'/>";
-        h += "<text class='rl-passo' x='" + X(m[1]) + "' y='" + (y1 + 27) + "' text-anchor='" + m[2] + "' fill='" + passoCor(m[0]) + "'>" + (m[0] === "R" ? "↻ " : m[0] + " ") + esc(p ? p.nome : m[0]) + "</text>";
+        h += "<text class='rl-passo' x='" + X(m[1]) + "' y='" + (y1 + 27) + "' text-anchor='" + m[2] + "' fill='" + passoCor(m[0]) + "'>" + esc(m[3]) + "</text>";
       });
     }
     if (!opts.semFrase) {
@@ -331,8 +332,8 @@
     /* 1 · o radionuclídeo: uma esfera só, meia de ver e meia de tratar, com o brilho da emissão */
     parte("radionuclideo", function (g) {
       el("circle", { cx: x, cy: 62, r: 62, fill: "url(#at-brilho)" }, g);
-      el("path", { d: "M" + x + ",30 a32,32 0 0 0 0,64 z", "class": "at-obj at-esfera", fill: passoCor("V") }, g);
-      el("path", { d: "M" + x + ",30 a32,32 0 0 1 0,64 z", "class": "at-obj at-esfera", fill: passoCor("T") }, g);
+      el("path", { d: "M" + x + ",30 a32,32 0 0 0 0,64 z", "class": "at-obj at-esfera", fill: COR_ISO.ver }, g);
+      el("path", { d: "M" + x + ",30 a32,32 0 0 1 0,64 z", "class": "at-obj at-esfera", fill: COR_ISO.tratar }, g);
       texto(g, x - 15, 66, isoV ? isoV.simbolo.replace(/-.*/, "") : "V", "at-nuc-rot at-nuc-rot-g", "middle");
       texto(g, x + 15, 66, isoT ? isoT.simbolo.replace(/-.*/, "") : "T", "at-nuc-rot at-nuc-rot-g", "middle");
     });
@@ -376,7 +377,7 @@
       caixasEl[a.id] = g;
       clicavel(g, function () { acendeParte(a.id); abre(a.vista, a.item || undefined); });
     });
-    textoLinhas(atomo, 320, 392, rel("atomo_molecula") || "A mesma molécula leva o olho e o remédio. A mesma jornada precisa de um dono.", "at-mol-rot serif", "middle", 84, 14);
+    textoLinhas(atomo, 320, 392, rel("atomo_molecula") || "A mesma molécula leva o olho e o remédio. A mesma jornada pede alguém que a acompanhe do início ao fim.", "at-mol-rot serif", "middle", 84, 14);
     texto(atomo, 320, 428, "na molécula, à esquerda; no projeto, à direita · clique numa parte ou numa caixa para abrir a aba", "at-sub", "middle");
   }
   function acendeParte(id) {
@@ -413,7 +414,7 @@
     var html = "<dl class='w5h'>" +
       linha("O quê", esc(ponto(rel("w_oque")))) +
       linha("Por quê", esc(ponto(rel("w_porque"))) + (voz ? "<q class='w5-voz' title='" + esc(rel("voz_fonte")) + "'>" + esc(voz.split(/\.\s+/).filter(Boolean).pop()) + "</q>" : "")) +
-      linha("Para quem", esc(ponto(rel("w_quem"))) + (grupos ? "<span class='w5-pes'>" + grupos + "</span>" : ""), "w5-quem") +
+      linha("Para quem", grupos ? "<span class='w5-pes'>" + grupos + "</span>" : "", "w5-quem") + /* só os atores (29/10/2026) */
       linha("Onde", esc(ponto(rel("w_onde")))) +
       linha("Quando", esc(ponto(rel("w_quando")))) +
       linha("Como", esc(ponto(rel("w_como"))) + "<span class='w5-passos'>" + passos + "</span>", "w5-como") +
@@ -499,7 +500,7 @@
      Um passo mostra só as relações daquele momento, numeradas na ordem da jornada; um ator mostra as suas, com a
      direção explícita (sai · chega); o hub (o Centro) mostra só o que atravessa a sua fronteira. A lista e as setas
      se respondem: o mouse numa linha destaca a seta e apaga as outras. (O usuário, 29/10: "ao clicar me sinto perdido".) */
-  /* o ciclo macro (passos.csv): ver · tratar · reavaliar. Os sete passos são das Jornadas; aqui cada movimento junta as
+  /* o ciclo macro (passos.csv): pré-jornada · jornada · pós-jornada. Os sete passos são das Jornadas; aqui cada movimento junta as
      relações das suas etapas (o usuário, 29/10: "estou antecipando informações e detalhamentos") */
   var numFluxo = {}, etapaEco = null, visiveisEco = [], ecoPassos = null;
   /* a aba abre sem nada escolhido: nenhum ator, nenhum movimento, nenhuma seta (o usuário, 29/10). "ciclo inteiro" e
@@ -508,7 +509,7 @@
   function fluxoNoPasso(f, sigla) { var p = PASSO[sigla]; return !!p && (f.etapas || []).some(function (e) { return (p.etapas || []).indexOf(e) >= 0; }); }
   (function montaPassosEco() {
     var cena = eco && eco.parentNode; if (!cena || !PASSOS.length) return;
-    ecoPassos = document.createElement("div"); ecoPassos.className = "eco-passos"; ecoPassos.setAttribute("role", "tablist"); ecoPassos.setAttribute("aria-label", "o ciclo: ver, tratar, reavaliar");
+    ecoPassos = document.createElement("div"); ecoPassos.className = "eco-passos"; ecoPassos.setAttribute("role", "tablist"); ecoPassos.setAttribute("aria-label", "o ciclo: pré-jornada, jornada, pós-jornadaliar");
     ecoPassos.innerHTML = "<span class='ep-rot'>O CICLO</span>" + PASSOS.map(function (p, i) {
       var qt = (D.fluxos || []).filter(function (f) { return fluxoNoPasso(f, p.sigla); }).length;
       return "<button type='button' class='ep' role='tab' data-etapa='" + p.sigla + "' style='--cor:" + p.cor + "' title='" + esc(p.verbo) + " · " + qt + " relações'><i>" + SUP[p.sigla] + "</i>" + esc(p.nome) + "<small>" + qt + "</small></button>";
@@ -619,7 +620,7 @@
       html += "<div class='bloco ficha'><div class='rotulo'>O ecossistema</div><h3>Quem regula, paga, fornece e trata.</h3>" +
         "<p>" + esc(ponto(cam("ecossistema", "revela"))) + "</p></div>" +
         "<div class='bloco'><div class='rotulo'>As colunas</div><ul class='lista'>" + cols.map(function (c) { return "<li><b>" + esc(c.rotulo) + "</b>: " + esc(c.sub) + "</li>"; }).join("") + "</ul>" +
-        "<p class='dica'>Escolha um movimento do ciclo na faixa acima (ver, tratar, reavaliar), ou clique num ator para ver o que chega e sai dele.</p></div>";
+        "<p class='dica'>Escolha um momento do ciclo na faixa acima (pré-jornada, jornada, pós-jornada), ou clique num ator para ver o que chega e sai dele.</p></div>";
       var tese0 = achadosDe("ecossistema")[0];
       if (tese0) html += "<div class='bloco'>" + achadoHtml(tese0, "tese", true) + "</div>";
     } else {
@@ -649,8 +650,8 @@
   var sisFoco = document.getElementById("sis"), sis = sisFoco, leituraSis = document.getElementById("leitura-sis");
   var DUO = { 1: document.getElementById("sis1"), 2: document.getElementById("sis2") };
   var tempoAtual = 2, comparativo = true, caixasSis = {};
-  var TEMPOS = [[1, rel("tempo1_titulo") || "Hoje, de memória", rel("tempo1_sub") || "cada sistema faz a sua parte; a coordenação mora na planilha, no e-mail e na cabeça de quem lembra"],
-    [2, rel("tempo2_titulo") || "Com a camada de coordenação", rel("tempo2_sub") || "a mesma gente e os mesmos sistemas, com um dono por passo, prazos e histórico por cima"]];
+  var TEMPOS = [[1, rel("tempo1_titulo") || "Hoje, com a experiência das equipes", rel("tempo1_sub") || "cada sistema faz a sua parte; a coordenação mora na planilha, no e-mail e na cabeça de quem lembra"],
+    [2, rel("tempo2_titulo") || "Com a camada de coordenação", rel("tempo2_sub") || "a mesma gente e os mesmos sistemas, com um responsável por etapa, prazos e histórico por cima"]];
   var temposEl = document.getElementById("tempos"), vSistema = document.getElementById("v-sistema");
   if (temposEl) {
     temposEl.innerHTML = TEMPOS.map(function (t) { return "<button type='button' data-tempo='" + t[0] + "' role='tab'><b>" + t[0] + "</b><span class='tp-t'>" + esc(t[1]) + "</span><small>" + esc(t[2]) + "</small></button>"; }).join("");
@@ -733,7 +734,7 @@
       var c4 = CONT.sistemas_fragmentados, c15 = CONT.min_por_senha, c6 = CONT.telas_por_senha;
       texto(sis, 10, 24, (c4 ? "pelo menos " + c4.valor + " sistemas e uma planilha" : "sistemas em separado"), "tempo-rot");
       if (c15 && c6) texto(sis, 10, 54, "até " + c15.valor + " min por senha, em " + c6.valor + " telas", "nota-svg");
-      texto(sis, 10, 40, "ninguém vê o ciclo inteiro: a coordenação é de memória, por mensagem, sem histórico", "nota-svg");
+      texto(sis, 10, 40, "o ciclo inteiro ainda não tem uma visão única: a coordenação corre por mensagem, sem histórico", "nota-svg");
     } else {
       texto(sis, 880, 24, TEMPOS[1][1], "tempo-rot ok", "end");
       var coord = D.sistemas.filter(function (s) { return s.grupo === "proposta"; })[0];
@@ -745,14 +746,15 @@
         pos[coord.id] = { x: 20, y: 44, w: 860, h: 136, g: g };
         clicavel(g, function () { aoClicar(coord.id); });
         if (foco) caixasSis[coord.id] = g;
-        /* as três bandas: ver · tratar · reavaliar, com as etapas de cada uma */
+        /* as três bandas: pré-jornada · jornada · pós-jornada, com as etapas de cada uma (até 3 por coluna) */
         PASSOS.forEach(function (p, i) {
           var bx = 36 + i * 282, bw = 266;
           var b = el("g", { "class": "sis-banda clicavel banda-" + p.sigla, tabindex: 0, role: "button", "aria-label": SUP[p.sigla] + " " + p.nome }, sis);
           el("rect", { x: bx, y: 90, width: bw, height: 82, rx: 8, stroke: p.cor }, b);
           texto(b, bx + 12, 108, SUP[p.sigla] + " · " + p.nome.toUpperCase(), "sis-banda-rot").setAttribute("fill", p.cor);
+          /* o rótulo do momento leva o número; as etapas, só o nome curto */
           texto(b, bx + 12, 121, p.verbo, "sis-banda-verbo");
-          (p.etapas || []).forEach(function (e, k) { var et = ETAPA[e]; if (et) texto(b, bx + 12, 140 + k * 11, et.id + " · " + et.curto, "sis-banda-etapa"); });
+          (p.etapas || []).forEach(function (e, k) { var et = ETAPA[e]; if (et) texto(b, bx + 12 + Math.floor(k / 3) * 130, 140 + (k % 3) * 11, et.curto, "sis-banda-etapa"); });
           clicavel(b, function () { aoClicar(p.sigla); });
           if (foco) caixasSis[p.sigla] = b;
         });
@@ -770,7 +772,7 @@
       });
       if (substitui.length) texto(sis, 880, 196, "saem de cena: " + substitui.map(function (i) { return SIS[i.para].nome.toLowerCase(); }).join(" · "), "nota-svg", "end");
       texto(sis, 10, 24, "coordena, não substitui", "tempo-rot");
-      texto(sis, 10, 38, "um dono por passo, prazos e histórico por cima do que já existe", "nota-svg");
+      texto(sis, 10, 38, "um responsável por etapa, prazos e histórico por cima do que já existe", "nota-svg");
     }
     texto(sis, 10, 432, foco ? "clique num sistema ou numa banda para ler · \"lado a lado\" volta ao comparativo" : "clique neste olhar para abri-lo ao lado, com a leitura", "nota-svg");
   }
@@ -786,9 +788,8 @@
     var html = "<button type='button' class='volta-duo'>← os dois olhares, lado a lado</button>", s = id && SIS[id], p = id && PASSO[id];
     if (s || p) html = "<button type='button' class='fecha-leitura' aria-label='fechar a ficha'>×</button>" + html;
     if (p) {
-      html += "<div class='bloco ficha'><div class='rotulo'><span class='passo-chip p-" + p.sigla + "'>" + SUP[p.sigla] + "</span>" + esc(p.nome) + " · " + esc(p.verbo) + "</div><h3>" + esc(ponto(maiuscula(p.fisica))) + "</h3>" +
-        "<dl><dt>Etapas</dt><dd>" + (p.etapas || []).map(function (e) { return ETAPA[e] ? ETAPA[e].nome : e; }).join(" → ") + "</dd>" +
-        "<dt>Emissões</dt><dd>" + (p.emissoes || []).map(function (e) { return EMISSAO_TXT[e] || e; }).join(" · ") + "</dd></dl></div>";
+      html += "<div class='bloco ficha'><div class='rotulo'><span class='passo-chip p-" + p.sigla + "'>" + SUP[p.sigla] + "</span>" + esc(p.nome) + " · " + esc(p.verbo) + "</div><h3>" + esc(ponto(maiuscula(p.descricao))) + "</h3>" +
+        "<dl><dt>Etapas</dt><dd>" + (p.etapas || []).map(function (e) { return ETAPA[e] ? ETAPA[e].nome : e; }).join(" → ") + "</dd></dl></div>";
       var dec0 = (D.decisao || []).filter(function (d) { return d.nivel === 0; })[0];
       if (dec0) html += "<div class='bloco'><div class='rotulo'>A premissa " + st(dec0.estado) + "</div><p>" + esc(ponto(dec0.pergunta)) + "</p></div>";
     } else if (s) {
@@ -832,9 +833,9 @@
     if (!portfolio || !(D.servicos || []).length) return;
     var cartoes = D.servicos.map(function (s) {
       var it = ISO[s.isotopo_tratar], iv = ISO[s.isotopo_ver];
-      var selo = it ? "<div class='iso" + (it.confianca === "aberto" ? " c-aberto" : "") + "'><span class='iso-sim'>" + simbolo(it) + "</span><span class='iso-em'>" + esc(EMISSAO_TXT[it.emissao] || it.emissao) + " · " + esc(passoNome("T")) + "</span>" +
+      var selo = it ? "<div class='iso" + (it.confianca === "aberto" ? " c-aberto" : "") + "'><span class='iso-sim'>" + simbolo(it) + "</span><span class='iso-em'>" + esc(EMISSAO_TXT[it.emissao] || it.emissao) + " · tratar</span>" +
         "<span class='iso-dados'>meia-vida " + meiaVidaTxt(it) + (it.alcance_mm ? " · alcance " + pt(num(it.alcance_mm), num(it.alcance_mm) % 1 ? 1 : 0) + " mm" : "") + (it.energia_curta ? " · " + esc(it.energia_curta) : "") + "</span>" +
-        (iv ? "<span class='iso-ver'><b>" + esc(passoNome("V")) + "</b> · " + simbolo(iv) + " · " + esc(EMISSAO_TXT[iv.emissao] || iv.emissao) + " · meia-vida " + meiaVidaTxt(iv) + "</span>" : "") + "</div>" : "";
+        (iv ? "<span class='iso-ver'><b>ver</b> · " + simbolo(iv) + " · " + esc(EMISSAO_TXT[iv.emissao] || iv.emissao) + " · meia-vida " + meiaVidaTxt(iv) + "</span>" : "") + "</div>" : "";
       var depara = "<div class='depara'>" + DEPARA.map(function (d) {
         var v = d[2][s[d[0]]];
         return "<div><span>" + d[1] + "</span><span class='dp-v dp-" + (v ? v[1] : "neutro") + "'>" + esc(v ? v[0] : (s[d[0]] || "—")) + "</span></div>";
@@ -852,14 +853,14 @@
     }).join("");
     var legenda = Object.keys(ENQ).map(function (k) { return "<span class='tag enq enq-" + k + "'>" + esc(ENQ[k].curto) + "</span>"; }).join("");
     escreve(portfolio, "<div class='pf-grade'>" + cartoes + "</div>" +
-      "<div class='pf-rodape'><p class='pf-leg'>" + legenda + "<span class='dica'>verde = a regra de hoje dá conta · vermelho = onde a coordenação informal quebra · tracejado = a confirmar</span></p>" + elo("servicos") + "</div>");
+      "<div class='pf-rodape'><p class='pf-leg'>" + legenda + "<span class='dica'>verde = a regra de hoje dá conta · vermelho = onde a coordenação informal fica mais exigente · tracejado = a confirmar</span></p>" + elo("servicos") + "</div>");
     Array.prototype.forEach.call(portfolio.querySelectorAll(".cartao"), function (c) {
       c.addEventListener("click", function (ev) { if (ev.target.closest && ev.target.closest("button")) return; var id = c.getAttribute("data-serv"); selecionaServico(selecao.servicos === id ? null : id); estadoNaUrl(); });
     });
   })();
 
   /* ================= 4 · JORNADA AS IS e 6 · JORNADA TO BE: a jornada em dois tempos (29/10/2026) =================
-     No molde da "mãe" da Longevidade: o MESO são os três eventos (V ver · T tratar · R reavaliar, de passos.csv), as
+     No molde da "mãe" da Longevidade: o MESO são os três momentos (pré-jornada · jornada · pós-jornada, de passos.csv), as
      passagens entre eles (passagens.csv: quem passa, como, e onde quebra), a camada SEMPRE (quem acompanha a travessia
      inteira, com a volta do próximo ciclo) e, no AS IS, o ciclo dia a dia (o relógio). Um clique num evento abre o
      MICRO: o blueprint só dos seus passos. Uma jornada só, holística: sem a variável terapia (decisão do usuário em
@@ -889,7 +890,7 @@
   var jorPalco = document.getElementById("jor-palco"), jorLista = document.getElementById("lista-jor");
   var tbPalco = document.getElementById("tobe-palco"), tbLista = document.getElementById("tobe-escolhas");
 
-  function nomeAtor(id) { return id === "ninguem" ? "ninguém" : (ATOR[id] ? ATOR[id].curto : id); }
+  function nomeAtor(id) { return id === "ninguem" ? "sem responsável formal" : (ATOR[id] ? ATOR[id].curto : id); }
   function etapasDoPasso(sigla) { return ETAPAS.filter(function (e) { return e.passo === sigla; }); }
 
   /* ---------- o blueprint (micro): a faixa dos passos conta as colunas pelas linhas que recebe ---------- */
@@ -994,10 +995,10 @@
       return "<div class='pl" + (mudou ? (bom ? " melhora" : " piora") : " igual") + "'><span>" + rot + "</span><b>" + (mudou ? "<s>" + x + "</s> " : "") + y + (sufixo || "") + "</b></div>";
     }
     return "<div class='placar'>" +
-      bloco("etapas sem dono", a.semDono, d.semDono, true, "", "etapas em que ninguém responde") +
-      bloco("passagens sem dono", a.psgSem, d.psgSem, true, "", "passagens entre os eventos que ninguém conduz") +
+      bloco("etapas sem responsável formal", a.semDono, d.semDono, true, "", "etapas sem um responsável formal") +
+      bloco("passagens sem responsável formal", a.psgSem, d.psgSem, true, "", "passagens entre os momentos sem um responsável formal") +
       bloco("etapas no e-mail ou na planilha", a.mail, d.mail, true, "", "etapas cujo registro ainda depende de e-mail ou planilha") +
-      bloco("lacunas sem resposta", a.lac, d.lac, true, "", "o que falta em cada etapa e nenhuma escolha responde") +
+      bloco("lacunas sem resposta", a.lac, d.lac, true, "", "os pontos de atenção que as escolhas ainda não respondem") +
       bloco("freios na reação em cadeia", 0, freios(alts), false, " de " + nR1, "nós da reação em cadeia do atraso que alguma escolha freia") +
       bloco("critérios dos atores", 0, criteriosDe(alts), false, " de " + nCri, "critérios candidatos da Direção que as escolhas atendem") +
       "</div>";
@@ -1009,7 +1010,7 @@
   }
   function classeConf(c) { return c === "aberto" ? " h-aberto" : c === "provavel" ? " h-provavel" : ""; }
   function troca(antes, depois, m) { return "<s class='antes'>" + esc(antes) + "</s> <b class='depois" + classeConf(m.conf) + "'>" + esc(depois) + "</b>" + selo(m.alts); }
-  function quemHtml(id) { return id === "ninguem" ? "<span class='ninguem'>ninguém</span>" : "<b>" + esc(nomeAtor(id)) + "</b>"; }
+  function quemHtml(id) { return id === "ninguem" ? "<span class='ninguem'>sem responsável formal</span>" : "<b>" + esc(nomeAtor(id)) + "</b>"; }
   function donoHtml(r) {
     var m = r.muda && r.muda.dono, sd = [rel("dor_sem_dono")];
     if (m) return "<s class='antes'>" + esc(nomeAtor(m.antes)) + "</s> <b class='depois" + classeConf(m.conf) + "'>" + esc(nomeAtor(r.dono)) + "</b>" + selo(m.alts);
@@ -1034,14 +1035,14 @@
       var et = ETAPA[r.etapa] || {};
       var falta = r.lacunas.map(function (l) {
         return l.respostas.length ? l.respostas.map(function (x) { return "<small class='jm-resp" + classeConf(x.conf) + "'>✓ " + esc(x.txt) + " " + liga(l.dores, [{ alt: x.alt }]) + "</small>"; }).join("") :
-          "<small class='jm-falta'>falta: " + esc(l.txt) + doresSelo(l.dores) + "</small>";
+          "<small class='jm-falta'>ponto de atenção: " + esc(l.txt) + doresSelo(l.dores) + "</small>";
       }).join("");
       var respondeu = abertas(r).length < r.lacunas.length;
       return "<button type='button' class='jm-et" + (r.muda.dono || respondeu || r.muda.sistema ? " muda" : "") + "' data-passo='" + p.sigla + "' data-etapa='" + r.etapa + "' style='--cor:" + p.cor + "'>" +
-        "<b>" + esc(et.curto || et.nome) + "</b><span>dono: " + donoHtml(r) + "</span>" + falta + "</button>";
+        "<b>" + esc(et.curto || et.nome) + "</b><span>responsável: " + donoHtml(r) + "</span>" + falta + "</button>";
     }).join("");
     return "<section class='jm-bloco' style='--cor:" + p.cor + "'>" +
-      "<button type='button' class='jm-abre' data-passo='" + p.sigla + "'><span class='jm-m'><b>" + SUP[p.sigla] + "</b>" + esc(p.nome) + "</span><small>" + esc(p.verbo) + "</small><em>os passos →</em></button>" +
+      "<button type='button' class='jm-abre' data-passo='" + p.sigla + "'><span class='jm-m'><b>" + SUP[p.sigla] + "</b>" + esc(p.nome) + "</span><small>" + esc(p.verbo) + "</small><em>as etapas →</em></button>" +
       (rel("jor_nota_" + p.sigla) ? "<p class='jm-desc'>" + esc(rel("jor_nota_" + p.sigla)) + "</p>" : "") +
       "<div class='jm-ets'>" + chips + "</div></section>";
   }
@@ -1057,7 +1058,7 @@
   }
   function desenhaMeso(est, toBe) {
     var cols = PASSOS.map(function (p) { return "minmax(0," + Math.max(1, etapasDoPasso(p.sigla).length) + "fr)"; }).join(" 190px ");
-    var html = "<p class='jm-cap'>OS TRÊS EVENTOS <span>clique num evento ou numa etapa para ver os seus passos</span></p><div class='jm' style='grid-template-columns:" + cols + "'>";
+    var html = "<p class='jm-cap'>OS TRÊS MOMENTOS <span>clique num momento ou numa etapa para abrir o detalhe</span></p><div class='jm' style='grid-template-columns:" + cols + "'>";
     PASSOS.forEach(function (p, i) {
       html += blocoEvento(p, est);
       if (i < PASSOS.length - 1) html += setaPassagem(est.passagens[(p.sigla + PASSOS[i + 1].sigla).toLowerCase()]);
@@ -1065,7 +1066,7 @@
     html += "</div><p class='jm-cap'>SEMPRE <span>quem acompanha a travessia inteira, e a volta do próximo ciclo</span></p>" + bandaSempre(est);
     var dd = doresDaJornada(est);
     if (dd.length) html += "<div class='jm-dores'><b>" + (toBe ? "AS DORES QUE CONTINUAM" : "AS DORES NESTA JORNADA") + "</b>" + dd.map(function (d) { return "<span>" + doresSelo([d]) + esc(DOR[d].nome) + "</span>"; }).join("") + "</div>";
-    else if (toBe) html += "<div class='jm-dores'><b>AS DORES QUE CONTINUAM</b><span>nenhuma: as escolhas respondem a todos os pontos marcados nesta jornada</span></div>";
+    else if (toBe) html += "<div class='jm-dores'><b>AS DORES QUE CONTINUAM</b><span>as escolhas respondem a todos os pontos marcados nesta jornada</span></div>";
     if (!toBe) html += "<p class='jm-ir-ciclo'><button type='button' class='ep-ir' data-passo='ciclo'>⏱ o ciclo, dia a dia: os dois relógios, o da física e o da senha →</button></p>";
     return html;
   }
@@ -1098,18 +1099,70 @@
     return Object.keys(v).filter(function (d) { return DOR[d]; }).sort(function (x, y) { return ordemNum(DOR[x].numero) - ordemNum(DOR[y].numero); });
   }
   /* ---------- a página do ciclo, dia a dia: o relógio grande, e o que ele diz escrito ao lado ---------- */
+  /* ---------- a página do ciclo, dia a dia (29/10/2026): duas raias, a da dose e a da senha, no mesmo eixo de dias.
+     Entre elas, a janela de risco: a dose já não se cancela e a senha pode não ter chegado. ①②③ no desenho e escritos
+     embaixo (relatorio.csv ciclo_passo_*, com os números de contagens.csv entre chaves) ---------- */
+  function preenche(txt, iso) {
+    return String(txt || "").replace(/\{(\w+)\}/g, function (m, k) {
+      if (k === "isotopo") return iso.simbolo;
+      if (k === "perda") return pt(perdaPorDia(iso) * 100, 1) + "%";
+      return CONT[k] ? String(CONT[k].valor) : m;
+    });
+  }
+  function duasRaias(iso) {
+    var W = 780, H = 236, x0 = 150, x1 = W - 16, dias = 45, T = meiaVidaDias(iso);
+    var ent = cont("entrega_dose"), canc = cont("cancelamento_industria"), smin = cont("senha_min"), smax = cont("senha_max"), ans = cont("senha_ans_dias");
+    var c0 = cont("ciclo_intervalo_min"), c1 = cont("ciclo_intervalo_max");
+    if ([ent, canc, smin, smax].some(function (v) { return v === null; })) return "";
+    var corte = Math.max(0, ent - canc);
+    function X(d) { return x0 + (x1 - x0) * d / dias; }
+    function num(x, y, n, cls) { return "<g class='dr-num " + (cls || "") + "'><circle cx='" + x + "' cy='" + y + "' r='9'/><text x='" + x + "' y='" + (y + 3.6) + "' text-anchor='middle'>" + n + "</text></g>"; }
+    var yD = 92, yS = 168, h = "<svg class='dr-svg' viewBox='0 0 " + W + " " + H + "' role='img' aria-label='" + esc("A dose chega em " + ent + " dias; a senha, entre " + smin + " e " + smax + " dias. Entre o último dia para cancelar e a senha mais lenta fica a janela de risco.") + "'>";
+    /* a janela de risco, ao fundo */
+    h += "<rect class='dr-janela' x='" + X(corte) + "' y='48' width='" + (X(smax) - X(corte)) + "' height='" + (yS + 26 - 48) + "' rx='6'/>";
+    h += "<text class='dr-janela-rot' x='" + ((X(corte) + X(smax)) / 2) + "' y='" + (yS + 40) + "' text-anchor='middle'>janela de risco: a dose já não se cancela e a senha pode não ter chegado</text>";
+    /* o eixo dos dias */
+    h += "<line class='dr-eixo' x1='" + x0 + "' y1='34' x2='" + x1 + "' y2='34'/>";
+    for (var d = 0; d <= dias; d += 7) h += "<line class='dr-tique' x1='" + X(d) + "' y1='30' x2='" + X(d) + "' y2='38'/><text class='dr-dia' x='" + X(d) + "' y='24' text-anchor='middle'>" + (d ? d : "dia 0") + "</text>";
+    h += "<text class='dr-dia' x='" + x0 + "' y='12'>dias desde o pedido</text>";
+    /* a raia da dose: o pedido, a produção e o trânsito, a chegada e o decaimento */
+    h += "<text class='dr-raia' x='12' y='" + (yD - 4) + "'>A DOSE</text><text class='dr-raia-sub' x='12' y='" + (yD + 10) + "'>o relógio da física</text>";
+    h += "<rect class='dr-trajeto' x='" + X(0) + "' y='" + (yD - 9) + "' width='" + (X(ent) - X(0)) + "' height='18' rx='9'/>";
+    h += "<text class='dr-dentro' x='" + ((X(0) + X(ent)) / 2) + "' y='" + (yD + 4) + "' text-anchor='middle'>pedido, produção e trânsito</text>";
+    h += "<line class='dr-corte' x1='" + X(corte) + "' y1='" + (yD - 22) + "' x2='" + X(corte) + "' y2='" + (yD + 16) + "'/>";
+    h += "<text class='dr-nota' x='" + X(corte) + "' y='" + (yD - 26) + "' text-anchor='middle'>último dia para cancelar</text>";
+    var pts = [];
+    function yA(a) { return yD + 18 - 38 * a; } /* a atividade da dose, de 100% (em cima) a zero (embaixo) */
+    for (var k = 0; k <= 40; k++) { var dd = ent + (dias - ent) * k / 40; pts.push(X(dd).toFixed(1) + "," + yA(Math.pow(2, -(dd - ent) / T)).toFixed(1)); }
+    h += "<polygon class='dr-decai-area' points='" + X(ent).toFixed(1) + "," + yA(0) + " " + pts.join(" ") + " " + X(dias).toFixed(1) + "," + yA(0) + "'/>";
+    h += "<polyline class='dr-decai' points='" + pts.join(" ") + "'/>";
+    if (ent + T < dias) h += "<circle class='dr-meia' cx='" + X(ent + T) + "' cy='" + yA(0.5) + "' r='3'/><text class='dr-nota' x='" + (X(ent + T) + 6) + "' y='" + (yA(0.5) - 4) + "'>metade em " + meiaVidaTxt(iso) + "</text>";
+    h += "<circle class='dr-chega' cx='" + X(ent) + "' cy='" + yA(1) + "' r='6'/><text class='dr-nota forte' x='" + (X(ent) + 10) + "' y='" + (yA(1) - 6) + "'>a dose chega (dia " + ent + ") e passa a decair</text>";
+    h += num(X(0) - 2, yD - 22, "1") + num(X(Math.min(dias - 2, ent + 2.2 * T)) , yA(Math.pow(2, -2.2)) - 14, "3", "risco");
+    /* a raia da senha: o melhor caso, a faixa até o pior caso e o prazo da ANS */
+    h += "<text class='dr-raia' x='12' y='" + (yS - 4) + "'>A SENHA</text><text class='dr-raia-sub' x='12' y='" + (yS + 10) + "'>o relógio da operadora</text>";
+    h += "<rect class='dr-senha-certa' x='" + X(0) + "' y='" + (yS - 9) + "' width='" + (X(smin) - X(0)) + "' height='18' rx='4'/>";
+    h += "<rect class='dr-senha-faixa' x='" + X(smin) + "' y='" + (yS - 9) + "' width='" + (X(smax) - X(smin)) + "' height='18' rx='4'/>";
+    h += "<text class='dr-dentro escuro' x='" + ((X(smin) + X(smax)) / 2) + "' y='" + (yS + 4) + "' text-anchor='middle'>a senha chega entre " + smin + " e " + smax + " dias</text>";
+    if (ans !== null) h += "<line class='dr-ans' x1='" + X(ans) + "' y1='" + (yS - 16) + "' x2='" + X(ans) + "' y2='" + (yS + 16) + "'/><text class='dr-nota' x='" + X(ans) + "' y='" + (yS - 20) + "' text-anchor='middle'>prazo da ANS</text>";
+    h += num(X(smax) + 14, yS, "2");
+    /* o próximo ciclo */
+    if (c0 !== null && c1 !== null) h += "<text class='dr-nota' x='" + x1 + "' y='" + (H - 4) + "' text-anchor='end'>↻ o próximo ciclo começa de " + Math.round(c0 / 7) + " a " + Math.round(c1 / 7) + " semanas depois da terapia, com nova senha</text>";
+    return h + "</svg>";
+  }
   function desenhaCiclo() {
-    var i0 = isoTerapeuticos()[0], iVer = isoDeVer();
+    var i0 = isoTerapeuticos()[0];
     if (!i0) return "";
     function fato(rot, txts) { txts = txts.filter(Boolean); return txts.length ? "<div class='cc-fato'><b>" + rot + "</b>" + txts.map(function (t) { return "<p>" + esc(ponto(t)) + "</p>"; }).join("") + "</div>" : ""; }
     function leit(id) { return CONT[id] ? CONT[id].leitura : ""; }
-    var fatos = fato("O RELÓGIO DA FÍSICA", [i0.simbolo + ": a atividade cai pela metade a cada " + meiaVidaTxt(i0), "Cada dia de atraso leva " + pt(perdaPorDia(i0) * 100, 1) + "% da atividade"]);
-    fatos += fato("O RELÓGIO DA SENHA", [leit("senha_min"), leit("senha_max"), leit("senha_ans_dias")]) +
-      fato("A DOSE", [leit("previsao_industria"), leit("entrega_dose")]) +
-      fato("O PRÓXIMO CICLO", [leit("ciclo_intervalo_min"), leit("ciclo_intervalo_max"), leit("ciclos_min")]);
+    var leitura = [1, 2, 3].map(function (n) {
+      return "<li" + (n === 3 ? " class='risco'" : "") + "><i>" + n + "</i><span>" + esc(ponto(preenche(rel("ciclo_passo_" + n), i0))) + "</span></li>";
+    }).join("");
+    var fatos = fato("A FÍSICA", [i0.simbolo + ": a atividade cai pela metade a cada " + meiaVidaTxt(i0)]) +
+      fato("O PRÓXIMO CICLO", [leit("ciclo_intervalo_min"), leit("ciclos_min")]);
     return "<p class='jm-trilha'><button type='button' class='jm-mae'>" + esc(rel("jor_mae") || "A jornada inteira") + "</button> › <b>O ciclo, dia a dia</b></p>" +
-      "<div class='j-topo'><h2 class='serif'>O ciclo, dia a dia</h2><p class='l-entrega'>Dois relógios. O da física é fixo: a dose decai a cada dia. O da senha varia: a operadora autoriza quando autoriza. O risco mora onde os dois se desencontram.</p></div>" +
-      "<div class='cc'><div class='cc-relogio'>" + relogioSvg(i0, { w: 680, h: 172, dias: 45, completo: true, isoVer: iVer, semFrase: true }) + "</div>" +
+      "<div class='j-topo'><h2 class='serif'>O ciclo, dia a dia</h2><p class='l-entrega'>" + esc(rel("ciclo_sub")) + "</p></div>" +
+      "<div class='cc'><div class='cc-relogio'>" + duasRaias(i0) + "<ol class='cc-leitura'>" + leitura + "</ol></div>" +
       "<div class='cc-fatos'>" + fatos + "</div></div>";
   }
   function raiasJornada() {
@@ -1128,11 +1181,11 @@
         var mudou = [].concat.apply([], r.sis.filter(function (s) { return s.estado !== "fica"; }).map(function (s) { return s.alts; }));
         return "<div class='bpp-cel" + cls(r) + (r.muda.sistema ? " muda" : "") + (r.bastidor ? "" : " bpp-vazia") + "'>" + esc(r.bastidor) + (chips ? "<span class='chips'>" + chips + "</span>" : "") + mecs(mudou) + "</div>";
       }],
-      ["DONO", "e quem paga ou autoriza", function (r) {
+      ["RESPONSÁVEL", "e quem paga ou autoriza", function (r) {
         var c = r.muda.dono ? "bpp-dono muda" + classeConf(r.muda.dono.conf) : r.dono === "ninguem" ? "bpp-risco" : "bpp-dono";
         return "<div class='bpp-cel " + c + "'>" + donoHtml(r) + ((r.paga || []).length ? "<span class='chips'>" + r.paga.map(function (k) { return tagEnq(k, true); }).join("") + "</span>" : "") + (r.muda.dono ? mecs(r.muda.dono.alts) : "") + "</div>";
       }],
-      ["O QUE FALTA", "nesta etapa", function (r) {
+      ["PONTOS DE ATENÇÃO", "nesta etapa", function (r) {
         if (!r.lacunas.length) return "<div class='bpp-cel bpp-vazia'></div>";
         return "<div class='bpp-cel " + (abertas(r).length === r.lacunas.length ? "bpp-risco" : "muda") + "'>" + r.lacunas.map(function (l) {
           if (!l.respostas.length) return "<span class='lac-aberta'>" + esc(l.txt) + doresSelo(l.dores) + "</span>";
@@ -1161,11 +1214,11 @@
     var ev = evento.jornadas, est = estadoJornada();
     if (jorLista) escreve(jorLista, "<p class='l-coluna'>A JORNADA</p>" +
       "<button type='button' class='j-opt j-destaque" + (!ev ? " on" : "") + "' data-passo=''>" + esc(rel("jor_mae") || "A jornada inteira") + "<small>meso</small></button>" +
-      PASSOS.map(function (p) { return "<button type='button' class='j-opt j-ev" + (ev === p.sigla ? " on" : "") + "' data-passo='" + p.sigla + "' style='--cor:" + p.cor + "'><span><i>" + SUP[p.sigla] + "</i>" + esc(p.nome) + "</span><small>" + etapasDoPasso(p.sigla).length + " passos</small></button>"; }).join("") +
+      PASSOS.map(function (p) { return "<button type='button' class='j-opt j-ev" + (ev === p.sigla ? " on" : "") + "' data-passo='" + p.sigla + "' style='--cor:" + p.cor + "'><span><i>" + SUP[p.sigla] + "</i>" + esc(p.nome) + "</span><small>" + etapasDoPasso(p.sigla).length + " etapas</small></button>"; }).join("") +
       "<button type='button' class='j-opt j-ciclo" + (ev === "ciclo" ? " on" : "") + "' data-passo='ciclo'><span>⏱ o ciclo, dia a dia</span><small>relógio</small></button>");
     var corpo = ev === "ciclo" ? desenhaCiclo() : ev ? desenhaMicro(est, ev, "jornadas") :
       "<div class='j-topo'><h2 class='serif'>" + esc(rel("jor_mae") || "A jornada inteira") + "</h2></div>" + desenhaMeso(est, false);
-    escreve(jorPalco, corpo + "<p class='bp-pe'><span>em itálico, o que ainda é leitura nossa: ninguém ouviu paciente nem oncologista ainda · em vermelho, o número da dor no diagnóstico (de 1.1 a 1.11), o mesmo dos slides</span>" + elo("jornadas") + "</p>");
+    escreve(jorPalco, corpo + "<p class='bp-pe'><span>em itálico, o que ainda é leitura nossa: o paciente e o oncologista ainda não foram ouvidos · em vermelho, o número da dor no diagnóstico, o mesmo dos slides</span>" + elo("jornadas") + "</p>");
     if (vistaAtual === "jornadas") { var m = cam("jornadas", "manchete"); document.getElementById("manchete").textContent = m ? ponto(m) : ""; }
   }
   function abreEtapa(id) {
@@ -1236,7 +1289,7 @@
 
   /* ================= 5 · DIREÇÃO: a decisão da Fase 3 =================
      À esquerda, pouco e grande: a conclusão em serifa, a espinha dos três níveis da decisão (decisao.csv) e a grade
-     das oito alternativas (alternativas.csv). À direita, um cartão por alternativa, empilhados na mesma célula:
+     das alternativas (alternativas.csv). À direita, um cartão por alternativa, empilhados na mesma célula:
      quem pede (criterios.csv × grupos.csv, com a cobertura), o que já sabemos (achados e padrões que a sustentam),
      o que falta definir (pendencias.csv) e quem não ouvimos. Mais um cartão para a arquitetura (o nível 1). */
   var direcao = document.getElementById("direcao");
@@ -1318,7 +1371,7 @@
         "<div class='pc-listas'><section>" + rot("O que já sabemos", achs.length) + "<ul class='pc-ul'>" + (achs.map(liAchado).join("") || vazio) + "</ul></section>" +
         "<section>" + rot("O que bloqueia a decisão", bloqueios.length) + "<ul class='pc-ul'>" + (bloqueios.map(function (p) { return "<li title='" + esc(p.decisao) + "'><b>" + esc(p.curto) + "</b><small>" + st(p.status) + " " + esc(p.dono) + " · " + esc(p.prazo) + "</small></li>"; }).join("") || vazio) + "</ul></section></div>";
     }
-    var alts = altsOrdenadas(); /* 2.1 → 2.8: a ordem provisória da matriz multicritério, a mesma dos slides */
+    var alts = altsOrdenadas(); /* 2.1 → 2.n: a ordem provisória da matriz multicritério, a mesma dos slides */
     alts.forEach(function (a, i) { a.ordem_n = a.numero || String(i + 1); });
     var espinha = DEC.map(function (d) {
       return "<li class='est-" + d.estado + "' title='" + esc(d.pergunta) + "'><i>" + d.nivel + "</i><div><b>" + esc(d.titulo) + st(d.estado) + "</b><p>" + esc(corta(ponto(d.pergunta), 120)) + "</p>" +
@@ -1333,7 +1386,7 @@
       "<div><p class='l-coluna'>O QUE O RELATÓRIO CONCLUI</p><p class='dc-frase'>" + esc(rel("conclusao_curta") || rel("conclusao")) + "</p></div>" +
       "<p class='l-coluna' style='margin:0'>" + esc(rel("premissa_titulo") || "A DECISÃO, EM TRÊS NÍVEIS") + "</p><ol class='espinha'>" + espinha + "</ol>" +
       "<button type='button' class='alt-op dir-loops' data-alt='loops'>↻ " + esc(rel("r1_titulo") || "por que o problema se sustenta sozinho") + "</button>" +
-      "<p class='l-coluna' style='margin:4px 0 0'>AS OITO ALTERNATIVAS <span class='l-ordem'>de 2.1 a 2.8, na ordem provisória da matriz multicritério</span></p><div class='alt-grade'>" + grade + "</div>" + elo("direcao") +
+      "<p class='l-coluna' style='margin:4px 0 0'>AS " + (EXTENSO[alts.length] || alts.length) + " ALTERNATIVAS <span class='l-ordem'>de " + alts[0].numero + " a " + alts[alts.length - 1].numero + ", na ordem provisória da matriz multicritério</span></p><div class='alt-grade'>" + grade + "</div>" + elo("direcao") +
 
       "</div>" +
       "<div class='alt-cards'>" + alts.map(function (a) { return "<div class='alt-card' data-alt='" + a.id + "' style='--cor:" + (COR_EST[a.estado] || "#0C3A6F") + "'>" + card(a) + "</div>"; }).join("") +
