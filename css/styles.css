@@ -75,7 +75,7 @@ nav.barra{position:sticky;top:0;z-index:50;height:var(--header);display:flex;ali
 .v-dupla:not(.cheia) #duo{display:none}
 .v-abertura.on{grid-template-columns:minmax(380px,50%) minmax(0,1fr);gap:22px}
 .v-jornadas.on{grid-template-columns:180px minmax(0,1fr);gap:20px}
-.v-tobe.on{grid-template-columns:236px minmax(0,1fr);gap:18px}
+.v-tobe.on{grid-template-columns:256px minmax(0,1fr);gap:18px}
 .v-cheia.on,.v-direcao.on{display:block}
 /* a cor de cada camada: pinta o alto do cartão da leitura e a caixa da tese */
 #v-abertura{--cam:var(--ink)} #v-ecossistema{--cam:var(--bronze)} #v-sistema{--cam:var(--accent)} #v-servicos{--cam:var(--verde)} #v-jornadas{--cam:var(--ink)} #v-direcao{--cam:var(--verde)} #v-tobe{--cam:var(--verde)}
@@ -587,6 +587,12 @@ nav.barra{position:sticky;top:0;z-index:50;height:var(--header);display:flex;ali
 .tb-alt:not(.tb-cen) > span{flex:1;flex-direction:row;flex-wrap:wrap;align-items:baseline;column-gap:6px}
 .tb-alt:not(.tb-cen) .tb-resolve{margin-left:auto;white-space:nowrap}
 .tb-sua{letter-spacing:0;text-transform:none;font-weight:400;font-style:italic}
+/* as alavancas (30/10/2026): compactas, em duas colunas, para a coluna caber na tela sem rolar */
+.tb-alvs{display:grid;grid-template-columns:1fr 1fr;column-gap:3px}
+.tobe-escolhas .tb-alt{margin-bottom:2px}
+.tb-cen:not(.on) .tb-asp{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tb-alt.tb-alv{align-items:center;gap:4px;padding:2px 5px;font-size:10.5px;line-height:1.2}
+.tb-alv > i{min-width:22px;font-size:9px}
 .tb-aviso{margin:0 0 4px;font-size:11.5px;font-style:italic;color:var(--muted)}
 .pc-tobe{margin:-4px 0 0}
 /* a numeração ligada: a dor em vermelho (1.x), a escolha em verde (2.x), a seta liga uma à outra */
@@ -708,7 +714,7 @@ nav.barra{position:sticky;top:0;z-index:50;height:var(--header);display:flex;ali
 @media (max-width:1020px){.bpp-rot,.bpp-eixo{position:sticky;left:0;z-index:2;background:var(--paper);align-self:stretch;display:flex;flex-direction:column;justify-content:center;box-shadow:6px 0 6px -6px rgba(12,58,111,.25)}.bpp-eixo{justify-content:flex-end}}
 @media (max-width:520px){.w5-passos,.alt-grade{grid-template-columns:1fr}}
 /* as jornadas em dois tempos, em telas estreitas: os eventos empilham, a seta gira, o relógio e o micro rolam para o lado */
-@media (max-width:1360px){.v-tobe.on{grid-template-columns:226px minmax(0,1fr)}}
+@media (max-width:1360px){.v-tobe.on{grid-template-columns:246px minmax(0,1fr)}}
 @media (max-width:1020px){
   .jm{grid-template-columns:1fr!important}
   .jm-seta{flex-direction:row;flex-wrap:wrap;justify-content:flex-start;text-align:left;gap:2px 8px;padding:6px 4px}
@@ -720,7 +726,7 @@ nav.barra{position:sticky;top:0;z-index:50;height:var(--header);display:flex;ali
   .jm-nav{display:flex;margin:6px 0 0}
   .placar{grid-template-columns:repeat(3,minmax(0,1fr))}
   .tobe-escolhas .ajusta{display:flex;flex-wrap:wrap;gap:4px}
-  .tobe-escolhas .l-coluna,.tobe-escolhas .l-sub,.tobe-escolhas .j-nota{width:100%}
+  .tobe-escolhas .l-coluna,.tobe-escolhas .l-sub,.tobe-escolhas .j-nota,.tobe-escolhas .tb-alvs{width:100%}
   .tb-alt.tb-cen{flex-basis:100%}
   .tb-alt{flex:1 1 45%;width:auto}
   .bpp.bpp-micro{min-width:calc(120px + var(--bpp-n,3) * 170px)}

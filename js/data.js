@@ -1,9 +1,9 @@
 /* GERADO por 08_sintese/dados/build_dados.py a partir dos CSVs. Não editar à mão. */
 window.TERA = {
  "versao": {
-  "numero": 13,
-  "data": "2026-10-29",
-  "titulo": "Pré, jornada e pós · tom neutro"
+  "numero": 14,
+  "data": "2026-10-30",
+  "titulo": "Os cenários do relatório"
  },
  "relatorio": {
   "titulo": {
@@ -203,7 +203,7 @@ window.TERA = {
    "confianca": "provavel"
   },
   "tobe_nota": {
-   "texto": "Três cenários, cada um uma junção de oportunidades: operacional, assistencial e comercial. Abre na desfragmentação. A validar com os atores.",
+   "texto": "Uma oportunidade pode estar em mais de um cenário.",
    "confianca": "provavel"
   },
   "dor_sem_dono": {
@@ -2408,6 +2408,59 @@ window.TERA = {
     "elegibilidade-convenio-deve-ser-checada-toda-visita",
     "elegibilidade-dinamica-por-ciclo"
    ]
+  },
+  {
+   "id": "e27",
+   "alternativa": "regras-pactuadas",
+   "alvo_tipo": "lacuna",
+   "alvo": "l-dose-senha",
+   "campo": "resposta",
+   "depois": "a dose só é pedida depois da senha, por regra pactuada entre as áreas",
+   "mecanismo": "o risco da dose sem senha passa a seguir uma regra comum",
+   "confianca": "provavel",
+   "achados": [
+    "exigencia-aguardar-senha-antes-pedir-dose",
+    "radiofarmacia-nao-compra-dose-sem-aprovacao-convenio"
+   ]
+  },
+  {
+   "id": "e28",
+   "alternativa": "autorizacao-tratamento",
+   "alvo_tipo": "lacuna",
+   "alvo": "l-senha",
+   "campo": "resposta",
+   "depois": "a autorização cobre o tratamento completo e não recomeça a cada ciclo",
+   "mecanismo": "a senha deixa de reabrir o prazo da operadora a cada ciclo",
+   "confianca": "aberto",
+   "achados": [
+    "autorizacao-por-ciclo-nao-por-tratamento-completo"
+   ]
+  },
+  {
+   "id": "e29",
+   "alternativa": "seguro-dose",
+   "alvo_tipo": "lacuna",
+   "alvo": "l-dose-senha",
+   "campo": "resposta",
+   "depois": "o custo da dose perdida tem regra e responsável definidos",
+   "mecanismo": "a dose perdida deixa de ser decidida caso a caso",
+   "confianca": "provavel",
+   "achados": [
+    "seguro-dose-perdida-paciente-inapto"
+   ]
+  },
+  {
+   "id": "e30",
+   "alternativa": "sentinela",
+   "alvo_tipo": "passagem",
+   "alvo": "prejor",
+   "campo": "como",
+   "depois": "as demandas seguem uma rotina única pactuada, no modelo do grupo Sentinela",
+   "mecanismo": "papéis claros e um aviso só, como já acontece na iodoterapia",
+   "confianca": "provavel",
+   "achados": [
+    "grupo-sentinela-coordenacao-interna"
+   ]
   }
  ],
  "loops": [
@@ -2734,36 +2787,114 @@ window.TERA = {
  "cenarios": [
   {
    "id": "c1",
-   "nome": "Desfragmentação",
+   "nome": "Fluidez guiada",
    "aspecto": "operacional",
-   "frase": "um status e um canal entre as áreas",
+   "frase": "uma navegadora e alertas a cada etapa, com a comunicação num registro único",
    "confianca": "provavel",
    "alternativas": [
     "a1",
+    "a3",
+    "a2",
     "a6"
    ]
   },
   {
    "id": "c2",
-   "nome": "Paciente acompanhado",
+   "nome": "Coordenação enxuta",
    "aspecto": "assistencial",
-   "frase": "um responsável do pedido ao retorno, e a elegibilidade conferida a cada ciclo",
+   "frase": "uma navegadora e regras pactuadas entre áreas, no modelo do grupo Sentinela",
    "confianca": "provavel",
    "alternativas": [
     "a3",
-    "a7"
+    "a7",
+    "regras-pactuadas",
+    "sentinela"
    ]
   },
   {
    "id": "c3",
-   "nome": "Dose garantida",
+   "nome": "Previsibilidade contratual",
    "aspecto": "comercial",
-   "frase": "a cobertura e a senha antes do pedido da dose",
+   "frase": "a cobertura do tratamento completo e uma regra para a dose perdida",
    "confianca": "provavel",
    "alternativas": [
     "a4",
-    "a2"
+    "a2",
+    "autorizacao-tratamento",
+    "seguro-dose"
    ]
+  }
+ ],
+ "oportunidades": [
+  {
+   "id": "a1",
+   "curto": "Painel de status único",
+   "numero": "2.1",
+   "tipo": "alternativa",
+   "camada": "sistema"
+  },
+  {
+   "id": "a3",
+   "curto": "Navegador do teranóstico",
+   "numero": "2.2",
+   "tipo": "alternativa",
+   "camada": "jornadas"
+  },
+  {
+   "id": "a2",
+   "curto": "Alerta da janela de risco",
+   "numero": "2.3",
+   "tipo": "alternativa",
+   "camada": "jornadas"
+  },
+  {
+   "id": "a6",
+   "curto": "Canal de coordenação com trilha",
+   "numero": "2.4",
+   "tipo": "alternativa",
+   "camada": "sistema"
+  },
+  {
+   "id": "a7",
+   "curto": "Elegibilidade em duas camadas",
+   "numero": "2.5",
+   "tipo": "alternativa",
+   "camada": "servicos"
+  },
+  {
+   "id": "a4",
+   "curto": "Mapa de cobertura por operadora",
+   "numero": "2.6",
+   "tipo": "alternativa",
+   "camada": "servicos"
+  },
+  {
+   "id": "autorizacao-tratamento",
+   "curto": "Autorização por tratamento completo",
+   "numero": "2.8",
+   "tipo": "alavanca",
+   "camada": ""
+  },
+  {
+   "id": "regras-pactuadas",
+   "curto": "Regras pactuadas entre áreas",
+   "numero": "2.9",
+   "tipo": "alavanca",
+   "camada": ""
+  },
+  {
+   "id": "seguro-dose",
+   "curto": "Seguro da dose perdida",
+   "numero": "2.10",
+   "tipo": "alavanca",
+   "camada": ""
+  },
+  {
+   "id": "sentinela",
+   "curto": "Coordenação que já funciona",
+   "numero": "2.11",
+   "tipo": "alavanca",
+   "camada": ""
   }
  ],
  "dores": [
@@ -4962,6 +5093,12 @@ window.TERA = {
    "titulo": "Pré, jornada e pós · tom neutro",
    "o_que_mudou": "Depois da conversa com o par de projeto: a peça passa a se ler em pré-jornada, jornada e pós-jornada, e a jornada ganha 10 etapas, com agendamento e preparo, produção e recebimento da dose, e conta e auditoria. O diagnóstico fica só com os pilares do escopo (comercial, assistencial, operacional e sistema), renumerado, com 8 dores e 6 alternativas. O texto de toda a peça foi revisto num tom neutro, para coordenadores e executivos. O ciclo, dia a dia, ganhou duas raias, a da dose e a da senha, com a janela de risco entre elas.",
    "versao": 13
+  },
+  {
+   "data": "2026-10-30",
+   "titulo": "Os cenários do relatório",
+   "o_que_mudou": "A jornada TO BE abre com os três cenários do relatório parcial: Fluidez guiada (operacional), Coordenação enxuta (assistencial) e Previsibilidade contratual (comercial), cada um com as oportunidades da sua ficha, e uma oportunidade pode estar em mais de um cenário. A numeração ganha as alavancas do relatório: 2.8 autorização por tratamento completo, 2.9 regras pactuadas entre áreas, 2.10 seguro da dose perdida e 2.11 a coordenação que já funciona. Duas frases da peça passam ao tom neutro.",
+   "versao": 14
   }
  ]
 };

@@ -607,7 +607,7 @@
     } else if (et) {
       var i = PASSOS.indexOf(et), minhas = ETAPAS.filter(function (e) { return (et.etapas || []).indexOf(e.id) >= 0; }), semDono = minhas.filter(function (e) { return e.dono_hoje === "ninguem"; });
       html += "<div class='bloco ficha'><div class='rotulo'><span class='passo-chip p-" + et.sigla + "'>" + SUP[et.sigla] + "</span>movimento " + (i + 1) + " de " + PASSOS.length + "</div><h3>" + esc(maiuscula(et.nome)) + ": " + esc(et.verbo) + "</h3>" +
-        "<p>" + esc(minhas.map(function (e) { return e.nome; }).join(" → ")) + (semDono.length ? ". <span class='c-aberto'>Ninguém responde pela jornada em " + esc(semDono.map(function (e) { return e.nome.toLowerCase(); }).join(" e ")) + ".</span>" : ".") + "</p></div>";
+        "<p>" + esc(minhas.map(function (e) { return e.nome; }).join(" → ")) + (semDono.length ? ". <span class='c-aberto'>A jornada não tem responsável formal em " + esc(semDono.map(function (e) { return e.nome.toLowerCase(); }).join(" e ")) + ".</span>" : ".") + "</p></div>";
       var MAXP = 10;
       html += "<div class='bloco'><div class='rotulo'>Quem se relaciona em " + esc(et.nome) + " <span class='conf'>" + lista.length + "</span></div><ul class='lista'>" +
         (lista.length ? lista.slice(0, MAXP).map(function (f) { return itemFluxo(f, false); }).join("") : "<li>nenhuma relação registrada neste movimento</li>") +
@@ -869,19 +869,22 @@
      passagens e lacunas, nunca dias. Riscado é como é hoje; em verde, o que muda, com o número da escolha; tracejado,
      hipótese. Uma lacuna respondida continua à vista: a escolha responde, mas a restrição de fora não some. */
   var PSG = D.passagens || [], EFE = D.efeitos || [], LAC = D.lacunas || [];
-  var ALT_N = {}; (D.alternativas || []).forEach(function (a, i) { ALT_N[a.id] = a.numero || String(i + 1); });
+  /* o que a aba 6 escolhe (30/10/2026): as alternativas da Direção e as alavancas do diagnóstico, as duas com número 2.x */
+  var OPS = D.oportunidades || D.alternativas || [], OP = indexa(OPS, "id");
+  var ALT_N = {}; OPS.forEach(function (a, i) { ALT_N[a.id] = a.numero || String(i + 1); });
   /* a numeração ligada (29/10/2026): as dores 1.x marcam os pontos vermelhos da jornada de hoje; as alternativas 2.x são a
      ação. Os mesmos números dos slides do relatório (dados/numeracao.csv, gerado por exportes/gera_diagnostico.py) */
   var DOR = indexa(D.dores, "id");
   function ordemNum(n) { var p = String(n || "9.99").split("."); return (+p[0]) * 1000 + (+p[1] || 0); }
   function altsOrdenadas() { return (D.alternativas || []).slice().sort(function (a, b) { return ordemNum(a.numero) - ordemNum(b.numero); }); }
+  function opsOrdenadas() { return OPS.slice().sort(function (a, b) { return ordemNum(a.numero) - ordemNum(b.numero); }); }
   function doresSelo(ids) { return (ids || []).filter(function (d) { return DOR[d]; }).map(function (d) { return "<i class='dor-selo'>" + DOR[d].numero + "</i>"; }).join(""); }
   var COORD_HOJE = (D.sistemas || []).filter(function (s) { return s.grupo === "coordenacao_hoje"; }).map(function (s) { return s.id; });
   var ORD_CONF = { confirmado: 0, provavel: 1, aberto: 2 };
   /* os cenários da TO BE (cenarios.csv, 29/10/2026): junções de oportunidades pelas lentes operacional, assistencial e
      comercial. As escolhas são uma lista só: um cenário as preenche, e um clique numa oportunidade ajusta */
   var CEN = D.cenarios || [], CENI = indexa(CEN, "id");
-  function altsDoCenario(id) { var c = CENI[id]; return c ? (D.alternativas || []).map(function (x) { return x.id; }).filter(function (x) { return c.alternativas.indexOf(x) >= 0; }) : []; }
+  function altsDoCenario(id) { var c = CENI[id]; return c ? OPS.map(function (x) { return x.id; }).filter(function (x) { return c.alternativas.indexOf(x) >= 0; }) : []; }
   function cenarioDe(lista) { /* o cenário cujas oportunidades são exatamente as escolhidas; null numa combinação própria */
     return CEN.filter(function (c) { return c.alternativas.length === lista.length && c.alternativas.every(function (a) { return lista.indexOf(a) >= 0; }); })[0] || null;
   }
@@ -1234,10 +1237,20 @@
     var v = {}; ids.forEach(function (a) { doresDaAlt(a).forEach(function (d) { v[d] = 1; }); });
     return Object.keys(v).sort(function (x, y) { return ordemNum(DOR[x].numero) - ordemNum(DOR[y].numero); });
   }
+  /* um botão por oportunidade; as alavancas (30/10/2026) vão compactas, em duas colunas, sem as dores: o cartão do cenário já as diz */
+  function botoesOps(lista, alts, compacto) {
+    return lista.map(function (a) {
+      var on = alts.indexOf(a.id) >= 0, fora = !temEfeito(a.id), dd = doresDaAlt(a.id);
+      return "<button type='button' class='tb-alt" + (compacto ? " tb-alv" : "") + (on ? " on" : "") + (fora ? " fora" : "") + "' data-alt='" + a.id + "' aria-pressed='" + on + "'><i>" + ALT_N[a.id] + "</i><span>" + esc(a.curto) +
+        (compacto ? "" : fora ? "<small>não muda a jornada</small>" :
+          (dd.length ? "<small class='tb-resolve'>" + doresSelo(dd) + "</small>" : "<small>muda o registro, sem dor marcada</small>")) + "</span></button>";
+    }).join("");
+  }
   function montaToBe() {
     if (!tbPalco) return;
     if (evento.tobe === "ciclo") evento.tobe = null;
     var alts = altsAtivas(), antes = estadoJornada(), depois = aplicaEfeitos(alts), ev = evento.tobe, cAtivo = cenarioDe(alts);
+    var alavancas = opsOrdenadas().filter(function (a) { return a.tipo === "alavanca"; });
     if (tbLista) escreve(tbLista, "<p class='l-coluna'>OS CENÁRIOS</p>" +
       CEN.map(function (c, i) {
         var on = !!cAtivo && cAtivo.id === c.id, membros = porNumero(altsDoCenario(c.id));
@@ -1246,14 +1259,11 @@
           "<small class='tb-resolve'>" + selo(membros.map(function (a) { return { alt: a }; })) + " resolve " + doresSelo(doresDasAlts(membros)) + "</small></span></button>";
       }).join("") +
       "<p class='l-sub tb-sub'>AS OPORTUNIDADES<span class='tb-sua'> · " + (cAtivo ? "e as dores que resolvem" : "sua combinação") + "</span></p>" +
-      altsOrdenadas().map(function (a) {
-        var on = alts.indexOf(a.id) >= 0, fora = !temEfeito(a.id), dd = doresDaAlt(a.id);
-        return "<button type='button' class='tb-alt" + (on ? " on" : "") + (fora ? " fora" : "") + "' data-alt='" + a.id + "' aria-pressed='" + on + "'><i>" + ALT_N[a.id] + "</i><span>" + esc(a.curto) + (fora ? "<small>não muda a jornada</small>" :
-          (dd.length ? "<small class='tb-resolve'>" + doresSelo(dd) + "</small>" : "<small>muda o registro, sem dor marcada</small>")) + "</span></button>";
-      }).join("") +
+      botoesOps(opsOrdenadas().filter(function (a) { return a.tipo !== "alavanca"; }), alts) +
+      (alavancas.length ? "<p class='l-sub tb-sub'>AS ALAVANCAS<span class='tb-sua'> · fora do ranking da Direção</span></p><div class='tb-alvs'>" + botoesOps(alavancas, alts, true) + "</div>" : "") +
       "<p class='l-legenda j-nota'>" + esc(rel("tobe_nota")) + "</p>");
     var aviso = alts.filter(function (a) { return !temEfeito(a); }).map(function (a) {
-      return "<p class='tb-aviso'><i class='alt-selo'>" + ALT_N[a] + "</i> " + esc(ALT[a].curto) + " não muda a jornada" + (ALT[a].camada ? ": age em " + esc(rotuloVista(ALT[a].camada).toLowerCase()) : "") + ".</p>";
+      return "<p class='tb-aviso'><i class='alt-selo'>" + ALT_N[a] + "</i> " + esc(OP[a].curto) + " não muda a jornada" + (OP[a].camada ? ": age em " + esc(rotuloVista(OP[a].camada).toLowerCase()) : "") + ".</p>";
     }).join("");
     var topo = ev ? "" : "<div class='j-topo'><h2 class='serif'>" + (cAtivo ? "Cenário " + (CEN.indexOf(cAtivo) + 1) + " · " + esc(cAtivo.nome) +
       " <small>" + esc(cAtivo.aspecto) + " · " + esc(cAtivo.frase) + "</small>" : esc(rel("tobe_titulo") || "A jornada com as escolhas")) + "</h2><p class='l-entrega'>" + esc(rel("tobe_sub")) + "</p></div>";
@@ -1277,7 +1287,7 @@
       else if (b.hasAttribute("data-cenario")) escolhas = altsDoCenario(b.getAttribute("data-cenario"));
       else if (b.hasAttribute("data-alt")) {
         var a = b.getAttribute("data-alt"), k = escolhas.indexOf(a);
-        if (k >= 0) escolhas.splice(k, 1); else escolhas = (D.alternativas || []).map(function (x) { return x.id; }).filter(function (x) { return x === a || escolhas.indexOf(x) >= 0; });
+        if (k >= 0) escolhas.splice(k, 1); else escolhas = OPS.map(function (x) { return x.id; }).filter(function (x) { return x === a || escolhas.indexOf(x) >= 0; });
       }
       else return;
       if (vista === "jornadas") { selecao.jornadas = etapaOn.jornadas; montaJornada(); }
@@ -1430,7 +1440,7 @@
     if ((vista === "jornadas" || vista === "tobe") && PASSO[ps]) evento[vista] = ps;
     if (vista === "jornadas" && ps === "ciclo") evento.jornadas = "ciclo";
     if (CENI[p.get("cenario")]) escolhas = altsDoCenario(p.get("cenario"));
-    else if (p.has("escolhas")) escolhas = (p.get("escolhas") || "").split(",").filter(function (a) { return ALT[a]; });
+    else if (p.has("escolhas")) escolhas = (p.get("escolhas") || "").split(",").filter(function (a) { return OP[a]; });
     var t = +p.get("tempo"); if (t === 1 || t === 2) { comparativo = false; if (vSistema) vSistema.classList.remove("cheia"); tempo(t); }
     montaAtomo(); leituraAbertura();
     var et = vista === "ecossistema" ? (p.get("passo") || "") : "", et0 = PASSOS[0] ? PASSOS[0].sigla : null;
